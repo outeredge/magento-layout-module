@@ -1,0 +1,22 @@
+{
+    "name": "outeredge/edge-magento-module-layout",
+    "type": "magento-module",
+    "description": "Module to create layout elements for Magento by outer/edge",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "outer/edge",
+            "email": "support@outeredgeuk.com"
+        }
+    ],
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "extra": {
+        "map": [
+            ["app/code/local/Edge/Layout", "app/code/local/Edge/Layout"],
+            ["app/etc/modules/Edge_Layout.xml", "app/etc/modules/Edge_Layout.xml"],
+            ["app/design/adminhtml/default/default/layout/edge/layout.xml", "app/design/adminhtml/default/default/layout/edge/layout.xml"]
+        ]
+    }
+}
