@@ -80,7 +80,7 @@ class Edge_Layout_Adminhtml_ElementsController extends Mage_Adminhtml_Controller
                     if (isset($fileData['name']) && $fileData['name'] != '') {
                         try {
                             $uploader = new Mage_Core_Model_File_Uploader($name);
-                            $uploader->setAllowedExtensions(array('jpg','jpeg','gif','png'));
+                            $uploader->setAllowedExtensions(array('jpg','jpeg','gif','png','svg'));
                             $uploader->setAllowRenameFiles(true);
                             $uploader->setFilesDispersion(false);
                             $dirPath = Mage::getBaseDir('media') . DS . 'layout' . DS;
