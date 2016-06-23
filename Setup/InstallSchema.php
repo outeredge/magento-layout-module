@@ -36,14 +36,14 @@ class InstallSchema implements InstallSchemaInterface
                     'title',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true, 'default' => null],
                     'Title'
                 )
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true, 'default' => null],
                     'Description'
                 )
                 ->addColumn(
@@ -88,7 +88,7 @@ class InstallSchema implements InstallSchemaInterface
                     'title',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true, 'default' => null],
                     'Title'
                 )
                 ->addColumn(
@@ -134,10 +134,8 @@ class InstallSchema implements InstallSchemaInterface
                     Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => true,
                         'unsigned' => true,
-                        'nullable' => false,
-                        'primary'  => true,
+                        'nullable' => false
                     ],
                     'Fk Group'
                 )
@@ -146,10 +144,8 @@ class InstallSchema implements InstallSchemaInterface
                     Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => true,
                         'unsigned' => true,
-                        'nullable' => false,
-                        'primary'  => true,
+                        'nullable' => true
                     ],
                     'Fk Type'
                 )
@@ -157,49 +153,49 @@ class InstallSchema implements InstallSchemaInterface
                     'title',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Title'
                 )
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Description'
                 )
                 ->addColumn(
                     'link',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Link'
                 )
                 ->addColumn(
                     'link_text',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Link Text'
                 )
                 ->addColumn(
                     'image',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Image'
                 )
                 ->addColumn(
                     'overlay_style',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Overlay Style'
                 )
                 ->addColumn(
                     'overlay_colour',
                     Table::TYPE_TEXT,
                     null,
-                    ['nullable' => false, 'default' => ''],
+                    ['nullable' => true],
                     'Overlay Colour'
                 )
                 ->addColumn(
@@ -213,7 +209,7 @@ class InstallSchema implements InstallSchemaInterface
                     'created_at',
                     Table::TYPE_DATETIME,
                     null,
-                    ['nullable' => false],
+                    ['nullable' => true ],
                     'Created At'
                 )
                 ->addForeignKey(
