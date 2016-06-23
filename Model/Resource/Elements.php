@@ -2,7 +2,7 @@
 
 namespace OuterEdge\Layout\Model\Resource;
 
-use Magento\Framework\Model\Resource\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class Elements extends AbstractDb
 {

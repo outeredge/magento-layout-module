@@ -2,7 +2,7 @@
 
 namespace OuterEdge\Layout\Model\Resource\Elements;
 
-use Magento\Framework\Model\Resource\Db\Collection\AbstractCollection;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
