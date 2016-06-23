@@ -1,9 +1,2 @@
-edge-magento-module-layout
+outer/edge Magento Layout Module
 ========================
-
-Module to create layout elements for Magento by outer/edge
-
-Example how to use on frontend:
-
-$helper = Mage::helper('layout/data');
-$helper->getLayoutContents('homepage', 'top')->getData());

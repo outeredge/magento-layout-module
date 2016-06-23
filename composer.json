@@ -1,22 +1,28 @@
 {
-    "name": "outeredge/edge-magento-module-layout",
-    "type": "magento-module",
-    "description": "Module to create layout elements for Magento by outer/edge",
-    "license": "MIT",
+    "name": "outeredge/magento-module-layout",
+    "description": "Magento Layout Module by outer/edge",
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
     "authors": [
         {
             "name": "outer/edge",
-            "email": "support@outeredgeuk.com"
+            "email": "support@outeredgeuk.com",
+            "homepage": "https://outeredgeuk.com/",
+            "role": "Developer"
         }
     ],
     "require": {
-        "magento-hackathon/magento-composer-installer": "*"
+        "php": "~5.5.0|~5.6.0|~7.0.0"
     },
-    "extra": {
-        "map": [
-            ["app/code/local/Edge/Layout", "app/code/local/Edge/Layout"],
-            ["app/etc/modules/Edge_Layout.xml", "app/etc/modules/Edge_Layout.xml"],
-            ["app/design/adminhtml/default/default/layout/edge/layout.xml", "app/design/adminhtml/default/default/layout/edge/layout.xml"]
-        ]
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "OuterEdge\\Layout\\": ""
+        }
     }
 }
