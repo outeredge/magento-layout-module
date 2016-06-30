@@ -57,7 +57,7 @@ class InstallSchema implements InstallSchemaInterface
                     'created_at',
                     Table::TYPE_DATETIME,
                     null,
-                    ['nullable' => false],
+                    ['nullable' => true],
                     'Created At'
                 )
                 ->setComment('Layout Group Table')
@@ -102,7 +102,7 @@ class InstallSchema implements InstallSchemaInterface
                     'created_at',
                     Table::TYPE_DATETIME,
                     null,
-                    ['nullable' => false],
+                    ['nullable' => true],
                     'Created At'
                 )
                 ->setComment('Layout Types Table')

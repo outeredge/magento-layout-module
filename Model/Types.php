@@ -4,12 +4,11 @@ namespace OuterEdge\Layout\Model;
 
 use Magento\Framework\Model\AbstractModel;
 
-class Groups extends AbstractModel
+class Types extends AbstractModel
 {
-
     protected function _construct()
     {
-        $this->_init('OuterEdge\Layout\Model\Resource\Groups');
+        $this->_init('OuterEdge\Layout\Model\Resource\Types');
     }
 
     /**
@@ -17,7 +16,7 @@ class Groups extends AbstractModel
      * @param type $title
      * @return type
      */
-    public function getGroupIdByName($title = false)
+    public function getTypeIdByName($title = false)
     {
         $result = $this->getCollection();
         $result->addFilter('title', $title);

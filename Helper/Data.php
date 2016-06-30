@@ -2,27 +2,82 @@
 
 namespace OuterEdge\Layout\Helper;
 
-use Magento\Framework\Model\Context;
-use Magento\Framework\App\State;
+use Magento\Framework\App\Helper\AbstractHelper;
+use OuterEdge\Layout\Model\ElementsFactory;
+use OuterEdge\Layout\Model\GroupsFactory;
+use OuterEdge\Layout\Model\TypesFactory;
 
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
-    public function getLayoutContents($groupName = false, $type = false)
+    /**
+     * @var OuterEdge\Layout\Model\ElementsFactory
+     */
+    protected $_modelElementsFactory;
+
+    /**
+     * @var OuterEdge\Layout\Model\GroupsFactory
+     */
+    protected $_modelGroupsFactory;
+
+    /**
+     * @var OuterEdge\Layout\Model\TypesFactory
+     */
+    protected $_modelTypesFactory;
+
+    /**
+     *
+     * @param ElementsFactory $modelElementsFactory
+     * @param GroupsFactory $modelGroupsFactory
+     */
+    public function __construct(
+        ElementsFactory $modelElementsFactory,
+        GroupsFactory $modelGroupsFactory,
+        TypesFactory $modelTypesFactory)
     {
-        $groups  = Mage::getModel('layout/layout_groups');
-        $idGroup = $groups->getGroupIdByName($groupName);
+        $this->_modelElementsFactory = $modelElementsFactory;
+        $this->_modelGroupsFactory   = $modelGroupsFactory;
+        $this->_modelTypesFactory     = $modelTypesFactory;
+    }
+
+    /**
+     * getLayoutContents
+     * @param type $groupTitle
+     * @param type $type
+     * @return type
+     */
+    public function getLayoutContents($groupTitle = false, $type = false)
+    {
+        /**
+        * @var OuterEdge\Layout\Model\GroupsFactory
+        */
+        $groupsModel = $this->_modelGroupsFactory->create();
+        $idGroup     = $groupsModel->getGroupIdByName($groupTitle);
+
         if (!$idGroup) {
             return null;
         }
 
-        $layout  = Mage::getModel('layout/layout_elements');
-        $result  = $layout->loadByType($idGroup->getId(), $type);
-        $grouped = $this->groupBy($result->getData(), 'type');
-        $data    = $this->getVarienDataCollection($grouped);
+        /**
+         * @var OuterEdge\Layout\Model\TypeFactory
+         */
+        $typesModel = $this->_modelTypesFactory->create();
+        $fkType     = $typesModel->getTypeIdByName($type);
 
-        return $data;
+        /**
+         * @var OuterEdge\Layout\Model\ElementsFactory
+         */
+        $elementsModel = $this->_modelElementsFactory->create();
+        $result        = $elementsModel->loadByGroupAndType($idGroup->getIdGroup(), $fkType->getIdType());
+
+        return $this->groupBy($result->getData(), 'typeTitle');
     }
 
+    /**
+     * groupBy
+     * @param type $array
+     * @param type $key
+     * @return type
+     */
     protected function groupBy($array, $key)
     {
         $return = array();
@@ -30,19 +85,5 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $return[$val[$key]][] = $val;
         }
         return $return;
-    }
-
-    protected function getVarienDataCollection($groups)
-    {
-        $home = new Varien_Object();
-        foreach ($groups as $name => $items) {
-            $home[$name] = new Varien_Data_Collection();
-            foreach ($items as $item) {
-                $varienObject = new Varien_Object();
-                $varienObject->setData($item);
-                $home[$name]->addItem($varienObject);
-            }
-        }
-        return $home;
     }
 }

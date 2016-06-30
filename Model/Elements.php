@@ -10,4 +10,22 @@ class Elements extends AbstractModel
     {
         $this->_init('OuterEdge\Layout\Model\Resource\Elements');
     }
+
+    /**
+     *
+     * @param type $fkGroup
+     * @param type $fkType
+     * @return type
+     */
+    public function loadByGroupAndType($fkGroup, $fkType = false)
+    {
+        $result = $this->getCollection();
+        $result->addFilter('fk_group', $fkGroup);
+        if ($fkType) {
+            $result->addFilter('fk_type', $fkType);
+        }
+        $result->join($this->getResource()->getTable('layout_types'),
+            'fk_type = id_type', 'title as typeTitle');
+        return $result;
+    }
 }
