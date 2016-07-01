@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="OuterEdge_Layout::layout_content" title="Layout" module="OuterEdge_Layout" sortOrder="50"  parent="Magento_Backend::content" resource="OuterEdge_Layout::layout_content"/>
+        <add id="OuterEdge_Layout::elements" title="Groups/Elements" module="OuterEdge_Layout" sortOrder="0" parent="OuterEdge_Layout::layout_content" action="layout/elements" resource="OuterEdge_Layout::elements"/>
+        <add id="OuterEdge_Layout::types" title="Types" module="OuterEdge_Layout" sortOrder="1" parent="OuterEdge_Layout::layout_content" action="layout/types" resource="OuterEdge_Layout::types"/>
+    </menu>
+</config>

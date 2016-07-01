@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="OuterEdge_Layout::layout_content" title="Layout" sortOrder="10" >
+                        <resource id="OuterEdge_Layout::groups" title="Groups" sortOrder="40" >
+                            <resource id="OuterEdge_Layout::groups_save" title="Save Groups" sortOrder="10" />
+                            <resource id="OuterEdge_Layout::groups_delete" title="Delete Groups" sortOrder="20" />
+                        </resource>
+                        <resource id="OuterEdge_Layout::elements" title="Elements" sortOrder="40" >
+                            <resource id="OuterEdge_Layout::elements_save" title="Save Elements" sortOrder="10" />
+                            <resource id="OuterEdge_Layout::elements_delete" title="Delete Elements" sortOrder="20" />
+                        </resource>
+                        <resource id="OuterEdge_Layout::types" title="Types" sortOrder="40" >
+                            <resource id="OuterEdge_Layout::types_save" title="Save Types" sortOrder="10" />
+                            <resource id="OuterEdge_Layout::types_delete" title="Delete Types" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

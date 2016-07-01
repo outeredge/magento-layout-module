@@ -26,6 +26,7 @@ class Elements extends AbstractModel
         }
         $result->join($this->getResource()->getTable('layout_types'),
             'fk_type = id_type', 'title as typeTitle');
+        $result->setOrder('sort_order');
         return $result;
     }
 }
