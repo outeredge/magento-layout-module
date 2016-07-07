@@ -34,10 +34,7 @@ class Index extends \Magento\Backend\App\Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('OuterEdge_Layout::elements');
-        $resultPage->addBreadcrumb(__('Layout Elements'), __('Layout Elements'));
-        $resultPage->addBreadcrumb(__('Manage Layout Elements'), __('Manage Layout Elements'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Layout Elements'));
+        $resultPage->getLayout()->getBlock('layout.view.elements');
 
         return $resultPage;
     }

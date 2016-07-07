@@ -43,19 +43,19 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
 
-        $form->setHtmlIdPrefix('page_');
+        $form->setHtmlIdPrefix('groups_');
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Edit Group')]);
 
         if ($model->getId()) {
-            $fieldset->addField('id_group', 'hidden', ['name' => 'id_group']);
+            $fieldset->addField('id_group', 'hidden', ['name' => 'group[id_group]']);
         }
 
         $fieldset->addField(
             'title',
             'text',
             [
-                'name' => 'title',
+                'name' => 'group[title]',
                 'label' => __('Title'),
                 'title' => __('Title'),
                 'required' => true
@@ -65,7 +65,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             'description',
             'textarea',
             [
-                'name' => 'description',
+                'name' => 'group[description]',
                 'label' => __('Description'),
                 'title' => __('Description'),
                 'required' => true
@@ -75,7 +75,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             'sort_order',
             'text',
             [
-                'name' => 'sort_order',
+                'name' => 'group[sort_order]',
                 'label' => __('Sort Order'),
                 'title' => __('Sort Order'),
                 'required' => false
@@ -90,7 +90,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             'created_at',
             'date',
             [
-                'name' => 'created_at',
+                'name' => 'group[created_at]',
                 'label' => __('Created Date'),
                 'date_format' => $dateFormat,
                 'class' => 'validate-date validate-date-range date-range-custom_theme-from'
@@ -110,7 +110,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      */
     public function getTabLabel()
     {
-        return __('Group Information Tab');
+        return __('Group Information');
     }
 
     /**
@@ -120,7 +120,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      */
     public function getTabTitle()
     {
-        return __('Group Information Tab');
+        return __('Group Information');
     }
 
     /**

@@ -25,7 +25,7 @@ class Groups extends \Magento\Backend\Block\Widget\Grid\Container
 
         $addButtonProps = [
             'id' => 'add_new_grid',
-            'label' => __('Add New'),
+            'label' => __('Add New Group'),
             'class' => 'add',
             'button_class' => '',
             'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
@@ -49,7 +49,7 @@ class Groups extends \Magento\Backend\Block\Widget\Grid\Container
     {
 
         $splitButtonOptions[] = [
-            'label' => __('Add New'),
+            'label' => __('Add New Group'),
             'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
         ];
 

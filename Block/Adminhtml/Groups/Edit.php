@@ -37,7 +37,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Groups'));
+        $this->buttonList->update('save', 'label', __('Save Group'));
         $this->buttonList->add(
             'saveandcontinue',
             [

@@ -2,12 +2,14 @@
 
 namespace OuterEdge\Layout\Block\Adminhtml;
 
-class Elements extends \Magento\Backend\Block\Widget\Grid\Container
+/**
+ * Elements edit form main tab
+ */
+class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
-    /**
-     * @var string
-     */
     protected $_template = 'elements/view.phtml';
+
+    protected $_idGroup;
 
     /**
      * @param \Magento\Backend\Block\Widget\Context $context
@@ -17,15 +19,16 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container
         \Magento\Backend\Block\Widget\Context $context,
         array $data = []
     ) {
-        parent::__construct($context, $data);
+         parent::__construct($context, $data);
     }
 
     protected function _prepareLayout()
     {
+        $this->_idGroup = $this->getRequest()->getParam('id_group');
 
         $addButtonProps = [
             'id' => 'add_new_grid',
-            'label' => __('Add New'),
+            'label' => __('Add New Element'),
             'class' => 'add',
             'button_class' => '',
             'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
@@ -35,7 +38,7 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container
 
         $this->setChild(
             'grid',
-           $this->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Elements\Grid', 'layout.view.elements')
+            $this->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Elements\Grid', 'layout.view.elements')
         );
         return parent::_prepareLayout();
     }
@@ -49,13 +52,12 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container
     {
 
         $splitButtonOptions[] = [
-            'label' => __('Add New'),
+            'label' => __('Add New Element'),
             'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
         ];
 
         return $splitButtonOptions;
     }
-
 
     /**
      *
@@ -66,7 +68,7 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container
     protected function _getCreateUrl()
     {
         return $this->getUrl(
-            'layout/*/new'
+            "layout/elements/new/id_group/$this->_idGroup"
         );
     }
 
@@ -81,4 +83,50 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container
     }
 
 
+    /**
+     * Prepare label for tab
+     *
+     * @return \Magento\Framework\Phrase
+     */
+    public function getTabLabel()
+    {
+        return __('Elements');
+    }
+
+    /**
+     * Prepare title for tab
+     *
+     * @return \Magento\Framework\Phrase
+     */
+    public function getTabTitle()
+    {
+        return __('Elements');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canShowTab()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isHidden()
+    {
+        return false;
+    }
+
+    /**
+     * Check permission for passed action
+     *
+     * @param string $resourceId
+     * @return bool
+     */
+    protected function _isAllowedAction($resourceId)
+    {
+        return $this->_authorization->isAllowed($resourceId);
+    }
 }

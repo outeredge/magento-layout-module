@@ -54,7 +54,11 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $collection = $this->_elementsFactory->create()->getCollection();
+        $id = $this->getRequest()->getParam('id_group');
+
+        $collection = $this->_elementsFactory->create()->getCollection()
+            ->addFieldToFilter('fk_group', $id);
+
         $this->setCollection($collection);
 
         parent::_prepareCollection();
@@ -104,7 +108,7 @@ class Grid extends Extended
                     [
                         'caption' => __('Edit'),
                         'url' => [
-                            'base' => '*/*/edit'
+                            'base' => 'layout/elements/edit'
                         ],
                         'field' => 'id_element'
                     ]
@@ -126,31 +130,11 @@ class Grid extends Extended
     }
 
     /**
-     * @return $this
-     */
-    protected function _prepareMassaction()
-    {
-        $this->setMassactionIdField('id_element');
-        $this->getMassactionBlock()->setFormFieldName('element_record_id');
-
-        $this->getMassactionBlock()->addItem(
-            'delete',
-            [
-                'label' => __('Delete'),
-                'url' => $this->getUrl('layout/*/massDelete'),
-                'confirm' => __('Are you sure?')
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getGridUrl()
     {
-        return $this->getUrl('layout/*/grid', ['_current' => true]);
+        return $this->getUrl('layout/*/index', ['_current' => true]);
     }
 
 

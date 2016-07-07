@@ -11,11 +11,17 @@
         <referenceContainer name="left">
             <block class="OuterEdge\Layout\Block\Adminhtml\Groups\Edit\Tabs" name="layout_groups_edit_tabs">
                 <block class="OuterEdge\Layout\Block\Adminhtml\Groups\Edit\Tab\Main" name="layout_groups_edit_tab_main"/>
-                <action method="addTab">
+                <block class="OuterEdge\Layout\Block\Adminhtml\Elements" name="layout_elements_grid"/>
+                 <action method="addTab">
                     <argument name="name" xsi:type="string">main_section</argument>
                     <argument name="block" xsi:type="string">layout_groups_edit_tab_main</argument>
                 </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">elements_section</argument>
+                    <argument name="block" xsi:type="string">layout_elements_grid</argument>
+                </action>
             </block>
         </referenceContainer>
+
     </body>
 </page>

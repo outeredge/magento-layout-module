@@ -22,16 +22,16 @@ class Save extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPostValue();
+        $post = $this->getRequest()->getPostValue();
+
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($data) {
+        if ($post) {
             $model = $this->_objectManager->create('OuterEdge\Layout\Model\Groups');
+            $data = $this->getRequest()->getParam('group');
 
-            $id = $this->getRequest()->getParam('id_group');
-
-            if ($id) {
-                $model->load($id);
+            if (isset($data['id_group'])) {
+                $model->load($data['id_group']);
             }
 
             $model->setData($data);

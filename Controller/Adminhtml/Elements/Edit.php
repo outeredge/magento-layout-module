@@ -65,7 +65,6 @@ class Edit extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-
         // 1. Get ID and create model
         $id = $this->getRequest()->getParam('id_element');
         $model = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');

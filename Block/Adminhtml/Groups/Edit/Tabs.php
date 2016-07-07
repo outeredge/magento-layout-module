@@ -14,6 +14,6 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         parent::_construct();
         $this->setId('group_record');
         $this->setDestElementId('edit_form');
-        $this->setTitle(__('Group Information'));
+        $this->setTitle(__('Information'));
     }
 }

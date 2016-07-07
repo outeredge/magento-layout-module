@@ -23,6 +23,7 @@ class Save extends \Magento\Backend\App\Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
@@ -41,9 +42,9 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccess(__('The data has been saved.'));
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['id_element' => $model->getId(), '_current' => true]);
+                    return $resultRedirect->setPath('layout/groups/edit', ['id_group' => $model->getFkGroup(), '_current' => true]);
                 }
-                return $resultRedirect->setPath('*/*/');
+                return $resultRedirect->setPath('layout/groups/edit',['id_group' => $model->getFkGroup()]);
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\RuntimeException $e) {
@@ -53,7 +54,7 @@ class Save extends \Magento\Backend\App\Action
             }
 
             $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('*/*/edit', ['id_element' => $this->getRequest()->getParam('element_record_id')]);
+            return $resultRedirect->setPath('layout/groups/edit', ['id_group' => $model->getFkGroup()]);
         }
         return $resultRedirect->setPath('*/*/');
     }

@@ -150,7 +150,7 @@ class Grid extends Extended
      */
     public function getGridUrl()
     {
-        return $this->getUrl('layout/*/grid', ['_current' => true]);
+        return $this->getUrl('layout/*/index', ['_current' => true]);
     }
 
 

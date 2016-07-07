@@ -38,6 +38,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      */
     protected function _prepareForm()
     {
+        $idGroup = $this->getRequest()->getParam('id_group');
+
         $model = $this->_coreRegistry->registry('layout_elements_form_data');
 
         /** @var \Magento\Framework\Data\Form $form */
@@ -49,6 +51,11 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         if ($model->getId()) {
             $fieldset->addField('id_element', 'hidden', ['name' => 'id_element']);
+        }
+
+        if ($idGroup) {
+            $model->setFkGroup($idGroup);
+            $fieldset->addField('fk_group', 'hidden', ['name' => 'fk_group']);
         }
 
         $fieldset->addField(
@@ -112,7 +119,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             ]
         );
 
-         $fieldset->addField(
+        $fieldset->addField(
             'overlay_style',
             'text',
             [
