@@ -34,7 +34,7 @@ class Delete extends \Magento\Backend\App\Action
                 $model->delete();
 
                 $this->messageManager->addSuccess(__('You deleted the element.'));
-                return $resultRedirect->setPath('*/*/');
+                return $resultRedirect->setPath('layout/groups/edit', ['id_group' => $model->getFkGroup()]);
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 return $resultRedirect->setPath('*/*/edit', ['id_element' => $id]);
