@@ -52,8 +52,8 @@ class Edit extends \Magento\Backend\App\Action
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('OuterEdge_Layout::elements')
-                    ->addBreadcrumb(__('Layout Elements'), __('Layout Elements'))
-                    ->addBreadcrumb(__('Manage Layout Elements'), __('Manage Layout Elements'));
+            ->addBreadcrumb(__('Layout Elements'), __('Layout Elements'))
+            ->addBreadcrumb(__('Manage Layout Elements'), __('Manage Layout Elements'));
         return $resultPage;
     }
 
@@ -65,11 +65,9 @@ class Edit extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        // 1. Get ID and create model
-        $id = $this->getRequest()->getParam('id_element');
-        $model = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');
+        $id        = $this->getRequest()->getParam('id_element');
+        $model     = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');
 
-        // 2. Initial checking
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
@@ -81,16 +79,16 @@ class Edit extends \Magento\Backend\App\Action
             }
         }
 
-        // 3. Set entered data if was error when we do save
+        //Set entered data if was error when we do save
         $data = $this->_objectManager->get('Magento\Backend\Model\Session')->getFormData(true);
         if (!empty($data)) {
             $model->setData($data);
         }
 
-        // 4. Register model to use later in blocks
+        //Register model to use later in blocks
         $this->_coreRegistry->register('layout_elements_form_data', $model);
 
-        // 5. Build edit form
+        //Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_initAction();
         $resultPage->addBreadcrumb(

@@ -42,6 +42,15 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         $model = $this->_coreRegistry->registry('layout_elements_form_data');
 
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $modelAllType = $objectManager->create('OuterEdge\Layout\Model\Resource\Types\Collection');
+        $modelAllType->load();
+
+        $optionsArray = array();
+        foreach ($modelAllType->getData() as $type) {
+            $optionsArray += [$type['id_type'] => $type['title']];
+        }
+
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
 
@@ -51,6 +60,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         if ($model->getId()) {
             $fieldset->addField('id_element', 'hidden', ['name' => 'id_element']);
+            $fieldset->addField('fk_group', 'hidden', ['name' => 'fk_group']);
         }
 
         if ($idGroup) {
@@ -78,16 +88,19 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'required' => true
             ]
         );
+
         $fieldset->addField(
             'fk_type',
-            'text',
+            'select',
             [
-                'name' => 'fk_type',
                 'label' => __('Type'),
                 'title' => __('Type'),
-                'required' => true
+                'name' => 'fk_type',
+                'required' => true,
+                'options' => $optionsArray
             ]
         );
+
         $fieldset->addField(
             'link',
             'text',
@@ -149,26 +162,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'required' => false
             ]
         );
-
-//        $contentField = $fieldset->addField(
-//            'link',
-//            'text',
-//            [
-//                'name' => 'link',
-//                'label' => __('Description'),
-//                'title' => __('Description'),
-//                'required' => true
-//            ]
-//        );
-//
-//        // Setting custom renderer for content field to remove label column
-//        $renderer = $this->getLayout()->createBlock(
-//            'Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element'
-//        )->setTemplate(
-//            'Magento_Cms::page/edit/form/renderer/content.phtml'
-//        );
-//        $contentField->setRenderer($renderer);
-
 
         $dateFormat = $this->_localeDate->getDateFormat(
             \IntlDateFormatter::SHORT
