@@ -3,6 +3,8 @@ namespace  OuterEdge\Layout\Block\Adminhtml\Elements;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_idGroup;
+
     /**
      * Core registry
      *
@@ -22,6 +24,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     ) {
         $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
+
+        $this->buttonList->remove('back');
     }
 
     /**
@@ -31,9 +35,20 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'id_element';
+        $this->_objectId   = 'id_element';
         $this->_blockGroup = 'outerEdge_layout';
         $this->_controller = 'adminhtml_elements';
+        $this->_idGroup    = $this->getRequest()->getParam('id_group');
+
+        $this->buttonList->add(
+            'back_element',
+            [
+                'id' => 'back_element',
+                'label' => __('Back'),
+                'class' => 'action-default scalable back',
+                'onclick' => "setLocation('" . $this->_getBackCreateUrl() . "')"
+            ]
+        );
 
         parent::_construct();
 
@@ -53,6 +68,19 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         );
 
         $this->buttonList->update('delete', 'label', __('Delete'));
+    }
+
+    /**
+     *
+     *
+     * @param string $type
+     * @return string
+     */
+    protected function _getBackCreateUrl()
+    {
+        return $this->getUrl(
+            "layout/groups/edit/id_group/$this->_idGroup"
+        );
     }
 
     /**
