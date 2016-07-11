@@ -19,7 +19,8 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
         \Magento\Backend\Block\Widget\Context $context,
         array $data = []
     ) {
-         parent::__construct($context, $data);
+        parent::__construct($context, $data);
+        $this->buttonList->remove('add');
     }
 
     protected function _prepareLayout()
@@ -29,10 +30,8 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
         $addButtonProps = [
             'id' => 'add_new_grid',
             'label' => __('Add New Element'),
-            'class' => 'add',
-            'button_class' => '',
-            'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
-            'options' => $this->_getAddButtonOptions(),
+            'class' => 'action-default scalable add primary',
+            'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
         ];
         $this->buttonList->add('add_new', $addButtonProps);
 
@@ -41,22 +40,6 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
             $this->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Elements\Grid', 'layout.view.elements')
         );
         return parent::_prepareLayout();
-    }
-
-    /**
-     *
-     *
-     * @return array
-     */
-    protected function _getAddButtonOptions()
-    {
-
-        $splitButtonOptions[] = [
-            'label' => __('Add New Element'),
-            'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
-        ];
-
-        return $splitButtonOptions;
     }
 
     /**
