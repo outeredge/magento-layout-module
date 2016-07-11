@@ -217,7 +217,7 @@ class InstallSchema implements InstallSchemaInterface
                     'fk_group',
                     $installer->getTable('layout_groups'),
                     'id_group',
-                    Table::ACTION_SET_NULL
+                    Table::ACTION_CASCADE
                 )
                 ->addForeignKey(
                     $installer->getFkName('layout_elements', 'fk_type', 'layout_types', 'id_type'),
