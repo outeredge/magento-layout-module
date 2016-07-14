@@ -17,10 +17,10 @@ class Groups extends AbstractModel
      * @param type $title
      * @return type
      */
-    public function getGroupIdByName($title = false)
+    public function getGroupIdByCode($title = false)
     {
         $result = $this->getCollection();
-        $result->addFilter('title', $title);
+        $result->addFilter('group_code', $title);
         return $result->getFirstItem();
     }
 }

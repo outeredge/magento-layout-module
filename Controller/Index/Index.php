@@ -23,7 +23,7 @@ class Index extends Action
 
     public function execute()
     {
-        $result = $this->_helper->getLayoutContents('homepage', 'top');
+        $result = $this->_helper->getLayoutContents('homepage');
         print_r($result);
     }
 }

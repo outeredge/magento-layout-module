@@ -5,7 +5,6 @@ namespace OuterEdge\Layout\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use OuterEdge\Layout\Model\ElementsFactory;
 use OuterEdge\Layout\Model\GroupsFactory;
-use OuterEdge\Layout\Model\TypesFactory;
 
 class Data extends AbstractHelper
 {
@@ -20,70 +19,42 @@ class Data extends AbstractHelper
     protected $_modelGroupsFactory;
 
     /**
-     * @var OuterEdge\Layout\Model\TypesFactory
-     */
-    protected $_modelTypesFactory;
-
-    /**
      *
      * @param ElementsFactory $modelElementsFactory
      * @param GroupsFactory $modelGroupsFactory
      */
     public function __construct(
         ElementsFactory $modelElementsFactory,
-        GroupsFactory $modelGroupsFactory,
-        TypesFactory $modelTypesFactory)
+        GroupsFactory $modelGroupsFactory)
     {
         $this->_modelElementsFactory = $modelElementsFactory;
         $this->_modelGroupsFactory   = $modelGroupsFactory;
-        $this->_modelTypesFactory     = $modelTypesFactory;
     }
 
     /**
      * getLayoutContents
      * @param type $groupTitle
-     * @param type $type
-     * @return type
+     * @return array
      */
-    public function getLayoutContents($groupTitle = false, $type = false)
+    public function getLayoutContents($groupCode = false)
     {
         /**
         * @var OuterEdge\Layout\Model\GroupsFactory
         */
         $groupsModel = $this->_modelGroupsFactory->create();
-        $idGroup     = $groupsModel->getGroupIdByName($groupTitle);
+        $idGroup     = $groupsModel->getGroupIdByCode($groupCode);
 
         if (!$idGroup) {
             return null;
         }
 
         /**
-         * @var OuterEdge\Layout\Model\TypeFactory
-         */
-        $typesModel = $this->_modelTypesFactory->create();
-        $fkType     = $typesModel->getTypeIdByName($type);
-
-        /**
          * @var OuterEdge\Layout\Model\ElementsFactory
          */
         $elementsModel = $this->_modelElementsFactory->create();
-        $result        = $elementsModel->loadByGroupAndType($idGroup->getIdGroup(), $fkType->getIdType());
+        $result        = $elementsModel->loadByGroup($idGroup->getGroupId());
 
-        return $this->groupBy($result->getData(), 'typeTitle');
+        return $result->getData();
     }
 
-    /**
-     * groupBy
-     * @param type $array
-     * @param type $key
-     * @return type
-     */
-    protected function groupBy($array, $key)
-    {
-        $return = array();
-        foreach($array as $val) {
-            $return[$val[$key]][] = $val;
-        }
-        return $return;
-    }
 }
