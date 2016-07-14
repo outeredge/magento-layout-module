@@ -22,7 +22,7 @@ class Delete extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id_element');
+        $id = $this->getRequest()->getParam('element_id');
 
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
@@ -34,10 +34,10 @@ class Delete extends \Magento\Backend\App\Action
                 $model->delete();
 
                 $this->messageManager->addSuccess(__('You deleted the element.'));
-                return $resultRedirect->setPath('layout/groups/edit', ['id_group' => $model->getFkGroup()]);
+                return $resultRedirect->setPath('layout/groups/edit', ['group_id' => $model->getFkGroup()]);
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['id_element' => $id]);
+                return $resultRedirect->setPath('*/*/edit', ['element_id' => $id]);
             }
         }
         $this->messageManager->addError(__('We can\'t find a element to delete.'));

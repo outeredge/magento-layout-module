@@ -31,7 +31,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'id_group';
+        $this->_objectId = 'group_id';
         $this->_blockGroup = 'outerEdge_layout';
         $this->_controller = 'adminhtml_groups';
 

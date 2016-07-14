@@ -30,8 +30,8 @@ class Save extends \Magento\Backend\App\Action
             $model = $this->_objectManager->create('OuterEdge\Layout\Model\Groups');
             $data = $this->getRequest()->getParam('group');
 
-            if (isset($data['id_group'])) {
-                $model->load($data['id_group']);
+            if (isset($data['group_id'])) {
+                $model->load($data['group_id']);
             }
 
             $model->setData($data);
@@ -41,7 +41,7 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccess(__('The data has been saved.'));
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['id_group' => $model->getId(), '_current' => true]);
+                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
@@ -53,7 +53,7 @@ class Save extends \Magento\Backend\App\Action
             }
 
             $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('*/*/edit', ['id_group' => $this->getRequest()->getParam('group_record_id')]);
+            return $resultRedirect->setPath('*/*/edit', ['group_id' => $this->getRequest()->getParam('group_record_id')]);
         }
         return $resultRedirect->setPath('*/*/');
     }

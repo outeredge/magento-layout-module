@@ -38,18 +38,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      */
     protected function _prepareForm()
     {
-        $idGroup = $this->getRequest()->getParam('id_group');
+        $idGroup = $this->getRequest()->getParam('group_id');
 
         $model = $this->_coreRegistry->registry('layout_elements_form_data');
-
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $modelAllType = $objectManager->create('OuterEdge\Layout\Model\Resource\Types\Collection');
-        $modelAllType->load();
-
-        $optionsArray = array();
-        foreach ($modelAllType->getData() as $type) {
-            $optionsArray += [$type['id_type'] => $type['title']];
-        }
 
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
@@ -59,7 +50,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Information')]);
 
         if ($model->getId()) {
-            $fieldset->addField('id_element', 'hidden', ['name' => 'id_element']);
+            $fieldset->addField('element_id', 'hidden', ['name' => 'element_id']);
             $fieldset->addField('fk_group', 'hidden', ['name' => 'fk_group']);
         }
 
@@ -88,19 +79,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'required' => true
             ]
         );
-
-        $fieldset->addField(
-            'fk_type',
-            'select',
-            [
-                'label' => __('Type'),
-                'title' => __('Type'),
-                'name' => 'fk_type',
-                'required' => true,
-                'options' => $optionsArray
-            ]
-        );
-
         $fieldset->addField(
             'link',
             'text',
@@ -131,27 +109,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'required' => false
             ]
         );
-
-        $fieldset->addField(
-            'overlay_style',
-            'text',
-            [
-                'name' => 'overlay_style',
-                'label' => __('Overlay Style'),
-                'title' => __('Overlay Style'),
-                'required' => false
-            ]
-        );
-        $fieldset->addField(
-            'overlay_colour',
-            'text',
-            [
-                'name' => 'overlay_colour',
-                'label' => __('Overlay Colour'),
-                'title' => __('Overlay Colour'),
-                'required' => false
-            ]
-        );
         $fieldset->addField(
             'sort_order',
             'text',
@@ -160,21 +117,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'label' => __('Sort Order'),
                 'title' => __('Sort Order'),
                 'required' => false
-            ]
-        );
-
-        $dateFormat = $this->_localeDate->getDateFormat(
-            \IntlDateFormatter::SHORT
-        );
-
-        $fieldset->addField(
-            'created_at',
-            'date',
-            [
-                'name' => 'created_at',
-                'label' => __('Created Date'),
-                'date_format' => $dateFormat,
-                'class' => 'validate-date validate-date-range date-range-custom_theme-from'
             ]
         );
 

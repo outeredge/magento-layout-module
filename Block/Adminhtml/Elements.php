@@ -25,7 +25,7 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
 
     protected function _prepareLayout()
     {
-        $this->_idGroup = $this->getRequest()->getParam('id_group');
+        $this->_idGroup = $this->getRequest()->getParam('group_id');
 
         $addButtonProps = [
             'id' => 'add_new_grid',
@@ -43,15 +43,12 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
     }
 
     /**
-     *
-     *
-     * @param string $type
-     * @return string
+     * @return mixed
      */
     protected function _getCreateUrl()
     {
         return $this->getUrl(
-            "layout/elements/new/id_group/$this->_idGroup"
+            "layout/elements/new/group_id/$this->_idGroup"
         );
     }
 

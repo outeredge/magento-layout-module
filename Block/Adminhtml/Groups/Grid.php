@@ -42,7 +42,7 @@ class Grid extends Extended
     {
         parent::_construct();
         $this->setId('groupsGrid');
-        $this->setDefaultSort('id_group');
+        $this->setDefaultSort('group_id');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
@@ -68,11 +68,11 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'id_group',
+            'group_id',
             [
                 'header' => __('ID'),
                 'type' => 'number',
-                'index' => 'id_group',
+                'index' => 'group_id',
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id'
             ]
@@ -106,7 +106,7 @@ class Grid extends Extended
                         'url' => [
                             'base' => '*/*/edit'
                         ],
-                        'field' => 'id_group'
+                        'field' => 'group_id'
                     ]
                 ],
                 'filter' => false,
@@ -130,7 +130,7 @@ class Grid extends Extended
      */
     protected function _prepareMassaction()
     {
-        $this->setMassactionIdField('id_group');
+        $this->setMassactionIdField('group_id');
         $this->getMassactionBlock()->setFormFieldName('group_record_id');
 
         $this->getMassactionBlock()->addItem(
@@ -158,7 +158,7 @@ class Grid extends Extended
     {
         return $this->getUrl(
             'layout/*/edit',
-            ['id_group' => $row->getId()]
+            ['group_id' => $row->getId()]
         );
     }
 }

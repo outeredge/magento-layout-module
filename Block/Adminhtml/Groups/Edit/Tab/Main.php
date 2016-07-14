@@ -48,8 +48,19 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Edit Group')]);
 
         if ($model->getId()) {
-            $fieldset->addField('id_group', 'hidden', ['name' => 'group[id_group]']);
+            $fieldset->addField('group_id', 'hidden', ['name' => 'group[group_id]']);
         }
+
+        $fieldset->addField(
+            'group_code',
+            'text',
+            [
+                'name' => 'group[group_code]',
+                'label' => __('Group Code'),
+                'title' => __('Group Code'),
+                'required' => true
+            ]
+        );
 
         $fieldset->addField(
             'title',
@@ -79,21 +90,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'label' => __('Sort Order'),
                 'title' => __('Sort Order'),
                 'required' => false
-            ]
-        );
-
-        $dateFormat = $this->_localeDate->getDateFormat(
-            \IntlDateFormatter::SHORT
-        );
-
-        $fieldset->addField(
-            'created_at',
-            'date',
-            [
-                'name' => 'group[created_at]',
-                'label' => __('Created Date'),
-                'date_format' => $dateFormat,
-                'class' => 'validate-date validate-date-range date-range-custom_theme-from'
             ]
         );
 

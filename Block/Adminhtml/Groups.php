@@ -56,11 +56,7 @@ class Groups extends \Magento\Backend\Block\Widget\Grid\Container
         return $splitButtonOptions;
     }
 
-
     /**
-     *
-     *
-     * @param string $type
      * @return string
      */
     protected function _getCreateUrl()

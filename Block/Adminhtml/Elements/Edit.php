@@ -35,10 +35,10 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _construct()
     {
-        $this->_objectId   = 'id_element';
+        $this->_objectId   = 'element_id';
         $this->_blockGroup = 'outerEdge_layout';
         $this->_controller = 'adminhtml_elements';
-        $this->_idGroup    = $this->getRequest()->getParam('id_group');
+        $this->_idGroup    = $this->getRequest()->getParam('group_id');
 
         $this->buttonList->add(
             'back_element',
@@ -71,15 +71,12 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
-     *
-     *
-     * @param string $type
      * @return string
      */
     protected function _getBackCreateUrl()
     {
         return $this->getUrl(
-            "layout/groups/edit/id_group/$this->_idGroup"
+            "layout/groups/edit/group_id/$this->_idGroup"
         );
     }
 

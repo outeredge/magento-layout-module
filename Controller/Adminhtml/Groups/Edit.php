@@ -67,7 +67,7 @@ class Edit extends \Magento\Backend\App\Action
     {
 
         // 1. Get ID and create model
-        $id = $this->getRequest()->getParam('id_group');
+        $id = $this->getRequest()->getParam('group_id');
         $model = $this->_objectManager->create('OuterEdge\Layout\Model\Groups');
 
         // 2. Initial checking

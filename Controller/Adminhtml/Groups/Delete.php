@@ -22,7 +22,7 @@ class Delete extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id_group');
+        $id = $this->getRequest()->getParam('group_id');
 
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
@@ -37,7 +37,7 @@ class Delete extends \Magento\Backend\App\Action
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['id_group' => $id]);
+                return $resultRedirect->setPath('*/*/edit', ['group_id' => $id]);
             }
         }
         $this->messageManager->addError(__('We can\'t find a group to delete.'));

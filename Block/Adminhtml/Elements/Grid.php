@@ -42,7 +42,7 @@ class Grid extends Extended
     {
         parent::_construct();
         $this->setId('elementsGrid');
-        $this->setDefaultSort('id_element');
+        $this->setDefaultSort('element_id');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
@@ -54,7 +54,7 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $id = $this->getRequest()->getParam('id_group');
+        $id = $this->getRequest()->getParam('group_id');
 
         $collection = $this->_elementsFactory->create()->getCollection()
             ->addFieldToFilter('fk_group', $id);
@@ -72,11 +72,11 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'id_element',
+            'element_id',
             [
                 'header' => __('ID'),
                 'type' => 'number',
-                'index' => 'id_element',
+                'index' => 'element_id',
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id'
             ]
@@ -110,7 +110,7 @@ class Grid extends Extended
                         'url' => [
                             'base' => 'layout/elements/edit'
                         ],
-                        'field' => 'id_element'
+                        'field' => 'element_id'
                     ]
                 ],
                 'filter' => false,
@@ -142,7 +142,7 @@ class Grid extends Extended
     {
         return $this->getUrl(
             'layout/*/edit',
-            ['id_element' => $row->getId()]
+            ['element_id' => $row->getId()]
         );
     }
 }

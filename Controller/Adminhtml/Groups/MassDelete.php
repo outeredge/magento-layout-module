@@ -39,7 +39,7 @@ class MassDelete extends \Magento\Backend\App\Action
                     return $resultRedirect->setPath('*/*/');
                 } catch (\Exception $e) {
                     $this->messageManager->addError($e->getMessage());
-                    return $resultRedirect->setPath('*/*/edit', ['id_group' => $id]);
+                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $id]);
                 }
             }
         }
