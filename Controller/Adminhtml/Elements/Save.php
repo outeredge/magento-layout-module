@@ -3,15 +3,24 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Elements;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Save extends \Magento\Backend\App\Action
 {
+    /**
+     * @var DateTime
+     */
+    protected $datetime;
 
     /**
      * @param Action\Context $context
      */
-    public function __construct(Action\Context $context)
+    public function __construct(
+        Action\Context $context,
+        DateTime $datetime)
     {
+        $this->datetime = $datetime;
+
         parent::__construct($context);
     }
 
@@ -33,6 +42,8 @@ class Save extends \Magento\Backend\App\Action
 
             if ($id) {
                 $model->load($id);
+            } else {
+                $data['created_at'] = $this->datetime->date();
             }
 
             $model->setData($data);

@@ -99,7 +99,7 @@ class Grid extends Extended
         );
 
         $this->addColumn(
-            'edit',
+            'edit_elements',
             [
                 'header' => __('Edit'),
                 'type' => 'action',
@@ -137,11 +137,14 @@ class Grid extends Extended
         return $this->getUrl('layout/*/index', ['_current' => true]);
     }
 
-
+    /**
+     * @param DataObject $row
+     * @return string
+     */
     public function getRowUrl($row)
     {
         return $this->getUrl(
-            'layout/*/edit',
+            'layout/elements/edit',
             ['element_id' => $row->getId()]
         );
     }

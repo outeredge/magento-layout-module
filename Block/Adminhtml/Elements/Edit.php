@@ -3,8 +3,6 @@ namespace  OuterEdge\Layout\Block\Adminhtml\Elements;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
-    protected $_idGroup;
-
     /**
      * Core registry
      *
@@ -38,7 +36,6 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         $this->_objectId   = 'element_id';
         $this->_blockGroup = 'outerEdge_layout';
         $this->_controller = 'adminhtml_elements';
-        $this->_idGroup    = $this->getRequest()->getParam('group_id');
 
         $this->buttonList->add(
             'back_element',
@@ -75,8 +72,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _getBackCreateUrl()
     {
+        $idGroup = $this->_coreRegistry->registry('layout_elements_form_data')->getFkGroup();
         return $this->getUrl(
-            "layout/groups/edit/group_id/$this->_idGroup"
+            "layout/groups/edit/group_id/$idGroup"
         );
     }
 

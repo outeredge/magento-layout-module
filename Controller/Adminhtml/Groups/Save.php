@@ -3,15 +3,24 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Groups;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Save extends \Magento\Backend\App\Action
 {
+    /**
+     * @var DateTime
+     */
+    protected $datetime;
 
     /**
      * @param Action\Context $context
      */
-    public function __construct(Action\Context $context)
+    public function __construct(
+        Action\Context $context,
+        DateTime $datetime)
     {
+        $this->datetime = $datetime;
+
         parent::__construct($context);
     }
 
@@ -32,6 +41,8 @@ class Save extends \Magento\Backend\App\Action
 
             if (isset($data['group_id'])) {
                 $model->load($data['group_id']);
+            } else {
+                $data['created_at'] = $this->datetime->date();
             }
 
             $model->setData($data);
