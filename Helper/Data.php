@@ -39,12 +39,12 @@ class Data extends AbstractHelper
     public function getLayoutContents($groupCode = false)
     {
         /**
-        * @var OuterEdge\Layout\Model\GroupsFactory
-        */
+         * @var OuterEdge\Layout\Model\GroupsFactory
+         */
         $groupsModel = $this->_modelGroupsFactory->create();
-        $idGroup     = $groupsModel->getGroupIdByCode($groupCode);
+        $groupData    = $groupsModel->getGroupIdByCode($groupCode);
 
-        if (!$idGroup) {
+        if (!$groupData) {
             return null;
         }
 
@@ -52,9 +52,12 @@ class Data extends AbstractHelper
          * @var OuterEdge\Layout\Model\ElementsFactory
          */
         $elementsModel = $this->_modelElementsFactory->create();
-        $result        = $elementsModel->loadByGroup($idGroup->getGroupId());
+        $result        = $elementsModel->loadByGroup($groupData->getGroupId());
 
-        return $result->getData();
+        $data = $groupData->getData();
+        $data['elements'] = $result->getData();
+
+        return $data;
     }
 
 }
