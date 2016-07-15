@@ -43,9 +43,6 @@ class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \
     }
 
     /**
-     *
-     *
-     * @param string $type
      * @return string
      */
     protected function _getCreateUrl()
