@@ -49,6 +49,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Information')]);
 
+        $fieldset->addType('image', 'OuterEdge\Layout\Block\Adminhtml\Elements\Helper\Image');
+
         if ($model->getId()) {
             $fieldset->addField('element_id', 'hidden', ['name' => 'element_id']);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
@@ -101,12 +103,13 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         );
         $fieldset->addField(
             'image',
-            'text',
+            'image',
             [
                 'name' => 'image',
                 'label' => __('Image'),
                 'title' => __('Image'),
-                'required' => false
+                'required' => false,
+                'note' => 'Allow image type: jpg, jpeg, gif, png',
             ]
         );
         $fieldset->addField(
