@@ -55,9 +55,25 @@ class Data extends AbstractHelper
         $result        = $elementsModel->loadByGroup($groupData->getGroupId());
 
         $data = $groupData->getData();
-        $data['elements'] = $result->getData();
+        $data['elements'] = $this->groupBy($result->getData(), 'title');
 
         return $data;
+
+    }
+
+    /**
+     * groupBy
+     * @param type $array
+     * @param type $key
+     * @return type
+     */
+    protected function groupBy($array, $key)
+    {
+        $return = array();
+        foreach($array as $val) {
+            $return[$val[$key]] = $val;
+        }
+        return $return;
     }
 
 }
