@@ -51,7 +51,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         $this->buttonList->update('save', 'label', __('Save Elements'));
         $this->buttonList->add(
-            'saveandcontinue',
+            'saveandcontinue_elements',
             [
                 'label' => __('Save and Continue Edit'),
                 'class' => 'save',
@@ -72,7 +72,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _getBackCreateUrl()
     {
-        $idGroup = $this->_coreRegistry->registry('layout_elements_form_data')->getFkGroup();
+        $idGroup = $this->_coreRegistry->registry('layout_elements_form_data')->getGroupId();
         return $this->getUrl(
             "layout/groups/edit/group_id/$idGroup"
         );

@@ -19,7 +19,7 @@ class Elements extends AbstractModel
     public function loadByGroup($fkGroup)
     {
         $result = $this->getCollection();
-        $result->addFilter('fk_group', $fkGroup);
+        $result->addFilter('group_id', $fkGroup);
         $result->setOrder('sort_order');
         return $result;
     }

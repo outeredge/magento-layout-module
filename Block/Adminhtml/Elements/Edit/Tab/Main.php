@@ -51,12 +51,12 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         if ($model->getId()) {
             $fieldset->addField('element_id', 'hidden', ['name' => 'element_id']);
-            $fieldset->addField('fk_group', 'hidden', ['name' => 'fk_group']);
+            $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
 
         if ($idGroup) {
-            $model->setFkGroup($idGroup);
-            $fieldset->addField('fk_group', 'hidden', ['name' => 'fk_group']);
+            $model->setGroupId($idGroup);
+            $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
 
         $fieldset->addField(

@@ -57,7 +57,7 @@ class Grid extends Extended
         $id = $this->getRequest()->getParam('group_id');
 
         $collection = $this->_elementsFactory->create()->getCollection()
-            ->addFieldToFilter('fk_group', $id);
+            ->addFieldToFilter('group_id', $id);
 
         $this->setCollection($collection);
 

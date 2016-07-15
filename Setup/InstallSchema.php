@@ -35,21 +35,21 @@ class InstallSchema implements InstallSchemaInterface
                 ->addColumn(
                     'group_code',
                     Table::TYPE_TEXT,
-                    null,
-                    ['nullable' => true, 'default' => null],
+                    255,
+                    ['nullable' => false, 'default' => null],
                     'Group Code'
                 )
                 ->addColumn(
                     'title',
                     Table::TYPE_TEXT,
-                    null,
+                    255,
                     ['nullable' => true, 'default' => null],
                     'Title'
                 )
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
-                    null,
+                    255,
                     ['nullable' => true, 'default' => null],
                     'Description'
                 )
@@ -73,6 +73,15 @@ class InstallSchema implements InstallSchemaInterface
                     null,
                     ['nullable' => true],
                     'Created At'
+                )
+                ->addIndex(
+                    $installer->getIdxName(
+                        'layout_groups',
+                        ['group_code'],
+                        \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+                    ),
+                    ['group_code'],
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
                 )
                 ->setComment('Layout Group Table')
                 ->setOption('type', 'InnoDB')
@@ -99,7 +108,7 @@ class InstallSchema implements InstallSchemaInterface
                     'Id'
                 )
                 ->addColumn(
-                    'fk_group',
+                    'group_id',
                     Table::TYPE_INTEGER,
                     null,
                     [
@@ -118,21 +127,21 @@ class InstallSchema implements InstallSchemaInterface
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
-                    null,
+                    255,
                     ['nullable' => true],
                     'Description'
                 )
                 ->addColumn(
                     'link',
                     Table::TYPE_TEXT,
-                    null,
+                    255,
                     ['nullable' => true],
                     'Link'
                 )
                 ->addColumn(
                     'link_text',
                     Table::TYPE_TEXT,
-                    null,
+                    255,
                     ['nullable' => true],
                     'Link Text'
                 )
@@ -165,8 +174,8 @@ class InstallSchema implements InstallSchemaInterface
                     'Created At'
                 )
                 ->addForeignKey(
-                    $installer->getFkName('layout_elements', 'fk_group', 'layout_groups', 'group_id'),
-                    'fk_group',
+                    $installer->getFkName('layout_elements', 'group_id', 'layout_groups', 'group_id'),
+                    'group_id',
                     $installer->getTable('layout_groups'),
                     'group_id',
                     Table::ACTION_CASCADE
