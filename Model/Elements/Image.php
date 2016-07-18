@@ -11,7 +11,7 @@ class Image
      * media sub folder
      * @var string
      */
-    protected $subDir = 'outeredge/layout/elements';
+    protected $subDir = 'outeredge/layout';
     /**
      * url builder
      *
@@ -41,7 +41,7 @@ class Image
      */
     public function getBaseUrl()
     {
-        return $this->urlBuilder->getBaseUrl(['_type' => UrlInterface::URL_TYPE_MEDIA]).$this->subDir.'/image';
+        return $this->urlBuilder->getBaseUrl().'../pub/'.UrlInterface::URL_TYPE_MEDIA.'/'.$this->subDir.'/image';
     }
     /**
      * get base image dir

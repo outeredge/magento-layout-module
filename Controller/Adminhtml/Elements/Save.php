@@ -59,13 +59,9 @@ class Save extends \Magento\Backend\App\Action
                 $data['created_at'] = $this->datetime->date();
             }
 
-            if(is_array( $data['image'])){
-                $data['image']=implode(" ",$data['image']);
-            }
-
             //Save image
             $imageName = $this->uploadFileAndGetName('image', $this->imageModel->getBaseDir(), $data);
-            $model->setImage($imageName);
+            $data['image'] = $imageName;
 
             $model->setData($data);
 
