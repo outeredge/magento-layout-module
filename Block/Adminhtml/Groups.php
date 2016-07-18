@@ -2,7 +2,9 @@
 
 namespace OuterEdge\Layout\Block\Adminhtml;
 
-class Groups extends \Magento\Backend\Block\Widget\Grid\Container
+use Magento\Backend\Block\Widget\Grid\Container;
+
+class Groups extends Container
 {
     /**
      * @var string

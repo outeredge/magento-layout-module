@@ -1,10 +1,12 @@
 <?php
 namespace  OuterEdge\Layout\Block\Adminhtml\Elements\Edit;
 
+use Magento\Backend\Block\Widget\Tabs;
+
 /**
  * Admin page left menu
  */
-class Tabs extends \Magento\Backend\Block\Widget\Tabs
+class Tabs extends Tabs
 {
     /**
      * @return void

@@ -5,7 +5,7 @@ namespace OuterEdge\Layout\Controller\Adminhtml\Groups;
 use Magento\Backend\App\Action;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
-class Save extends \Magento\Backend\App\Action
+class Save extends Action
 {
     /**
      * @var DateTime

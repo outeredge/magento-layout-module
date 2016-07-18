@@ -1,10 +1,12 @@
 <?php
 namespace OuterEdge\Layout\Block\Adminhtml\Elements\Edit;
 
+use Magento\Backend\Block\Widget\Form\Generic;
+
 /**
  * Adminhtml grid record edit form block
  */
-class Form extends \Magento\Backend\Block\Widget\Form\Generic
+class Form extends Generic
 {
     /**
      * Prepare form

@@ -3,13 +3,12 @@
     "description": "Magento Layout Module by outer/edge",
     "type": "magento2-module",
     "license": [
-        "OSL-3.0",
-        "AFL-3.0"
+        "MIT"
     ],
     "authors": [
         {
             "name": "outer/edge",
-            "email": "support@outeredgeuk.com",
+            "email": "hello@outeredgeuk.com",
             "homepage": "https://outeredgeuk.com/",
             "role": "Developer"
         }

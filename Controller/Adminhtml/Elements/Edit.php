@@ -4,7 +4,7 @@ namespace OuterEdge\Layout\Controller\Adminhtml\Elements;
 
 use Magento\Backend\App\Action;
 
-class Edit extends \Magento\Backend\App\Action
+class Edit extends Action
 {
     /**
      * Core registry

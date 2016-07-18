@@ -2,10 +2,12 @@
 
 namespace OuterEdge\Layout\Block\Adminhtml;
 
+use Magento\Backend\Block\Widget\Grid\Container;
+use Magento\Backend\Block\Widget\Tab\TabInterface;
 /**
  * Elements edit form main tab
  */
-class Elements extends \Magento\Backend\Block\Widget\Grid\Container implements \Magento\Backend\Block\Widget\Tab\TabInterface
+class Elements extends Container implements TabInterface
 {
     protected $_template = 'elements/view.phtml';
 

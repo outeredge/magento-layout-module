@@ -2,7 +2,9 @@
 
 namespace OuterEdge\Layout\Controller\Adminhtml\Groups;
 
-class NewAction extends \Magento\Backend\App\Action
+use Magento\Backend\App\Action;
+
+class NewAction extends Action
 {
     /**
      * @var \Magento\Backend\Model\View\Result\Forward

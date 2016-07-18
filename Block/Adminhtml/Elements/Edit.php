@@ -1,7 +1,9 @@
 <?php
 namespace  OuterEdge\Layout\Block\Adminhtml\Elements;
 
-class Edit extends \Magento\Backend\Block\Widget\Form\Container
+use Magento\Backend\Block\Widget\Form\Container;
+
+class Edit extends Container
 {
     /**
      * Core registry

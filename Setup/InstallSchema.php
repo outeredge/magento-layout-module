@@ -6,6 +6,7 @@ use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 
 class InstallSchema implements InstallSchemaInterface
 {
@@ -78,10 +79,10 @@ class InstallSchema implements InstallSchemaInterface
                     $installer->getIdxName(
                         'layout_groups',
                         ['group_code'],
-                        \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+                        AdapterInterface::INDEX_TYPE_UNIQUE
                     ),
                     ['group_code'],
-                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+                    ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
                 )
                 ->setComment('Layout Group Table')
                 ->setOption('type', 'InnoDB')

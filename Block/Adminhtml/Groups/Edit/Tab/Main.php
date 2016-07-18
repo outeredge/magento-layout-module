@@ -2,10 +2,13 @@
 
 namespace OuterEdge\Layout\Block\Adminhtml\Groups\Edit\Tab;
 
+use Magento\Backend\Block\Widget\Form\Generic;
+use Magento\Backend\Block\Widget\Tab\TabInterface;
+
 /**
  * Groups edit form main tab
  */
-class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
+class Main extends Generic implements TabInterface
 {
     /**
      * @var \Magento\Store\Model\System\Store

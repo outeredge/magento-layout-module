@@ -6,7 +6,6 @@ use Magento\Framework\Data\Form\Element\Factory as ElementFactory;
 use Magento\Framework\Data\Form\Element\CollectionFactory as ElementCollectionFactory;
 use Magento\Framework\Escaper;
 use OuterEdge\Layout\Model\Elements\Image as ElementsImage;
-
 use Magento\Framework\UrlInterface;
 /**
  * @method string getValue()

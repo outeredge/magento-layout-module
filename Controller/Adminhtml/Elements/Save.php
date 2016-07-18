@@ -7,7 +7,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use OuterEdge\Layout\Model\Elements\Image as ElementsImage;
 
-class Save extends \Magento\Backend\App\Action
+class Save extends Action
 {
     /**
      * @var DateTime
