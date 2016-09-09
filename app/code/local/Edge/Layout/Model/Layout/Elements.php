@@ -14,6 +14,7 @@ class Edge_Layout_Model_Layout_Elements extends Mage_Core_Model_Abstract
         if ($type) {
             $result->addFilter('type', $type);
         }
+        $result->addOrder('sort_order', 'ASC');
 
         return $result;
     }
