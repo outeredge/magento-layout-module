@@ -38,7 +38,7 @@ class Edge_Layout_Block_Adminhtml_Elements_Edit extends Mage_Adminhtml_Block_Wid
             return Mage::helper('layout')->__('New Item');
         }
     }
-    
+
     /**
      * Get form action URL
      * @return string
@@ -49,5 +49,15 @@ class Edge_Layout_Block_Adminhtml_Elements_Edit extends Mage_Adminhtml_Block_Wid
             return $this->getData('form_action_url');
         }
         return $this->getUrl('*/*/save');
+    }
+
+    /**
+     * Get back url
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        $id = $this->getRequest()->getParam('fk_group');
+        return $this->getUrl('*/elements/index/id/'.$id);
     }
 }
