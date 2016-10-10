@@ -1,12 +1,12 @@
 <?php
 namespace  OuterEdge\Layout\Block\Adminhtml\Elements\Edit;
 
-use Magento\Backend\Block\Widget\Tabs;
+use Magento\Backend\Block\Widget\Tabs as WidgetTabs;
 
 /**
  * Admin page left menu
  */
-class Tabs extends Tabs
+class Tabs extends WidgetTabs
 {
     /**
      * @return void
