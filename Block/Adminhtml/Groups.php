@@ -11,20 +11,8 @@ class Groups extends Container
      */
     protected $_template = 'groups/view.phtml';
 
-    /**
-     * @param \Magento\Backend\Block\Widget\Context $context
-     * @param array $data
-     */
-    public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-    }
-
     protected function _prepareLayout()
     {
-
         $addButtonProps = [
             'id' => 'add_new_grid',
             'label' => __('Add New Group'),
@@ -37,32 +25,25 @@ class Groups extends Container
 
         $this->setChild(
             'grid',
-           $this->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Groups\Grid', 'layout.view.groups')
+            $this->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Groups\Grid', 'layout.view.groups')
         );
         return parent::_prepareLayout();
     }
 
     /**
-     *
-     *
      * @return array
      */
     protected function _getAddButtonOptions()
     {
-
         $splitButtonOptions[] = [
             'label' => __('Add New Group'),
             'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
         ];
-
         return $splitButtonOptions;
     }
 
 
     /**
-     *
-     *
-     * @param string $type
      * @return string
      */
     protected function _getCreateUrl()
@@ -81,6 +62,4 @@ class Groups extends Container
     {
         return $this->getChildHtml('grid');
     }
-
-
 }

@@ -3,7 +3,12 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Groups;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use RuntimeException;
+use Exception;
 
 class Save extends Action
 {
@@ -13,21 +18,20 @@ class Save extends Action
     protected $datetime;
 
     /**
-     * @param Action\Context $context
+     * @param Context $context
      */
     public function __construct(
-        Action\Context $context,
-        DateTime $datetime)
-    {
+        Context $context,
+        DateTime $datetime
+    ) {
         $this->datetime = $datetime;
-
         parent::__construct($context);
     }
 
     /**
      * Save action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
@@ -55,11 +59,11 @@ class Save extends Action
                     return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
-            } catch (\RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addException($e, __('Something went wrong while saving the data.'));
             }
 

@@ -3,22 +3,15 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Groups;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\Controller\ResultInterface;
+use Exception;
 
 class Delete extends Action
 {
-
-    /**
-     * @param Action\Context $context
-     */
-    public function __construct(Action\Context $context)
-    {
-        parent::__construct($context);
-    }
-
     /**
      * Delete action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
@@ -28,14 +21,13 @@ class Delete extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {
             try {
-
                 $model = $this->_objectManager->create('OuterEdge\Layout\Model\Groups');
                 $model->load($id);
                 $model->delete();
 
                 $this->messageManager->addSuccess(__('You deleted the group.'));
                 return $resultRedirect->setPath('*/*/');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 return $resultRedirect->setPath('*/*/edit', ['group_id' => $id]);
             }

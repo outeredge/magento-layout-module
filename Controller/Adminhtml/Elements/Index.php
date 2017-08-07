@@ -2,13 +2,13 @@
 
 namespace OuterEdge\Layout\Controller\Adminhtml\Elements;
 
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Page;
 
 class Index extends Action
 {
-
     /**
      * @var PageFactory
      */
@@ -22,21 +22,20 @@ class Index extends Action
         Context $context,
         PageFactory $resultPageFactory
     ) {
-        parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
+        parent::__construct($context);
     }
 
     /**
      * Index action
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     public function execute()
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getLayout()->getBlock('layout.view.elements');
-
         return $resultPage;
     }
 
@@ -49,5 +48,4 @@ class Index extends Action
     {
         return $this->_authorization->isAllowed('OuterEdge_Layout::elements');
     }
-
 }

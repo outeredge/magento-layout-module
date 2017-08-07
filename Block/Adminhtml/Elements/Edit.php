@@ -1,30 +1,32 @@
 <?php
-namespace  OuterEdge\Layout\Block\Adminhtml\Elements;
+
+namespace OuterEdge\Layout\Block\Adminhtml\Elements;
 
 use Magento\Backend\Block\Widget\Form\Container;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Phrase;
+use Magento\Framework\View\Element\AbstractBlock;
 
 class Edit extends Container
 {
     /**
-     * Core registry
-     *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_coreRegistry = null;
 
     /**
-     * @param \Magento\Backend\Block\Widget\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         array $data = []
     ) {
         $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
-
         $this->buttonList->remove('back');
     }
 
@@ -75,15 +77,13 @@ class Edit extends Container
     protected function _getBackCreateUrl()
     {
         $idGroup = $this->_coreRegistry->registry('layout_elements_form_data')->getGroupId();
-        return $this->getUrl(
-            "layout/groups/edit/group_id/$idGroup"
-        );
+        return $this->getUrl('layout/groups/edit/group_id/' . $idGroup);
     }
 
     /**
      * Retrieve text for header element depending on loaded post
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getHeaderText()
     {
@@ -108,7 +108,7 @@ class Edit extends Container
     /**
      * Prepare layout
      *
-     * @return \Magento\Framework\View\Element\AbstractBlock
+     * @return AbstractBlock
      */
     protected function _prepareLayout()
     {
@@ -123,5 +123,4 @@ class Edit extends Container
         ";
         return parent::_prepareLayout();
     }
-
 }

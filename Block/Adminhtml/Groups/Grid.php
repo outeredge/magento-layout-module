@@ -2,32 +2,35 @@
 namespace  OuterEdge\Layout\Block\Adminhtml\Groups;
 
 use Magento\Backend\Block\Widget\Grid\Extended;
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Helper\Data as BackendHelper;
+use Magento\Framework\Module\Manager;
+use OuterEdge\Layout\Model\GroupsFactory;
 
 class Grid extends Extended
 {
     /**
-     * @var \Magento\Framework\Module\Manager
+     * @var Manager
      */
     protected $moduleManager;
 
     /**
-     * @var \OuterEdge\Layout\Model\GroupsFactory
+     * @var GroupsFactory
      */
     protected $_groupsFactory;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param \Magento\Framework\Module\Manager $moduleManager
+     * @param Context $context
+     * @param BackendHelper $backendHelper
+     * @param Manager $moduleManager
      * @param array $data
-     *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Backend\Helper\Data $backendHelper,
-        \OuterEdge\Layout\Model\GroupsFactory $groupsFactory,
-        \Magento\Framework\Module\Manager $moduleManager,
+        Context $context,
+        BackendHelper $backendHelper,
+        GroupsFactory $groupsFactory,
+        Manager $moduleManager,
         array $data = []
     ) {
         $this->_groupsFactory = $groupsFactory;
@@ -57,8 +60,7 @@ class Grid extends Extended
         $collection = $this->_groupsFactory->create()->getCollection();
         $this->setCollection($collection);
 
-        parent::_prepareCollection();
-        return $this;
+        return parent::_prepareCollection();
     }
 
     /**
@@ -162,4 +164,3 @@ class Grid extends Extended
         );
     }
 }
-?>

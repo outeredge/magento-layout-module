@@ -9,12 +9,12 @@ use OuterEdge\Layout\Model\GroupsFactory;
 class Data extends AbstractHelper
 {
     /**
-     * @var OuterEdge\Layout\Model\ElementsFactory
+     * @var ElementsFactory
      */
     protected $_modelElementsFactory;
 
     /**
-     * @var OuterEdge\Layout\Model\GroupsFactory
+     * @var GroupsFactory
      */
     protected $_modelGroupsFactory;
 
@@ -25,55 +25,45 @@ class Data extends AbstractHelper
      */
     public function __construct(
         ElementsFactory $modelElementsFactory,
-        GroupsFactory $modelGroupsFactory)
-    {
+        GroupsFactory $modelGroupsFactory
+    ) {
         $this->_modelElementsFactory = $modelElementsFactory;
         $this->_modelGroupsFactory   = $modelGroupsFactory;
     }
 
     /**
-     * getLayoutContents
-     * @param type $groupTitle
+     * @param string $groupCode
      * @return array
      */
     public function getLayoutContents($groupCode = false)
     {
-        /**
-         * @var OuterEdge\Layout\Model\GroupsFactory
-         */
         $groupsModel = $this->_modelGroupsFactory->create();
-        $groupData    = $groupsModel->getGroupIdByCode($groupCode);
 
+        $groupData = $groupsModel->getGroupIdByCode($groupCode);
         if (!$groupData) {
             return null;
         }
 
-        /**
-         * @var OuterEdge\Layout\Model\ElementsFactory
-         */
         $elementsModel = $this->_modelElementsFactory->create();
-        $result        = $elementsModel->loadByGroup($groupData->getGroupId());
+        $result = $elementsModel->loadByGroup($groupData->getGroupId());
 
         $data = $groupData->getData();
         $data['elements'] = $this->groupBy($result->getData(), 'title');
 
         return $data;
-
     }
 
     /**
-     * groupBy
-     * @param type $array
-     * @param type $key
-     * @return type
+     * @param array $array
+     * @param string $key
+     * @return array
      */
     protected function groupBy($array, $key)
     {
-        $return = array();
-        foreach($array as $val) {
+        $return = [];
+        foreach ($array as $val) {
             $return[$val[$key]] = $val;
         }
         return $return;
     }
-
 }

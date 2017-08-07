@@ -4,21 +4,27 @@ namespace OuterEdge\Layout\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Grid\Container;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
-/**
- * Elements edit form main tab
- */
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\Phrase;
+
 class Elements extends Container implements TabInterface
 {
+    /**
+     * @var string
+     */
     protected $_template = 'elements/view.phtml';
 
+    /**
+     * @var string
+     */
     protected $_idGroup;
 
     /**
-     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param Context $context
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
+        Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -45,16 +51,11 @@ class Elements extends Container implements TabInterface
     }
 
     /**
-     *
-     *
-     * @param string $type
      * @return string
      */
     protected function _getCreateUrl()
     {
-        return $this->getUrl(
-            "layout/elements/new/group_id/$this->_idGroup"
-        );
+        return $this->getUrl('layout/elements/new/group_id/' . $this->_idGroup);
     }
 
     /**
@@ -71,7 +72,7 @@ class Elements extends Container implements TabInterface
     /**
      * Prepare label for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getTabLabel()
     {
@@ -81,7 +82,7 @@ class Elements extends Container implements TabInterface
     /**
      * Prepare title for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getTabTitle()
     {

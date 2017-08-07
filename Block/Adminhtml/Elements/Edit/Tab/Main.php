@@ -4,29 +4,31 @@ namespace OuterEdge\Layout\Block\Adminhtml\Elements\Edit\Tab;
 
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Data\FormFactory;
+use Magento\Store\Model\System\Store;
+use Magento\Framework\Phrase;
 
-/**
- * Elements edit form main tab
- */
 class Main extends Generic implements TabInterface
 {
     /**
-     * @var \Magento\Store\Model\System\Store
+     * @var Store
      */
     protected $_systemStore;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
-     * @param \Magento\Store\Model\System\Store $systemStore
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param Store $systemStore
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Store\Model\System\Store $systemStore,
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        Store $systemStore,
         array $data = []
     ) {
         $this->_systemStore = $systemStore;
@@ -135,7 +137,7 @@ class Main extends Generic implements TabInterface
     /**
      * Prepare label for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getTabLabel()
     {
@@ -145,7 +147,7 @@ class Main extends Generic implements TabInterface
     /**
      * Prepare title for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getTabTitle()
     {

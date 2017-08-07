@@ -1,11 +1,9 @@
 <?php
+
 namespace OuterEdge\Layout\Block\Adminhtml\Groups\Edit;
 
 use Magento\Backend\Block\Widget\Form\Generic;
 
-/**
- * Adminhtml grid record edit form block
- */
 class Form extends Generic
 {
     /**

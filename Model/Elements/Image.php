@@ -1,4 +1,5 @@
 <?php
+
 namespace OuterEdge\Layout\Model\Elements;
 
 use Magento\Framework\UrlInterface;
@@ -8,20 +9,21 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 class Image
 {
     /**
-     * media sub folder
+     * Media sub folder
      * @var string
      */
     protected $subDir = 'outeredge/layout';
+
     /**
-     * url builder
-     *
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $urlBuilder;
+
     /**
-     * @var \Magento\Framework\Filesystem
+     * @var Filesystem
      */
     protected $fileSystem;
+
     /**
      * @param UrlInterface $urlBuilder
      * @param Filesystem $fileSystem
@@ -29,27 +31,28 @@ class Image
     public function __construct(
         UrlInterface $urlBuilder,
         Filesystem $fileSystem
-    )
-    {
+    ) {
         $this->urlBuilder = $urlBuilder;
         $this->fileSystem = $fileSystem;
     }
+
     /**
-     * get images base url
+     * Get images base url
      *
      * @return string
      */
     public function getBaseUrl()
     {
-        return $this->urlBuilder->getBaseUrl().'../pub/'.UrlInterface::URL_TYPE_MEDIA.'/'.$this->subDir.'/image';
+        return $this->urlBuilder->getBaseUrl() . '../pub/' . UrlInterface::URL_TYPE_MEDIA . '/' . $this->subDir . '/image';
     }
+
     /**
-     * get base image dir
+     * Get base image dir
      *
      * @return string
      */
     public function getBaseDir()
     {
-        return $this->fileSystem->getDirectoryWrite(DirectoryList::MEDIA)->getAbsolutePath($this->subDir.'/image');
+        return $this->fileSystem->getDirectoryWrite(DirectoryList::MEDIA)->getAbsolutePath($this->subDir . '/image');
     }
 }

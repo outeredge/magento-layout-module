@@ -3,30 +3,33 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Elements;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Backend\Model\View\Result\Redirect;
 
 class Edit extends Action
 {
     /**
-     * Core registry
-     *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_coreRegistry = null;
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactory
      */
     protected $resultPageFactory;
 
     /**
-     * @param Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param Registry $registry
      */
     public function __construct(
-        Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Registry $registry
+        Context $context,
+        PageFactory $resultPageFactory,
+        Registry $registry
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_coreRegistry = $registry;
@@ -44,11 +47,10 @@ class Edit extends Action
     /**
      * Init actions
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     protected function _initAction()
     {
-        // load layout, set active menu and breadcrumbs
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('OuterEdge_Layout::elements')
@@ -60,35 +62,32 @@ class Edit extends Action
     /**
      * Edit grid record
      *
-     * @return \Magento\Backend\Model\View\Result\Page|\Magento\Backend\Model\View\Result\Redirect
+     * @return Page|Redirect
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {
-        $id        = $this->getRequest()->getParam('element_id');
-        $model     = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');
+        $id    = $this->getRequest()->getParam('element_id');
+        $model = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');
 
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
                 $this->messageManager->addError(__('This element record no longer exists.'));
+
                 /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
-
                 return $resultRedirect->setPath('*/*/');
             }
         }
 
-        //Set entered data if was error when we do save
         $data = $this->_objectManager->get('Magento\Backend\Model\Session')->getFormData(true);
         if (!empty($data)) {
             $model->setData($data);
         }
 
-        //Register model to use later in blocks
         $this->_coreRegistry->register('layout_elements_form_data', $model);
 
-        //Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_initAction();
         $resultPage->addBreadcrumb(

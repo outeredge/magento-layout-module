@@ -3,9 +3,15 @@
 namespace OuterEdge\Layout\Controller\Adminhtml\Elements;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
-use OuterEdge\Layout\Model\Elements\Image as ElementsImage;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\File\Uploader;
+use OuterEdge\Layout\Model\Elements\Image;
+use RuntimeException;
+use Exception;
 
 class Save extends Action
 {
@@ -15,32 +21,37 @@ class Save extends Action
     protected $datetime;
 
     /**
-     * @var \Magento\MediaStorage\Model\File\UploaderFactory
+     * @var UploaderFactory
      */
     protected $uploader;
 
+    /**
+     * @var Image
+     */
     protected $imageModel;
 
     /**
-     * @param Action\Context $context
+     * @param Context $context
+     * @param DateTime $datetime
+     * @param UploaderFactory $uploader
+     * @param Image $imageModel
      */
     public function __construct(
-        Action\Context $context,
+        Context $context,
         DateTime $datetime,
         UploaderFactory $uploader,
-        ElementsImage $imageModel)
-    {
-        $this->datetime       = $datetime;
-        $this->uploader       = $uploader;
-        $this->imageModel     = $imageModel;
-
+        Image $imageModel
+    ) {
+        $this->datetime = $datetime;
+        $this->uploader = $uploader;
+        $this->imageModel = $imageModel;
         parent::__construct($context);
     }
 
     /**
      * Save action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
@@ -52,14 +63,12 @@ class Save extends Action
             $model = $this->_objectManager->create('OuterEdge\Layout\Model\Elements');
 
             $id = $this->getRequest()->getParam('element_id');
-
             if ($id) {
                 $model->load($id);
             } else {
                 $data['created_at'] = $this->datetime->date();
             }
 
-            //Save image
             $imageName = $this->uploadFileAndGetName('image', $this->imageModel->getBaseDir(), $data);
             $data['image'] = $imageName;
 
@@ -72,17 +81,18 @@ class Save extends Action
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('layout/groups/edit', ['group_id' => $model->getGroupId(), '_current' => true]);
                 }
-                return $resultRedirect->setPath('layout/groups/edit',['group_id' => $model->getGroupId()]);
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
+                return $resultRedirect->setPath('layout/groups/edit', ['group_id' => $model->getGroupId()]);
+            } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
-            } catch (\RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addException($e, __('Something went wrong while saving the data.'));
             }
             $this->_getSession()->setFormData($data);
             return $resultRedirect->setPath('layout/groups/edit', ['group_id' => $model->getGroupId()]);
         }
+
         return $resultRedirect->setPath('*/*/');
     }
 
@@ -106,8 +116,8 @@ class Save extends Action
                 $result = $uploader->save($destinationFolder);
                 return $result['file'];
             }
-        } catch (\Exception $e) {
-            if ($e->getCode() != \Magento\Framework\File\Uploader::TMP_NAME_EMPTY) {
+        } catch (Exception $e) {
+            if ($e->getCode() != Uploader::TMP_NAME_EMPTY) {
                 $this->messageManager->addError($e->getMessage());
             } else {
                 if (isset($data[$input]['value'])) {
