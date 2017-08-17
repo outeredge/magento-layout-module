@@ -6,7 +6,6 @@ use Magento\Framework\Model\AbstractModel;
 
 class Group extends AbstractModel
 {
-
     protected function _construct()
     {
         $this->_init('OuterEdge\Layout\Model\Resource\Group');

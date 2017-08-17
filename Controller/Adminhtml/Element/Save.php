@@ -2,23 +2,22 @@
 
 namespace OuterEdge\Layout\Controller\Adminhtml\Element;
 
-use Magento\Backend\App\Action;
+use OuterEdge\Layout\Controller\Adminhtml\Element;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
+use OuterEdge\Layout\Model\ElementFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\MediaStorage\Model\File\UploaderFactory;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\File\Uploader;
 use OuterEdge\Layout\Model\Element\Image;
-use RuntimeException;
 use Exception;
 
-class Save extends Action
+class Save extends Element
 {
     /**
      * @var DateTime
      */
-    protected $datetime;
+    protected $dateTime;
 
     /**
      * @var UploaderFactory
@@ -32,20 +31,31 @@ class Save extends Action
 
     /**
      * @param Context $context
-     * @param DateTime $datetime
+     * @param Registry $coreRegistry
+     * @param PageFactory $resultPageFactory
+     * @param ElementFactory $elementFactory
+     * @param DateTime $dateTime
      * @param UploaderFactory $uploader
      * @param Image $imageModel
      */
     public function __construct(
         Context $context,
-        DateTime $datetime,
+        Registry $coreRegistry,
+        PageFactory $resultPageFactory,
+        ElementFactory $elementFactory,
+        DateTime $dateTime,
         UploaderFactory $uploader,
         Image $imageModel
     ) {
-        $this->datetime = $datetime;
+        $this->dateTime = $dateTime;
         $this->uploader = $uploader;
         $this->imageModel = $imageModel;
-        parent::__construct($context);
+        parent::__construct(
+            $context,
+            $coreRegistry,
+            $resultPageFactory,
+            $elementFactory
+        );
     }
 
     /**
@@ -56,44 +66,49 @@ class Save extends Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
-
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($data) {
-            $model = $this->_objectManager->create('OuterEdge\Layout\Model\Element');
 
-            $id = $this->getRequest()->getParam('element_id');
-            if ($id) {
-                $model->load($id);
+        if ($data) {
+            $elementId = $this->getRequest()->getParam('element_id');
+
+            $data['updated_at'] = $this->dateTime->date();
+
+            $model = $this->elementFactory->create();
+
+            if ($elementId) {
+                $model->load($elementId);
+
+                if (!$model->getId()) {
+                    $this->messageManager->addError(__('This element no longer exists.'));
+                    return $this->returnResult('*/*/', [], ['error' => true]);
+                }
             } else {
-                $data['created_at'] = $this->datetime->date();
+                $data['created_at'] = $this->dateTime->date();
             }
 
             $imageName = $this->uploadFileAndGetName('image', $this->imageModel->getBaseDir(), $data);
             $data['image'] = $imageName;
 
-            $model->setData($data);
+            $model->addData($data);
 
             try {
                 $model->save();
-                $this->messageManager->addSuccess(__('The data has been saved.'));
-                $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
-                if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('layout/group/edit', ['group_id' => $model->getGroupId(), '_current' => true]);
-                }
-                return $resultRedirect->setPath('layout/group/edit', ['group_id' => $model->getGroupId()]);
-            } catch (LocalizedException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (RuntimeException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the data.'));
-            }
-            $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('layout/group/edit', ['group_id' => $model->getGroupId()]);
-        }
 
-        return $resultRedirect->setPath('*/*/');
+                $this->messageManager->addSuccess(__('The element has been saved.'));
+
+                $this->_session->setElementData(false);
+
+                if ($this->getRequest()->getParam('back')) {
+                    return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
+                }
+                return $resultRedirect->setPath('*/*/', [], ['error' => false]);
+            } catch (Exception $e) {
+                $this->messageManager->addError($e->getMessage());
+                $this->_session->setElementData($data);
+                return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => true]);
+            }
+        }
+        return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
 
     /**

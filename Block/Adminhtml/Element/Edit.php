@@ -3,13 +3,19 @@
 namespace OuterEdge\Layout\Block\Adminhtml\Element;
 
 use Magento\Backend\Block\Widget\Form\Container;
-use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
+use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Phrase;
-use Magento\Framework\View\Element\AbstractBlock;
 
 class Edit extends Container
 {
+    /**
+     * Block element name
+     *
+     * @var string
+     */
+    protected $_blockElement = 'OuterEdge_Layout';
+
     /**
      * @var Registry
      */
@@ -27,7 +33,6 @@ class Edit extends Container
     ) {
         $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
-        $this->buttonList->remove('back');
     }
 
     /**
@@ -37,25 +42,13 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId   = 'element_id';
-        $this->_blockGroup = 'outerEdge_layout';
+        $this->_objectId = 'element_id';
         $this->_controller = 'adminhtml_element';
-
-        $this->buttonList->add(
-            'back_element',
-            [
-                'id' => 'back_element',
-                'label' => __('Back'),
-                'class' => 'action-default scalable back',
-                'onclick' => "setLocation('" . $this->_getBackCreateUrl() . "')"
-            ]
-        );
 
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Element'));
-        $this->buttonList->add(
-            'saveandcontinue_element',
+        $this->addButton(
+            'save_and_edit_button',
             [
                 'label' => __('Save and Continue Edit'),
                 'class' => 'save',
@@ -64,63 +57,38 @@ class Edit extends Container
                         'button' => ['event' => 'saveAndContinueEdit', 'target' => '#edit_form'],
                     ],
                 ]
-            ],
-            -100
+            ]
         );
 
-        $this->buttonList->update('delete', 'label', __('Delete'));
+        $this->buttonList->update('save', 'label', __('Save Element'));
+        $this->buttonList->update('save', 'class', 'save primary');
+        $this->buttonList->update(
+            'save',
+            'data_attribute',
+            ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
+        );
     }
 
     /**
-     * @return string
-     */
-    protected function _getBackCreateUrl()
-    {
-        $idGroup = $this->_coreRegistry->registry('layout_element_form_data')->getGroupId();
-        return $this->getUrl('layout/group/edit/group_id/' . $idGroup);
-    }
-
-    /**
-     * Retrieve text for header element depending on loaded post
+     * Retrieve header text
      *
      * @return Phrase
      */
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('layout_element_form_data')->getId()) {
-            return __("Edit Element '%1'", $this->escapeHtml($this->_coreRegistry->registry('layout_element_form_data')->getTitle()));
-        } else {
-            return __('New Element');
+        if ($this->_coreRegistry->registry('element')->getId()) {
+            return __('Edit Element "%1"', $this->escapeHtml($this->_coreRegistry->registry('element')->getTitle()));
         }
+        return __('New Element');
     }
 
     /**
-     * Getter of url for "Save and Continue" button
-     * tab_id will be replaced by desired by JS later
+     * Retrieve URL for save
      *
      * @return string
      */
-    protected function _getSaveAndContinueUrl()
+    public function getSaveUrl()
     {
-        return $this->getUrl('*/*/save', ['_current' => true, 'back' => 'edit', 'active_tab' => '{{tab_id}}']);
-    }
-
-    /**
-     * Prepare layout
-     *
-     * @return AbstractBlock
-     */
-    protected function _prepareLayout()
-    {
-        $this->_formScripts[] = "
-            function toggleEditor() {
-                if (tinyMCE.getInstanceById('page_content') == null) {
-                    tinyMCE.execCommand('mceAddControl', false, 'content');
-                } else {
-                    tinyMCE.execCommand('mceRemoveControl', false, 'content');
-                }
-            };
-        ";
-        return parent::_prepareLayout();
+        return $this->getUrl('*/*/save', ['_current' => true, 'back' => null]);
     }
 }

@@ -73,7 +73,7 @@ class Save extends Group
             try {
                 $model->save();
 
-                $this->messageManager->addSuccess(__('You saved the group.'));
+                $this->messageManager->addSuccess(__('The group has been saved.'));
 
                 $this->_session->setGroupData(false);
 

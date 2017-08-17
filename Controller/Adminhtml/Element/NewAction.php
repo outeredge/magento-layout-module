@@ -10,39 +10,27 @@ use Magento\Backend\Model\View\Result\Forward;
 class NewAction extends Action
 {
     /**
-     * @var Forward
+     * @var ForwardFactory
      */
-    protected $resultForwardFactory;
+    private $forwardFactory;
 
     /**
      * @param Context $context
-     * @param ForwardFactory $resultForwardFactory
+     * @param ForwardFactory $forwardFactory
      */
     public function __construct(
         Context $context,
-        ForwardFactory $resultForwardFactory
+        ForwardFactory $forwardFactory
     ) {
-        $this->resultForwardFactory = $resultForwardFactory;
+        $this->forwardFactory = $forwardFactory;
         parent::__construct($context);
     }
 
     /**
-     * Forward to edit
-     *
      * @return Forward
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Forward $resultForward */
-        $resultForward = $this->resultForwardFactory->create();
-        return $resultForward->forward('edit');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _isAllowed()
-    {
-        return true;
+        return $this->forwardFactory->create()->forward('edit');
     }
 }

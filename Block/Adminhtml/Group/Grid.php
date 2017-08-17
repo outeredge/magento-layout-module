@@ -82,7 +82,7 @@ class Grid extends Extended
             ]
         );
 
-        $this->_eventManager->dispatch('layout_group_grid_build', ['grid' => $this]);
+        $this->_eventManager->dispatch('group_grid_build', ['grid' => $this]);
 
         return parent::_prepareColumns();
     }

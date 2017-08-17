@@ -5,38 +5,29 @@ namespace OuterEdge\Layout\Block\Adminhtml\Element;
 use Magento\Backend\Block\Widget\Grid\Extended;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Helper\Data as BackendHelper;
-use Magento\Framework\Module\Manager;
 use OuterEdge\Layout\Model\ElementFactory;
+use Magento\Framework\DataObject;
 
 class Grid extends Extended
 {
     /**
-     * @var Manager
-     */
-    protected $moduleManager;
-
-    /**
      * @var ElementFactory
      */
-    protected $_elementFactory;
+    private $elementFactory;
 
     /**
      * @param Context $context
      * @param BackendHelper $backendHelper
-     * @param Manager $moduleManager
+     * @param ElementFactory $elementFactory
      * @param array $data
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         Context $context,
         BackendHelper $backendHelper,
         ElementFactory $elementFactory,
-        Manager $moduleManager,
         array $data = []
     ) {
-        $this->_elementFactory = $elementFactory;
-        $this->moduleManager = $moduleManager;
+        $this->elementFactory = $elementFactory;
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -47,11 +38,8 @@ class Grid extends Extended
     {
         parent::_construct();
         $this->setId('elementGrid');
-        $this->setDefaultSort('element_id');
-        $this->setDefaultDir('DESC');
-        $this->setSaveParametersInSession(true);
-        $this->setUseAjax(true);
-        $this->setVarNameFilter('element_record');
+        $this->setDefaultSort('title');
+        $this->setDefaultDir('ASC');
     }
 
     /**
@@ -59,12 +47,8 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $id = $this->getRequest()->getParam('group_id');
-
-        $collection = $this->_elementFactory->create()->getCollection()
-            ->addFieldToFilter('group_id', $id);
+        $collection = $this->elementFactory->create()->getCollection();
         $this->setCollection($collection);
-
         return parent::_prepareCollection();
     }
 
@@ -75,80 +59,34 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'element_id',
-            [
-                'header' => __('ID'),
-                'type' => 'number',
-                'index' => 'element_id',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
-            ]
-        );
-        $this->addColumn(
             'title',
             [
                 'header' => __('Title'),
-                'index' => 'title',
-                'class' => 'xxx'
-            ]
-        );
-        $this->addColumn(
-            'description',
-            [
-                'header' => __('Description'),
-                'index' => 'description',
-                'class' => 'xxx'
+                'index'  => 'title'
             ]
         );
 
         $this->addColumn(
-            'edit_element',
+            'sort_order',
             [
-                'header' => __('Edit'),
-                'type' => 'action',
-                'getter' => 'getId',
-                'actions' => [
-                    [
-                        'caption' => __('Edit'),
-                        'url' => [
-                            'base' => 'layout/element/edit'
-                        ],
-                        'field' => 'element_id'
-                    ]
-                ],
-                'filter' => false,
-                'sortable' => false,
-                'index' => 'stores',
-                'header_css_class' => 'col-action',
-                'column_css_class' => 'col-action'
+                'header' => __('Sort Order'),
+                'index'  => 'sort_order'
             ]
         );
 
-        $block = $this->getLayout()->getBlock('grid.bottom.links');
-        if ($block) {
-            $this->setChild('grid.bottom.links', $block);
-        }
+        $this->_eventManager->dispatch('element_grid_build', ['grid' => $this]);
 
         return parent::_prepareColumns();
     }
 
     /**
-     * @return string
-     */
-    public function getGridUrl()
-    {
-        return $this->getUrl('layout/*/index', ['_current' => true]);
-    }
-
-    /**
+     * Return url of given row
+     *
      * @param DataObject $row
      * @return string
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl(
-            'layout/element/edit',
-            ['element_id' => $row->getId()]
-        );
+        return $this->getUrl('*/element/edit', ['element_id' => $row->getElementId()]);
     }
 }
