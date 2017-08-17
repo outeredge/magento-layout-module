@@ -1,27 +1,14 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
-    <head>
-        <css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
-    </head>
-    <update handle="editor"/>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="content">
-            <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit" name="layout_group_edit"/>
-        </referenceContainer>
         <referenceContainer name="left">
-            <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tabs" name="layout_group_edit_tabs">
-                <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tab\Main" name="layout_group_edit_tab_main"/>
-                <block class="OuterEdge\Layout\Block\Adminhtml\Element" name="layout_element_grid"/>
-                 <action method="addTab">
-                    <argument name="name" xsi:type="string">main_section</argument>
-                    <argument name="block" xsi:type="string">layout_group_edit_tab_main</argument>
-                </action>
-                <action method="addTab">
-                    <argument name="name" xsi:type="string">element_section</argument>
-                    <argument name="block" xsi:type="string">layout_element_grid</argument>
-                </action>
+            <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tabs" name="group_edit_tabs">
+                <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tab\Main" name="main"/>
+                <block class="OuterEdge\Layout\Block\Adminhtml\Element" name="elements"/>
             </block>
         </referenceContainer>
-
+        <referenceContainer name="content">
+            <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit" name="group_edit_content"/>
+        </referenceContainer>
     </body>
 </page>

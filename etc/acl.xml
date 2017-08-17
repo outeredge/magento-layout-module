@@ -4,7 +4,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::content">
-                    <resource id="OuterEdge_Layout::layout_content" title="Layout" sortOrder="10" >
+                    <resource id="OuterEdge_Layout::layout" title="Layout" sortOrder="10" >
                         <resource id="OuterEdge_Layout::group" title="Group" sortOrder="40" >
                             <resource id="OuterEdge_Layout::group_save" title="Save Group" sortOrder="10" />
                             <resource id="OuterEdge_Layout::group_delete" title="Delete Group" sortOrder="20" />
@@ -12,10 +12,6 @@
                         <resource id="OuterEdge_Layout::element" title="Element" sortOrder="40" >
                             <resource id="OuterEdge_Layout::element_save" title="Save Element" sortOrder="10" />
                             <resource id="OuterEdge_Layout::element_delete" title="Delete Element" sortOrder="20" />
-                        </resource>
-                        <resource id="OuterEdge_Layout::types" title="Types" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::types_save" title="Save Types" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::types_delete" title="Delete Types" sortOrder="20" />
                         </resource>
                     </resource>
                 </resource>

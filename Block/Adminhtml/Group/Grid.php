@@ -1,40 +1,33 @@
 <?php
-namespace  OuterEdge\Layout\Block\Adminhtml\Group;
+
+namespace OuterEdge\Layout\Block\Adminhtml\Group;
 
 use Magento\Backend\Block\Widget\Grid\Extended;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Helper\Data as BackendHelper;
-use Magento\Framework\Module\Manager;
 use OuterEdge\Layout\Model\GroupFactory;
+use Magento\Framework\DataObject;
 
 class Grid extends Extended
 {
     /**
-     * @var Manager
-     */
-    protected $moduleManager;
-
-    /**
      * @var GroupFactory
      */
-    protected $_groupFactory;
+    private $groupFactory;
 
     /**
      * @param Context $context
      * @param BackendHelper $backendHelper
-     * @param Manager $moduleManager
+     * @param GroupFactory $groupFactory
      * @param array $data
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         Context $context,
         BackendHelper $backendHelper,
         GroupFactory $groupFactory,
-        Manager $moduleManager,
         array $data = []
     ) {
-        $this->_groupFactory = $groupFactory;
-        $this->moduleManager = $moduleManager;
+        $this->groupFactory = $groupFactory;
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -45,11 +38,8 @@ class Grid extends Extended
     {
         parent::_construct();
         $this->setId('groupGrid');
-        $this->setDefaultSort('group_id');
-        $this->setDefaultDir('DESC');
-        $this->setSaveParametersInSession(true);
-        $this->setUseAjax(true);
-        $this->setVarNameFilter('group_record');
+        $this->setDefaultSort('title');
+        $this->setDefaultDir('ASC');
     }
 
     /**
@@ -57,9 +47,8 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $collection = $this->_groupFactory->create()->getCollection();
+        $collection = $this->groupFactory->create()->getCollection();
         $this->setCollection($collection);
-
         return parent::_prepareCollection();
     }
 
@@ -70,97 +59,42 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'group_id',
-            [
-                'header' => __('ID'),
-                'type' => 'number',
-                'index' => 'group_id',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
-            ]
-        );
-        $this->addColumn(
             'title',
             [
                 'header' => __('Title'),
-                'index' => 'title',
-                'class' => 'xxx'
-            ]
-        );
-        $this->addColumn(
-            'description',
-            [
-                'header' => __('Description'),
-                'index' => 'description',
-                'class' => 'xxx'
+                'index'  => 'title'
             ]
         );
 
         $this->addColumn(
-            'edit',
+            'group_code',
             [
-                'header' => __('Edit'),
-                'type' => 'action',
-                'getter' => 'getId',
-                'actions' => [
-                    [
-                        'caption' => __('Edit'),
-                        'url' => [
-                            'base' => '*/*/edit'
-                        ],
-                        'field' => 'group_id'
-                    ]
-                ],
-                'filter' => false,
-                'sortable' => false,
-                'index' => 'stores',
-                'header_css_class' => 'col-action',
-                'column_css_class' => 'col-action'
+                'header' => __('Code'),
+                'index'  => 'group_code'
             ]
         );
 
-        $block = $this->getLayout()->getBlock('grid.bottom.links');
-        if ($block) {
-            $this->setChild('grid.bottom.links', $block);
-        }
+        $this->addColumn(
+            'sort_order',
+            [
+                'header' => __('Sort Order'),
+                'index'  => 'sort_order'
+            ]
+        );
+
+        $this->_eventManager->dispatch('layout_group_grid_build', ['grid' => $this]);
 
         return parent::_prepareColumns();
     }
 
     /**
-     * @return $this
-     */
-    protected function _prepareMassaction()
-    {
-        $this->setMassactionIdField('group_id');
-        $this->getMassactionBlock()->setFormFieldName('group_record_id');
-
-        $this->getMassactionBlock()->addItem(
-            'delete',
-            [
-                'label' => __('Delete'),
-                'url' => $this->getUrl('layout/*/massDelete'),
-                'confirm' => __('Are you sure?')
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
+     * Return url of given row
+     *
+     * @param DataObject $row
      * @return string
      */
-    public function getGridUrl()
-    {
-        return $this->getUrl('layout/*/index', ['_current' => true]);
-    }
-
-
     public function getRowUrl($row)
     {
-        return $this->getUrl(
-            'layout/*/edit',
-            ['group_id' => $row->getId()]
-        );
+        return $this->getUrl('*/*/edit', ['group_id' => $row->getGroupId()]);
     }
 }

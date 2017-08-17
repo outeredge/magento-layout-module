@@ -1,14 +1,21 @@
 <?php
-namespace  OuterEdge\Layout\Block\Adminhtml\Group;
+
+namespace OuterEdge\Layout\Block\Adminhtml\Group;
 
 use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Framework\Registry;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Phrase;
-use Magento\Framework\View\Group\AbstractBlock;
 
 class Edit extends Container
 {
+    /**
+     * Block group name
+     *
+     * @var string
+     */
+    protected $_blockGroup = 'OuterEdge_Layout';
+
     /**
      * @var Registry
      */
@@ -36,14 +43,12 @@ class Edit extends Container
     protected function _construct()
     {
         $this->_objectId = 'group_id';
-        $this->_blockGroup = 'outerEdge_layout';
         $this->_controller = 'adminhtml_group';
 
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Group'));
-        $this->buttonList->add(
-            'saveandcontinue',
+        $this->addButton(
+            'save_and_edit_button',
             [
                 'label' => __('Save and Continue Edit'),
                 'class' => 'save',
@@ -52,54 +57,50 @@ class Edit extends Container
                         'button' => ['event' => 'saveAndContinueEdit', 'target' => '#edit_form'],
                     ],
                 ]
-            ],
-            -100
+            ]
         );
 
-        $this->buttonList->update('delete', 'label', __('Delete'));
+        $this->buttonList->update('save', 'label', __('Save Group'));
+        $this->buttonList->update('save', 'class', 'save primary');
+        $this->buttonList->update(
+            'save',
+            'data_attribute',
+            ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
+        );
+
+        $group = $this->_coreRegistry->registry('group');
+        if ($group->getId()) {
+            $this->addButton(
+                'add_new_element',
+                [
+                    'label' => __('Add New Element'),
+                    'class' => 'save',
+                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
+                ]
+            );
+        }
     }
 
     /**
-     * Retrieve text for header group depending on loaded post
+     * Retrieve header text
      *
      * @return Phrase
      */
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('layout_group_form_data')->getId()) {
-            return __("Edit Group '%1'", $this->escapeHtml($this->_coreRegistry->registry('layout_group_form_data')->getTitle()));
-        } else {
-            return __('New Group');
+        if ($this->_coreRegistry->registry('group')->getId()) {
+            return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('group')->getTitle()));
         }
+        return __('New Group');
     }
 
     /**
-     * Getter of url for "Save and Continue" button
-     * tab_id will be replaced by desired by JS later
+     * Retrieve URL for save
      *
      * @return string
      */
-    protected function _getSaveAndContinueUrl()
+    public function getSaveUrl()
     {
-        return $this->getUrl('*/*/save', ['_current' => true, 'back' => 'edit', 'active_tab' => '{{tab_id}}']);
-    }
-
-    /**
-     * Prepare layout
-     *
-     * @return AbstractBlock
-     */
-    protected function _prepareLayout()
-    {
-        $this->_formScripts[] = "
-            function toggleEditor() {
-                if (tinyMCE.getInstanceById('page_content') == null) {
-                    tinyMCE.execCommand('mceAddControl', false, 'content');
-                } else {
-                    tinyMCE.execCommand('mceRemoveControl', false, 'content');
-                }
-            };
-        ";
-        return parent::_prepareLayout();
+        return $this->getUrl('*/*/save', ['_current' => true, 'back' => null]);
     }
 }

@@ -2,30 +2,42 @@
 
 namespace OuterEdge\Layout\Controller\Adminhtml\Group;
 
-use Magento\Backend\App\Action;
+use OuterEdge\Layout\Controller\Adminhtml\Group;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
+use OuterEdge\Layout\Model\GroupFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\LocalizedException;
-use RuntimeException;
 use Exception;
 
-class Save extends Action
+class Save extends Group
 {
     /**
      * @var DateTime
      */
-    protected $datetime;
+    protected $dateTime;
 
     /**
      * @param Context $context
+     * @param Registry $coreRegistry
+     * @param PageFactory $resultPageFactory
+     * @param GroupFactory $groupFactory
+     * @param DateTime $dateTime
      */
     public function __construct(
         Context $context,
-        DateTime $datetime
+        Registry $coreRegistry,
+        PageFactory $resultPageFactory,
+        GroupFactory $groupFactory,
+        DateTime $dateTime
     ) {
-        $this->datetime = $datetime;
-        parent::__construct($context);
+        $this->dateTime = $dateTime;
+        parent::__construct(
+            $context,
+            $coreRegistry,
+            $resultPageFactory,
+            $groupFactory
+        );
     }
 
     /**
@@ -35,41 +47,46 @@ class Save extends Action
      */
     public function execute()
     {
-        $post = $this->getRequest()->getPostValue();
-
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $data = $this->getRequest()->getPostValue('group');
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($post) {
-            $model = $this->_objectManager->create('OuterEdge\Layout\Model\Group');
-            $data = $this->getRequest()->getParam('group');
 
-            if (isset($data['group_id'])) {
-                $model->load($data['group_id']);
+        if ($data) {
+            $groupId = $this->getRequest()->getParam('group_id');
+
+            $data['updated_at'] = $this->dateTime->date();
+
+            $model = $this->groupFactory->create();
+
+            if ($groupId) {
+                $model->load($groupId);
+
+                if (!$model->getId()) {
+                    $this->messageManager->addError(__('This group no longer exists.'));
+                    return $this->returnResult('*/*/', [], ['error' => true]);
+                }
             } else {
-                $data['created_at'] = $this->datetime->date();
+                $data['created_at'] = $this->dateTime->date();
             }
 
-            $model->setData($data);
+            $model->addData($data);
 
             try {
                 $model->save();
-                $this->messageManager->addSuccess(__('The data has been saved.'));
-                $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
-                if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true]);
-                }
-                return $resultRedirect->setPath('*/*/');
-            } catch (LocalizedException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (RuntimeException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the data.'));
-            }
 
-            $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('*/*/edit', ['group_id' => $this->getRequest()->getParam('group_record_id')]);
+                $this->messageManager->addSuccess(__('You saved the group.'));
+
+                $this->_session->setGroupData(false);
+
+                if ($this->getRequest()->getParam('back')) {
+                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true], ['error' => false]);
+                }
+                return $resultRedirect->setPath('*/*/', [], ['error' => false]);
+            } catch (Exception $e) {
+                $this->messageManager->addError($e->getMessage());
+                $this->_session->setGroupData($data);
+                return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true], ['error' => true]);
+            }
         }
-        return $resultRedirect->setPath('*/*/');
+        return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
 }
