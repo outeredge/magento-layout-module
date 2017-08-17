@@ -15,12 +15,12 @@ class InstallSchema implements InstallSchemaInterface
         $installer = $setup;
         $installer->startSetup();
 
-        $tableGroups = $installer->getTable('layout_groups');
+        $tableGroup = $installer->getTable('layout_group');
         // Check if the table already exists
-        if ($installer->getConnection()->isTableExists($tableGroups) != true) {
+        if ($installer->getConnection()->isTableExists($tableGroup) != true) {
             // Create table
             $table = $installer->getConnection()
-                ->newTable($tableGroups)
+                ->newTable($tableGroup)
                 ->addColumn(
                     'group_id',
                     Table::TYPE_INTEGER,
@@ -77,7 +77,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addIndex(
                     $installer->getIdxName(
-                        'layout_groups',
+                        'layout_group',
                         ['group_code'],
                         AdapterInterface::INDEX_TYPE_UNIQUE
                     ),
@@ -90,12 +90,12 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getConnection()->createTable($table);
         }
 
-        $tableElements = $installer->getTable('layout_elements');
+        $tableElement = $installer->getTable('layout_element');
         // Check if the table already exists
-        if ($installer->getConnection()->isTableExists($tableElements) != true) {
+        if ($installer->getConnection()->isTableExists($tableElement) != true) {
             // Create table
             $table = $installer->getConnection()
-                ->newTable($tableElements)
+                ->newTable($tableElement)
                 ->addColumn(
                     'element_id',
                     Table::TYPE_INTEGER,
@@ -175,13 +175,13 @@ class InstallSchema implements InstallSchemaInterface
                     'Created At'
                 )
                 ->addForeignKey(
-                    $installer->getFkName('layout_elements', 'group_id', 'layout_groups', 'group_id'),
+                    $installer->getFkName('layout_element', 'group_id', 'layout_group', 'group_id'),
                     'group_id',
-                    $installer->getTable('layout_groups'),
+                    $installer->getTable('layout_group'),
                     'group_id',
                     Table::ACTION_CASCADE
                 )
-                ->setComment('Elements Group Table')
+                ->setComment('Element Group Table')
                 ->setOption('type', 'InnoDB')
                 ->setOption('charset', 'utf8');
             $installer->getConnection()->createTable($table);

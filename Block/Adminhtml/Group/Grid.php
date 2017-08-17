@@ -1,0 +1,166 @@
+<?php
+namespace  OuterEdge\Layout\Block\Adminhtml\Group;
+
+use Magento\Backend\Block\Widget\Grid\Extended;
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Helper\Data as BackendHelper;
+use Magento\Framework\Module\Manager;
+use OuterEdge\Layout\Model\GroupFactory;
+
+class Grid extends Extended
+{
+    /**
+     * @var Manager
+     */
+    protected $moduleManager;
+
+    /**
+     * @var GroupFactory
+     */
+    protected $_groupFactory;
+
+    /**
+     * @param Context $context
+     * @param BackendHelper $backendHelper
+     * @param Manager $moduleManager
+     * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
+    public function __construct(
+        Context $context,
+        BackendHelper $backendHelper,
+        GroupFactory $groupFactory,
+        Manager $moduleManager,
+        array $data = []
+    ) {
+        $this->_groupFactory = $groupFactory;
+        $this->moduleManager = $moduleManager;
+        parent::__construct($context, $backendHelper, $data);
+    }
+
+    /**
+     * @return void
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setId('groupGrid');
+        $this->setDefaultSort('group_id');
+        $this->setDefaultDir('DESC');
+        $this->setSaveParametersInSession(true);
+        $this->setUseAjax(true);
+        $this->setVarNameFilter('group_record');
+    }
+
+    /**
+     * @return $this
+     */
+    protected function _prepareCollection()
+    {
+        $collection = $this->_groupFactory->create()->getCollection();
+        $this->setCollection($collection);
+
+        return parent::_prepareCollection();
+    }
+
+    /**
+     * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    protected function _prepareColumns()
+    {
+        $this->addColumn(
+            'group_id',
+            [
+                'header' => __('ID'),
+                'type' => 'number',
+                'index' => 'group_id',
+                'header_css_class' => 'col-id',
+                'column_css_class' => 'col-id'
+            ]
+        );
+        $this->addColumn(
+            'title',
+            [
+                'header' => __('Title'),
+                'index' => 'title',
+                'class' => 'xxx'
+            ]
+        );
+        $this->addColumn(
+            'description',
+            [
+                'header' => __('Description'),
+                'index' => 'description',
+                'class' => 'xxx'
+            ]
+        );
+
+        $this->addColumn(
+            'edit',
+            [
+                'header' => __('Edit'),
+                'type' => 'action',
+                'getter' => 'getId',
+                'actions' => [
+                    [
+                        'caption' => __('Edit'),
+                        'url' => [
+                            'base' => '*/*/edit'
+                        ],
+                        'field' => 'group_id'
+                    ]
+                ],
+                'filter' => false,
+                'sortable' => false,
+                'index' => 'stores',
+                'header_css_class' => 'col-action',
+                'column_css_class' => 'col-action'
+            ]
+        );
+
+        $block = $this->getLayout()->getBlock('grid.bottom.links');
+        if ($block) {
+            $this->setChild('grid.bottom.links', $block);
+        }
+
+        return parent::_prepareColumns();
+    }
+
+    /**
+     * @return $this
+     */
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('group_id');
+        $this->getMassactionBlock()->setFormFieldName('group_record_id');
+
+        $this->getMassactionBlock()->addItem(
+            'delete',
+            [
+                'label' => __('Delete'),
+                'url' => $this->getUrl('layout/*/massDelete'),
+                'confirm' => __('Are you sure?')
+            ]
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getUrl('layout/*/index', ['_current' => true]);
+    }
+
+
+    public function getRowUrl($row)
+    {
+        return $this->getUrl(
+            'layout/*/edit',
+            ['group_id' => $row->getId()]
+        );
+    }
+}

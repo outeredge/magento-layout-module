@@ -3,32 +3,32 @@
 namespace OuterEdge\Layout\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
-use OuterEdge\Layout\Model\ElementsFactory;
-use OuterEdge\Layout\Model\GroupsFactory;
+use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupFactory;
 
 class Data extends AbstractHelper
 {
     /**
-     * @var ElementsFactory
+     * @var ElementFactory
      */
-    protected $_modelElementsFactory;
+    protected $_modelElementFactory;
 
     /**
-     * @var GroupsFactory
+     * @var GroupFactory
      */
-    protected $_modelGroupsFactory;
+    protected $_modelGroupFactory;
 
     /**
      *
-     * @param ElementsFactory $modelElementsFactory
-     * @param GroupsFactory $modelGroupsFactory
+     * @param ElementFactory $modelElementFactory
+     * @param GroupFactory $modelGroupFactory
      */
     public function __construct(
-        ElementsFactory $modelElementsFactory,
-        GroupsFactory $modelGroupsFactory
+        ElementFactory $modelElementFactory,
+        GroupFactory $modelGroupFactory
     ) {
-        $this->_modelElementsFactory = $modelElementsFactory;
-        $this->_modelGroupsFactory   = $modelGroupsFactory;
+        $this->_modelElementFactory = $modelElementFactory;
+        $this->_modelGroupFactory   = $modelGroupFactory;
     }
 
     /**
@@ -37,18 +37,18 @@ class Data extends AbstractHelper
      */
     public function getLayoutContents($groupCode = false)
     {
-        $groupsModel = $this->_modelGroupsFactory->create();
+        $groupModel = $this->_modelGroupFactory->create();
 
-        $groupData = $groupsModel->getGroupIdByCode($groupCode);
+        $groupData = $groupModel->getGroupIdByCode($groupCode);
         if (!$groupData) {
             return null;
         }
 
-        $elementsModel = $this->_modelElementsFactory->create();
-        $result = $elementsModel->loadByGroup($groupData->getGroupId());
+        $elementModel = $this->_modelElementFactory->create();
+        $result = $elementModel->loadByGroup($groupData->getGroupId());
 
         $data = $groupData->getData();
-        $data['elements'] = $this->groupBy($result->getData(), 'title');
+        $data['element'] = $this->groupBy($result->getData(), 'title');
 
         return $data;
     }
