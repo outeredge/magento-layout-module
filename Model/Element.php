@@ -8,7 +8,7 @@ class Element extends AbstractModel
 {
     protected function _construct()
     {
-        $this->_init('OuterEdge\Layout\Model\Resource\Element');
+        $this->_init('OuterEdge\Layout\Model\ResourceModel\Element');
     }
 
     /**
