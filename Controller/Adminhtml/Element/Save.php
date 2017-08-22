@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\ElementFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Api\ImageProcessorInterface;
 use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -25,12 +26,7 @@ class Save extends Element
     /**
      * @var UploaderFactory
      */
-    protected $uploader;
-
-    /**
-     * @var Image
-     */
-    protected $imageModel;
+    private $uploaderFactory;
 
     /**
      * @var ImageProcessorInterface
@@ -48,6 +44,7 @@ class Save extends Element
      * @param PageFactory $resultPageFactory
      * @param ElementFactory $elementFactory
      * @param DateTime $dateTime
+     * @param UploaderFactory $uploaderFactory
      * @param ImageProcessorInterface $imageProcessor
      * @param ImageContentInterfaceFactory $imageContentFactory
      * @param Filesystem $filesystem
@@ -58,11 +55,13 @@ class Save extends Element
         PageFactory $resultPageFactory,
         ElementFactory $elementFactory,
         DateTime $dateTime,
+        UploaderFactory $uploaderFactory,
         ImageProcessorInterface $imageProcessor,
         ImageContentInterfaceFactory $imageContentFactory,
         Filesystem $filesystem
     ) {
         $this->dateTime = $dateTime;
+        $this->uploaderFactory = $uploaderFactory;
         $this->imageProcessor = $imageProcessor;
         $this->imageContentFactory = $imageContentFactory;
         $this->tmpDirectory = $filesystem->getDirectoryRead(DirectoryList::SYS_TMP);
@@ -108,19 +107,22 @@ class Save extends Element
                 $data['created_at'] = $this->dateTime->date();
             }
 
-            if (!empty($_FILES)) {
-                foreach ($_FILES as $imageName => $imageData) {
-                    if (isset($data[$imageName]['delete']) && $data[$imageName]['delete']) {
-                        $data[$imageName] = null;
-                    } elseif ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
+            if (isset($data['image']['delete']) && $data['image']['delete']) {
+                $data['image'] = null;
+            } else {
+                unset($data['image']);
+                try {
+                    $uploader = $this->uploaderFactory->create(['fileId' => 'image']);
+                    $imageData = $uploader->validateFile();
+                    if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
                         $imageContentDataObject = $this->imageContentFactory->create()
                             ->setName($imageData['name'])
                             ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
                             ->setType($imageData['type']);
-                        $data[$imageName] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
-                    } else {
-                        unset($data[$imageName]);
+                        $data['image'] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
                     }
+                } catch (Exception $e) {
+                    // The file was probably not uploaded - skip and continue with model saving
                 }
             }
 
