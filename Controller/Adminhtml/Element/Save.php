@@ -110,7 +110,6 @@ class Save extends Element
             if (isset($data['image']['delete']) && $data['image']['delete']) {
                 $data['image'] = null;
             } else {
-                unset($data['image']);
                 try {
                     $uploader = $this->uploaderFactory->create(['fileId' => 'image']);
                     $imageData = $uploader->validateFile();
@@ -120,9 +119,12 @@ class Save extends Element
                             ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
                             ->setType($imageData['type']);
                         $data['image'] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
+                    } else {
+                        unset($data['image']);
                     }
                 } catch (Exception $e) {
                     // The file was probably not uploaded - skip and continue with model saving
+                    unset($data['image']);
                 }
             }
 
