@@ -51,12 +51,11 @@ class Save extends Group
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($data) {
-            $groupId = $this->getRequest()->getParam('group_id');
-
             $data['updated_at'] = $this->dateTime->date();
 
             $model = $this->groupFactory->create();
 
+            $groupId = $this->getRequest()->getParam('group_id');
             if ($groupId) {
                 $model->load($groupId);
 

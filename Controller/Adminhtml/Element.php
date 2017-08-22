@@ -61,7 +61,7 @@ abstract class Element extends Action
         $resultPage = $this->resultPageFactory->create();
         $resultPage->addBreadcrumb(__('Element'), __('Element'))
             ->addBreadcrumb(__('Manage Layout Elements'), __('Manage Layout Elements'))
-            ->setActiveMenu('OuterEdge_Layout::element');
+            ->setActiveMenu('OuterEdge_Layout::group');
         if (!empty($title)) {
             $resultPage->addBreadcrumb($title, $title);
         }

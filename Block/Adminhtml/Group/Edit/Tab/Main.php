@@ -46,6 +46,7 @@ class Main extends Generic
                 'title' => __('Title')
             ]
         );
+
         $fieldset->addField(
             'description',
             'textarea',
@@ -55,6 +56,7 @@ class Main extends Generic
                 'title' => __('Description')
             ]
         );
+        
         $fieldset->addField(
             'sort_order',
             'text',

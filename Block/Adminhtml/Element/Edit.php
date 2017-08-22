@@ -14,7 +14,7 @@ class Edit extends Container
      *
      * @var string
      */
-    protected $_blockElement = 'OuterEdge_Layout';
+    protected $_blockGroup = 'OuterEdge_Layout';
 
     /**
      * @var Registry
@@ -83,6 +83,16 @@ class Edit extends Container
     }
 
     /**
+     * Get URL for back (reset) button
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        return $this->getUrl('*/group/edit', ['group_id' => $this->getGroupId(), 'active_tab' => 'elements']);
+    }
+
+    /**
      * Retrieve URL for save
      *
      * @return string
@@ -90,5 +100,18 @@ class Edit extends Container
     public function getSaveUrl()
     {
         return $this->getUrl('*/*/save', ['_current' => true, 'back' => null]);
+    }
+
+    /**
+     * Get group id
+     *
+     * @return int
+     */
+    private function getGroupId()
+    {
+        if ($this->getRequest()->getParam('group_id')) {
+            return $this->getRequest()->getParam('group_id');
+        }
+        return $this->_coreRegistry->registry('element')->getGroupId();
     }
 }

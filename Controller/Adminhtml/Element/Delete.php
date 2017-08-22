@@ -20,17 +20,19 @@ class Delete extends Element
             $model = $this->elementFactory->create();
             $model->load($id);
 
+            $groupId = $model->getGroupId();
+
             try {
                 $model->delete();
                 $this->messageManager->addSuccess(__('You deleted the element.'));
-                return $resultRedirect->setPath('*/*/');
+                return $resultRedirect->setPath('*/group/edit', ['group_id' => $groupId, 'active_tab' => 'elements']);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['element_id' => $id]);
+                return $resultRedirect->setPath('*/*/edit', ['element_id' => $id, 'group_id' => $groupId]);
             }
         }
-        
+
         $this->messageManager->addError(__('We can\'t find a element to delete.'));
-        return $resultRedirect->setPath('*/*/');
+        return $resultRedirect->setPath('*/*/', ['_current' => true]);
     }
 }

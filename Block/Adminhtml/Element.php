@@ -12,9 +12,8 @@ class Element extends Container
         $this->_blockGroup = 'OuterEdge_Layout';
         $this->_headerText = __('Layout Elements');
 
-        // @todo remove add button
-        $this->_addButtonLabel = __('Create New Element');
-
         parent::_construct();
+
+        $this->removeButton('add');
     }
 }

@@ -8,7 +8,6 @@
         <referenceContainer name="left">
             <block class="OuterEdge\Layout\Block\Adminhtml\Element\Edit\Tabs" name="element_edit_tabs">
                 <block class="OuterEdge\Layout\Block\Adminhtml\Element\Edit\Tab\Main" name="main"/>
-                <block class="OuterEdge\Layout\Block\Adminhtml\Element" name="elements"/>
             </block>
         </referenceContainer>
         <referenceContainer name="content">
