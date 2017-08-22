@@ -4,7 +4,7 @@
         <system>
             <media_storage_configuration>
                 <allowed_resources>
-                    <outeredge_image_folder>outeredge</outeredge_image_folder>
+                    <layout_images_folder>layout</layout_images_folder>
                 </allowed_resources>
             </media_storage_configuration>
         </system>
