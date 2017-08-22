@@ -55,9 +55,11 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get a group by group_code as id field
+     *
      * @return Group
      */
-    public function getGroup($id = false, $field = null)
+    public function getGroup($id = false, $field = 'group_code')
     {
         $group = $this->groupFactory->create();
         if ($id) {
@@ -97,7 +99,7 @@ class Data extends AbstractHelper
     /**
      * @return Group
      */
-    public function getGroupAndElements($id, $field = null)
+    public function getGroupAndElements($id, $field = 'group_code')
     {
         $group = $this->getGroup($id, $field);
         $elements = $this->getElementCollection()->addFieldToFilter('group_id', ['eq' => $group->getId()]);

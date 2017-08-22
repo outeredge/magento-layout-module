@@ -12,8 +12,7 @@ use Magento\Framework\Api\ImageProcessorInterface;
 use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
-use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image as ElementImage;
-
+use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image;
 use Exception;
 
 class Save extends Element
@@ -118,7 +117,7 @@ class Save extends Element
                             ->setName($imageData['name'])
                             ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
                             ->setType($imageData['type']);
-                        $data[$imageName] = $this->imageProcessor->processImageContent(ElementImage::LAYOUT_IMAGE_DIR, $imageContentDataObject);
+                        $data[$imageName] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
                     } else {
                         unset($data[$imageName]);
                     }
