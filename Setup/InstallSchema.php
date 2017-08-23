@@ -35,7 +35,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'group_code',
-                    Table::TYPE_TEXT,
+                    Table::TYPE_VARCHAR,
                     255,
                     ['nullable' => false, 'default' => null],
                     'Group Code'
@@ -50,7 +50,7 @@ class InstallSchema implements InstallSchemaInterface
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
-                    255,
+                    '2M',
                     ['nullable' => true, 'default' => null],
                     'Description'
                 )
@@ -128,21 +128,21 @@ class InstallSchema implements InstallSchemaInterface
                 ->addColumn(
                     'description',
                     Table::TYPE_TEXT,
-                    255,
+                    '2M',
                     ['nullable' => true],
                     'Description'
                 )
                 ->addColumn(
                     'link',
                     Table::TYPE_TEXT,
-                    255,
+                    '2M',
                     ['nullable' => true],
                     'Link'
                 )
                 ->addColumn(
                     'link_text',
                     Table::TYPE_TEXT,
-                    255,
+                    '2M',
                     ['nullable' => true],
                     'Link Text'
                 )
