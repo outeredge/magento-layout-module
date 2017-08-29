@@ -32,14 +32,16 @@ class Tabs extends WidgetTabs
             ]
         );
 
-        $this->addTab(
-            'elements',
-            [
-                'label' => __('Manage Elements'),
-                'title' => __('Manage Elements'),
-                'content' => $this->getChildHtml('elements')
-            ]
-        );
+        if ($this->getRequest()->getParam('group_id')) {
+            $this->addTab(
+                'elements',
+                [
+                    'label' => __('Manage Elements'),
+                    'title' => __('Manage Elements'),
+                    'content' => $this->getChildHtml('elements')
+                ]
+            );
+        }
 
         return parent::_beforeToHtml();
     }

@@ -48,6 +48,7 @@ class Grid extends Extended
     protected function _prepareCollection()
     {
         $collection = $this->elementFactory->create()->getCollection();
+        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('group_id')]);
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
