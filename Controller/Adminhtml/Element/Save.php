@@ -140,7 +140,10 @@ class Save extends Element
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
                 }
-                return $resultRedirect->setPath('*/*/', [], ['error' => false]);
+                return $resultRedirect->setPath('*/group/edit', [
+                    'group_id' => $model->getGroupId(),
+                    'active_tab' => 'elements'
+                ], ['error' => false]);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setElementData($data);
@@ -149,36 +152,4 @@ class Save extends Element
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
-
-    /**
-     * uploadFileAndGetName
-     * @param $input
-     * @param $destinationFolder
-     * @param $data
-     * @return string
-     */
-//    public function uploadFileAndGetName($input, $destinationFolder, $data)
-//    {
-//        try {
-//            if (isset($data[$input]['delete'])) {
-//                return '';
-//            } else {
-//                $uploader = $this->uploader->create(['fileId' => $input]);
-//                $uploader->setAllowRenameFiles(true);
-//                $uploader->setFilesDispersion(true);
-//                $uploader->setAllowCreateFolders(true);
-//                $result = $uploader->save($destinationFolder);
-//                return $result['file'];
-//            }
-//        } catch (Exception $e) {
-//            if ($e->getCode() != Uploader::TMP_NAME_EMPTY) {
-//                $this->messageManager->addError($e->getMessage());
-//            } else {
-//                if (isset($data[$input]['value'])) {
-//                    return $data[$input]['value'];
-//                }
-//            }
-//        }
-//        return '';
-//    }
 }
