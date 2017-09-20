@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Controller\Adminhtml\Group;
+namespace OuterEdge\Layout\Controller\Adminhtml\GroupTemplate;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;

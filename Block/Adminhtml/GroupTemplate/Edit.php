@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Block\Adminhtml\Element;
+namespace OuterEdge\Layout\Block\Adminhtml\GroupTemplate;
 
 use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Framework\Registry;
@@ -10,7 +10,7 @@ use Magento\Framework\Phrase;
 class Edit extends Container
 {
     /**
-     * Block element name
+     * Block GroupTemplate name
      *
      * @var string
      */
@@ -36,14 +36,14 @@ class Edit extends Container
     }
 
     /**
-     * Initialize element edit block
+     * Initialize GroupTemplate edit block
      *
      * @return void
      */
     protected function _construct()
     {
-        $this->_objectId = 'element_id';
-        $this->_controller = 'adminhtml_element';
+        $this->_objectId = 'template_id';
+        $this->_controller = 'adminhtml_groupTemplate';
 
         parent::_construct();
 
@@ -60,7 +60,7 @@ class Edit extends Container
             ]
         );
 
-        $this->buttonList->update('save', 'label', __('Save Element'));
+        $this->buttonList->update('save', 'label', __('Save GroupTemplate'));
         $this->buttonList->update('save', 'class', 'save primary');
         $this->buttonList->update(
             'save',
@@ -76,10 +76,10 @@ class Edit extends Container
      */
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('element')->getId()) {
-            return __('Edit Element "%1"', $this->escapeHtml($this->_coreRegistry->registry('element')->getTitle()));
+        if ($this->_coreRegistry->registry('template')->getId()) {
+            return __('Edit Template "%1"', $this->escapeHtml($this->_coreRegistry->registry('template')->getTitle()));
         }
-        return __('New Element');
+        return __('New Template');
     }
 
     /**
@@ -89,7 +89,7 @@ class Edit extends Container
      */
     public function getBackUrl()
     {
-        return $this->getUrl('*/group/edit', ['group_id' => $this->getGroupId(), 'active_tab' => 'elements']);
+        return $this->getUrl('*/group/edit', ['group_id' => $this->getGroupId(), 'active_tab' => 'templates']);
     }
 
     /**
@@ -112,6 +112,6 @@ class Edit extends Container
         if ($this->getRequest()->getParam('group_id')) {
             return $this->getRequest()->getParam('group_id');
         }
-        return $this->_coreRegistry->registry('element')->getGroupId();
+        return $this->_coreRegistry->registry('template')->getGroupId();
     }
 }
