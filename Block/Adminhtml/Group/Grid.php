@@ -95,6 +95,6 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/edit', ['group_id' => $row->getGroupId()]);
+        return $this->getUrl('*/*/edit', ['entity_id' => $row->getId()]);
     }
 }

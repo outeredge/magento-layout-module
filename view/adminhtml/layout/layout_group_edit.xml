@@ -5,7 +5,6 @@
             <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tabs" name="group_edit_tabs">
                 <block class="OuterEdge\Layout\Block\Adminhtml\Group\Edit\Tab\Main" name="main"/>
                 <block class="OuterEdge\Layout\Block\Adminhtml\Element" name="elements"/>
-                <block class="OuterEdge\Layout\Block\Adminhtml\GroupTemplate" name="templates"/>
             </block>
         </referenceContainer>
         <referenceContainer name="content">

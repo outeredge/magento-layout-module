@@ -50,7 +50,7 @@ class Main extends Generic
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Group Properties')]);
 
         if ($group->getId()) {
-            $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
+            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
         }
 
         $fieldset->addField(

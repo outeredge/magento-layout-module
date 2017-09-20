@@ -42,7 +42,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'group_id';
+        $this->_objectId = 'entity_id';
         $this->_controller = 'adminhtml_group';
 
         parent::_construct();
@@ -75,7 +75,7 @@ class Edit extends Container
                 [
                     'label' => __('Add New Element'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
+                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['entity_id' => $group->getId()]) . "')"
                 ]
             );
         }

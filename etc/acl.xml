@@ -13,10 +13,6 @@
                             <resource id="OuterEdge_Layout::element_save" title="Save Element" sortOrder="10" />
                             <resource id="OuterEdge_Layout::element_delete" title="Delete Element" sortOrder="20" />
                         </resource>
-                        <resource id="OuterEdge_Layout::groupTemplate" title="GroupTemplate" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::groupTemplate_save" title="Save GroupTemplate" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::groupTemplate_delete" title="Delete GroupTemplate" sortOrder="20" />
-                        </resource>
                     </resource>
                 </resource>
             </resource>

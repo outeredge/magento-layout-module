@@ -47,10 +47,32 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
+        
+        //EAV model, creating new entities, flavour #1
+        $employee1 = $this->elementFactory->create();
+        $employee1->setDepartment_id($department1->getId());
+        $employee1->setEmail('goran@mail.loc');
+        $employee1->setFirstName('Goran');
+        $employee1->setLastName('Gorvat');
+        $employee1->setServiceYears(3);
+        $employee1->setDob('1984-04-18');
+        $employee1->setSalary(3800.00);
+        $employee1->setVatNumber('GB123451234');
+        $employee1->setNote('Note #1');
+        $employee1->save();
+        
+        
+        
+        
+        /*
+        
+        
         $collection = $this->elementFactory->create()->getCollection();
-        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('group_id')]);
-        $collection->getSelect()->group('element_id');
-        $this->setCollection($collection);
+        $collection->addFieldToFilter('entity_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
+        $this->setCollection($collection); */
+        
+        die('okok');
+        
         return parent::_prepareCollection();
     }
 
@@ -61,10 +83,10 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'content',
+            'title',
             [
-                'header' => __('Content'),
-                'index'  => 'content'
+                'header' => __('Title'),
+                'index'  => 'title'
             ]
         );
 

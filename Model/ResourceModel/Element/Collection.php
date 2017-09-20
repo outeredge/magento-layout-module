@@ -2,14 +2,14 @@
 
 namespace OuterEdge\Layout\Model\ResourceModel\Element;
 
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
     /**
      * @var string
      */
-    protected $_idFieldName = 'element_id';
+    protected $_idFieldName = 'entity_id';
 
     /**
      * Define resource model
