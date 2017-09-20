@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Block\Adminhtml\Element\Edit;
+namespace OuterEdge\Layout\Block\Adminhtml\GroupTemplate\Edit;
 
 use Magento\Backend\Block\Widget\Tabs as WidgetTabs;
 
@@ -12,9 +12,9 @@ class Tabs extends WidgetTabs
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('element_tabs');
+        $this->setId('template_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(__('Element Information'));
+        $this->setTitle(__('Template Information'));
     }
 
     /**

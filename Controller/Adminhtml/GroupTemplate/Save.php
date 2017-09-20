@@ -1,22 +1,22 @@
 <?php
 
-namespace OuterEdge\Layout\Controller\Adminhtml\Element;
+namespace OuterEdge\Layout\Controller\Adminhtml\GroupTemplate;
 
-use OuterEdge\Layout\Controller\Adminhtml\Element;
+use OuterEdge\Layout\Controller\Adminhtml\GroupTemplate;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupTemplateFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Api\ImageProcessorInterface;
 use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
-use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image;
+use OuterEdge\Layout\Block\Adminhtml\GroupTemplate\Helper\Image;
 use Exception;
 
-class Save extends Element
+class Save extends GroupTemplate
 {
     /**
      * @var DateTime
@@ -42,7 +42,7 @@ class Save extends Element
      * @param Context $context
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
-     * @param ElementFactory $elementFactory
+     * @param GroupTemplateFactory $groupTemplateFactory
      * @param DateTime $dateTime
      * @param UploaderFactory $uploaderFactory
      * @param ImageProcessorInterface $imageProcessor
@@ -53,7 +53,7 @@ class Save extends Element
         Context $context,
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
-        ElementFactory $elementFactory,
+        GroupTemplateFactory $groupTemplateFactory,
         DateTime $dateTime,
         UploaderFactory $uploaderFactory,
         ImageProcessorInterface $imageProcessor,
@@ -69,7 +69,7 @@ class Save extends Element
             $context,
             $coreRegistry,
             $resultPageFactory,
-            $elementFactory
+            $groupTemplateFactory
         );
     }
 
@@ -95,12 +95,12 @@ class Save extends Element
 
             $model = $this->elementFactory->create();
 
-            $elementId = $this->getRequest()->getParam('element_id');
+            $elementId = $this->getRequest()->getParam('template_id');
             if ($elementId) {
                 $model->load($elementId);
 
                 if (!$model->getId()) {
-                    $this->messageManager->addError(__('This element no longer exists.'));
+                    $this->messageManager->addError(__('This template no longer exists.'));
                     return $this->returnResult('*/*/', [], ['error' => true]);
                 }
             } else {
@@ -133,21 +133,21 @@ class Save extends Element
             try {
                 $model->save();
 
-                $this->messageManager->addSuccess(__('The element has been saved.'));
+                $this->messageManager->addSuccess(__('The template has been saved.'));
 
-                $this->_session->setElementData(false);
+                $this->_session->setTemplateData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath('*/*/edit', ['template_id' => $model->getId(), '_current' => true], ['error' => false]);
                 }
                 return $resultRedirect->setPath('*/group/edit', [
                     'group_id' => $model->getGroupId(),
-                    'active_tab' => 'elements'
+                    'active_tab' => 'templates'
                 ], ['error' => false]);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setElementData($data);
-                return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath('*/*/edit', ['template_id' => $model->getId(), '_current' => true], ['error' => true]);
             }
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);

@@ -1,33 +1,33 @@
 <?php
 
-namespace OuterEdge\Layout\Block\Adminhtml\Element;
+namespace OuterEdge\Layout\Block\Adminhtml\GroupTemplate;
 
 use Magento\Backend\Block\Widget\Grid\Extended;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Helper\Data as BackendHelper;
-use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupTemplateFactory;
 use Magento\Framework\DataObject;
 
 class Grid extends Extended
 {
     /**
-     * @var ElementFactory
+     * @var GroupTemplateFactory
      */
-    private $elementFactory;
+    private $groupTemplateFactory;
 
     /**
      * @param Context $context
      * @param BackendHelper $backendHelper
-     * @param ElementFactory $elementFactory
+     * @param GroupTemplateFactory $groupTemplateFactory
      * @param array $data
      */
     public function __construct(
         Context $context,
         BackendHelper $backendHelper,
-        ElementFactory $elementFactory,
+        GroupTemplateFactory $groupTemplateFactory,
         array $data = []
     ) {
-        $this->elementFactory = $elementFactory;
+        $this->groupTemplateFactory = $groupTemplateFactory;
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -37,7 +37,7 @@ class Grid extends Extended
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('elementGrid');
+        $this->setId('groupTemplateGrid');
         $this->setDefaultSort('title');
         $this->setDefaultDir('ASC');
     }
@@ -47,9 +47,8 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $collection = $this->elementFactory->create()->getCollection();
+        $collection = $this->groupTemplateFactory->create()->getCollection();
         $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('group_id')]);
-        $collection->getSelect()->group('element_id');
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -61,10 +60,18 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'content',
+            'label',
             [
-                'header' => __('Content'),
-                'index'  => 'content'
+                'header' => __('Label'),
+                'index'  => 'label'
+            ]
+        );
+        
+        $this->addColumn(
+            'type',
+            [
+                'header' => __('Type'),
+                'index'  => 'type'
             ]
         );
 
@@ -76,7 +83,7 @@ class Grid extends Extended
             ]
         );
 
-        $this->_eventManager->dispatch('element_grid_build', ['grid' => $this]);
+        $this->_eventManager->dispatch('groupTemplate_grid_build', ['grid' => $this]);
 
         return parent::_prepareColumns();
     }
@@ -89,6 +96,6 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/element/edit', ['element_id' => $row->getElementId(), 'group_id' => $row->getGroupId()]);
+        return $this->getUrl('*/groupTemplate/edit', ['template_id' => $row->getId()]);
     }
 }

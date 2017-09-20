@@ -186,6 +186,169 @@ class InstallSchema implements InstallSchemaInterface
                 ->setOption('charset', 'utf8');
             $installer->getConnection()->createTable($table);
         }
+        
+        
+         $tableTemplate = $installer->getTable('layout_group_template');
+        // Check if the table already exists
+        if ($installer->getConnection()->isTableExists($tableTemplate) != true) {
+            // Create table
+            $table = $installer->getConnection()
+                ->newTable($tableTemplate)
+                ->addColumn(
+                    'template_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'Id'
+                )
+                ->addColumn(
+                    'group_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false
+                    ],
+                    'Fk Group'
+                )
+                ->addColumn(
+                    'label',
+                    Table::TYPE_TEXT,
+                    255,
+                    ['nullable' => true, 'default' => null],
+                    'Label'
+                )
+                ->addColumn(
+                    'type',
+                    Table::TYPE_TEXT,
+                    255,
+                    ['nullable' => true, 'default' => null],
+                    'Type'
+                )
+                ->addColumn(
+                    'sort_order',
+                    Table::TYPE_INTEGER,
+                    null,
+                    ['nullable' => false, 'default' => '0'],
+                    'Sort Order'
+                )
+                ->addColumn(
+                    'updated_at',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => true, 'default' => Table::TIMESTAMP_UPDATE],
+                    'Updated At'
+                )
+                ->addColumn(
+                    'created_at',
+                    Table::TYPE_DATETIME,
+                    null,
+                    ['nullable' => true],
+                    'Created At'
+                )
+                ->addForeignKey(
+                    $installer->getFkName('layout_group_template', 'group_id', 'layout_group', 'group_id'),
+                    'group_id',
+                    $installer->getTable('layout_group'),
+                    'group_id',
+                    Table::ACTION_CASCADE
+                )
+                ->setComment('Layout Group Template Table')
+                ->setOption('type', 'InnoDB')
+                ->setOption('charset', 'utf8');
+            $installer->getConnection()->createTable($table);
+        }
+        
+        $tableTemplateElement = $installer->getTable('layout_group_template_element');
+        // Check if the table already exists
+        if ($installer->getConnection()->isTableExists($tableTemplateElement) != true) {
+            // Create table
+            $table = $installer->getConnection()
+                ->newTable($tableTemplateElement)
+                ->addColumn(
+                    'template_element_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'Id'
+                )
+                ->addColumn(
+                    'element_id',
+                    Table::TYPE_INTEGER,
+                    255,
+                    ['nullable' => false],
+                    'Template Id'
+                )
+                ->addColumn(
+                    'group_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false
+                    ],
+                    'Fk Group'
+                )
+                ->addColumn(
+                    'template_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false
+                    ],
+                    'Fk Template'
+                )
+                ->addColumn(
+                    'content',
+                    Table::TYPE_TEXT,
+                    255,
+                    ['nullable' => false, 'default' => null],
+                    'Content'
+                )
+                ->addColumn(
+                    'updated_at',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => true, 'default' => Table::TIMESTAMP_UPDATE],
+                    'Updated At'
+                )
+                ->addColumn(
+                    'created_at',
+                    Table::TYPE_DATETIME,
+                    null,
+                    ['nullable' => true],
+                    'Created At'
+                )
+                ->addForeignKey(
+                    $installer->getFkName('layout_group_template_element', 'group_id', 'layout_group', 'group_id'),
+                    'group_id',
+                    $installer->getTable('layout_group'),
+                    'group_id',
+                    Table::ACTION_CASCADE
+                )
+                ->addForeignKey(
+                    $installer->getFkName('layout_group_template_element', 'template_id', 'layout_group_template', 'template_id'),
+                    'template_id',
+                    $installer->getTable('layout_group_template'),
+                    'template_id',
+                    Table::ACTION_CASCADE
+                )
+                ->setComment('Layout Group Template Element Table')
+                ->setOption('type', 'InnoDB')
+                ->setOption('charset', 'utf8');
+            $installer->getConnection()->createTable($table);
+        }
 
         $installer->endSetup();
     }
