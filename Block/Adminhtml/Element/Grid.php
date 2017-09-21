@@ -69,10 +69,10 @@ class Grid extends Extended
         );
 
         $this->addColumn(
-            'description',
+            'sort_order',
             [
-                'header' => __('Description'),
-                'index'  => 'description'
+                'header' => __('Sorte Order'),
+                'index'  => 'sort_order'
             ]
         );
 

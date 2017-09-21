@@ -14,7 +14,7 @@ class Edit extends Element
     public function execute()
     {
         $id = $this->getRequest()->getParam('element_id');
-        $groupId = $this->getRequest()->getParam('entity_id');
+        $groupId = $this->getRequest()->getParam('group_id');
 
         $model = $this->elementFactory->create();
 
@@ -39,6 +39,7 @@ class Edit extends Element
         } else {
             $groupModel->load($model->getGroupId());
         }
+        
         $this->_coreRegistry->register('groupCode', $groupModel->getGroupCode());
         
         $this->_coreRegistry->register('elementModel', $model);

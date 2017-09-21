@@ -2,12 +2,14 @@
 
 namespace OuterEdge\Layout\Helper\Templates\Adapter;
 
-class Showroom
+class Showrooms
 {   
     public function mappingFields()
     {
         return [
-                'image' => 'text',
+                'link' => 'text',
+                'link_text' => 'text',
+                'image' => 'image',
                 'address' => 'text',
                 'open_hours' => 'text',
                 'telephone'  => 'text',

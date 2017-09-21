@@ -22,6 +22,9 @@ class ElementSetup extends EavSetup
                     'description' => [
                         'type' => 'static',
                     ],
+                    'sort_order' => [
+                        'type' => 'static',
+                    ],
                 ],
             ],
         ];

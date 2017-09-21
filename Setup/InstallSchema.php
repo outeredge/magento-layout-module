@@ -78,11 +78,19 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addColumn(
                 'description',
-                Table::TYPE_TEXT,
-                64,
+                 Table::TYPE_TEXT,
+                '2M',
                 [],
                 'Description'
-            )->addForeignKey(
+            )
+            ->addColumn(
+                'sort_order',
+                Table::TYPE_INTEGER,
+                null,
+                ['nullable' => false, 'default' => '0'],
+                'Sort Order'
+            )
+            ->addForeignKey(
                 $setup->getFkName($elementEntity . '_entity', 'group_id', 'layout_group', 'entity_id'),
                 'group_id',
                 $setup->getTable('layout_group'),

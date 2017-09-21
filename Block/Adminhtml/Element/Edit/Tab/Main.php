@@ -11,7 +11,6 @@ use OuterEdge\Layout\Helper\Templates\Factory as TemplatesHelper;
 
 class Main extends Generic
 {
-    
     protected $_templates;
     
     /**
@@ -66,8 +65,8 @@ class Main extends Generic
             $element->setGroupId($groupId);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
-       
-        //Ask template from group code name
+        
+        //Ask factory template for group code name
         $template = $this->_templates->getAdapter($groupCode);
         $templateData = $template->mappingFields();
         
@@ -77,80 +76,85 @@ class Main extends Generic
             'text',
             [
                 'name'  => 'title',
-                'label' => __('title'),
-                'title' => __('title')
+                'label' => __('Title'),
+                'title' => __('Title')
             ]
         );
         
-         $fieldset->addField(
+        $fieldset->addField(
             'description',
-            'text',
+            'editor',
             [
-                'name'  => 'description',
-                'label' => __('Description'),
-                'title' => __('Description')
+                'name'    => 'description',
+                'label'   => __('Description'),
+                'title'   => __('Description'),
+                'wysiwyg' => true,
+                'config'  => $this->_wysiwygConfig->getConfig([
+                    'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
+                    'add_variables' => false,
+                    'add_widgets'   => false,
+                    'add_images'    => false
+                ])
             ]
         );
-        
-        
-        //Fazer o for each ao contrario!! Primeiro o helper
-        //Dynamic fields
-        foreach ($element->getData() as $key => $value) {
-    
-            $fieldType = false;
-            foreach ($templateData as $keyTemplate => $field) {
-                if ($key == $keyTemplate) {
-                    $fieldType = $field;      
-                    break;
-                }   
-            }    
 
-            if ($fieldType) {
-                
-                switch ($fieldType) {
-                    case 'image':
-                        $fieldset->addField(
-                            $key,
-                            'image',
-                            [
-                                'name'  => $key,
-                                'label' => __($key),
-                                'title' => __($key),
-                                'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
-                            ]
-                        );
-                        break;
-                    case 'description':
-                        $fieldset->addField(
-                            $key,
-                            'editor',
-                            [
-                                'name'    => $key,
-                                'label'   => __($key),
-                                'title'   => __($key),
-                                'wysiwyg' => true,
-                                'config'  => $this->_wysiwygConfig->getConfig([
-                                    'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
-                                    'add_variables' => false,
-                                    'add_widgets'   => false,
-                                    'add_images'    => false
-                                ])
-                            ]
-                        );
-                        break;
-                    default:
-                        $fieldset->addField(
-                            $key,
-                            $fieldType,
-                            [
-                                'name'     => $key,
-                                'label'    => __($key),
-                                'title'    => __($key)
-                            ]
-                        );
-                }
+        //Dynamic fields
+        foreach ($templateData as $key => $field) {
+            $label = ucfirst(str_replace("_"," ",$key));
+          
+            switch ($field) {
+                case 'image':
+                    $fieldset->addField(
+                        $key,
+                        'image',
+                        [
+                            'name'  => $key,
+                            'label' => __($label),
+                            'title' => __($label),
+                            'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
+                        ]
+                    );
+                    break;
+                case 'description':
+                    $fieldset->addField(
+                        $key,
+                        'editor',
+                        [
+                            'name'    => $key,
+                            'label'   => __($label),
+                            'title'   => __($label),
+                            'wysiwyg' => true,
+                            'config'  => $this->_wysiwygConfig->getConfig([
+                                'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
+                                'add_variables' => false,
+                                'add_widgets'   => false,
+                                'add_images'    => false
+                            ])
+                        ]
+                    );
+                    break;
+                default:
+                    $fieldset->addField(
+                        $key,
+                        $field,
+                        [
+                            'name'     => $key,
+                            'label'    => __($label),
+                            'title'    => __($label)
+                        ]
+                    );
             }
         }
+        
+        $fieldset->addField(
+            'sort_order',
+            'text',
+            [
+                'name'  => 'sort_order',
+                'label' => __('Sort Order'),
+                'title' => __('Sort Order')
+            ]
+        );
         
         $form->setValues($element->getData());
         $this->setForm($form);

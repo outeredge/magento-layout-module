@@ -75,7 +75,7 @@ class Edit extends Container
                 [
                     'label' => __('Add New Element'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['entity_id' => $group->getId()]) . "')"
+                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
                 ]
             );
         }

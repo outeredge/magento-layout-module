@@ -56,21 +56,27 @@ class Main extends Generic
                 'text',
                 [
                     'name'     => 'group[group_code]',
-                    'label'    => __('Code'),
-                    'title'    => __('Code'),
+                    'label'    => __('Template'),
+                    'title'    => __('Template'),
                     'readonly' => true,
-                    'required' => true
+                    'required' => true,
+                    'note'  => 'This code represent the template class where field\'s are defined'
                 ]
             );
         } else {
             $fieldset->addField(
                 'group_code',
-                'text',
+                'select',
                 [
                     'name'     => 'group[group_code]',
                     'label'    => __('Code'),
                     'title'    => __('Code'),
-                    'required' => true
+                    'options' => [
+                        'base' => __('Base'), 
+                        'showrooms' => __('Showrooms'),
+                        'homepage' => __('Homepage')],
+                    'required' => true,
+                    'note'  => 'This code represent the template class where field\'s are defined'
                 ]
             );
         }

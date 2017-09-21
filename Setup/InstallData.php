@@ -47,6 +47,12 @@ class InstallData implements InstallDataInterface
         $elementSetup->addAttribute(
             $elementEntity, 'longitude', ['type' => 'text']
         );
+        $elementSetup->addAttribute(
+            $elementEntity, 'link', ['type' => 'text']
+        );
+        $elementSetup->addAttribute(
+            $elementEntity, 'link_text', ['type' => 'text']
+        );
         $setup->endSetup();
     }
 }
