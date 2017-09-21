@@ -41,7 +41,7 @@ class Main extends Generic
      */
     protected function _prepareForm()
     {
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
 
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
@@ -51,18 +51,29 @@ class Main extends Generic
 
         if ($group->getId()) {
             $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
+            $fieldset->addField(
+                'group_code',
+                'text',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Code'),
+                    'title'    => __('Code'),
+                    'readonly' => true,
+                    'required' => true
+                ]
+            );
+        } else {
+            $fieldset->addField(
+                'group_code',
+                'text',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Code'),
+                    'title'    => __('Code'),
+                    'required' => true
+                ]
+            );
         }
-
-        $fieldset->addField(
-            'group_code',
-            'text',
-            [
-                'name'     => 'group[group_code]',
-                'label'    => __('Code'),
-                'title'    => __('Code'),
-                'required' => true
-            ]
-        );
 
         $fieldset->addField(
             'title',

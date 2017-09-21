@@ -24,7 +24,6 @@ class Element extends AbstractEntity
             $this->setType(\OuterEdge\Layout\Model\Element::ENTITY);
         }
         
-        die('ok');
         return parent::getEntityType();
     }
 }

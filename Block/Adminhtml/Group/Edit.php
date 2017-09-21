@@ -68,7 +68,7 @@ class Edit extends Container
             ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
         );
 
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
         if ($group->getId()) {
             $this->addButton(
                 'add_new_element',

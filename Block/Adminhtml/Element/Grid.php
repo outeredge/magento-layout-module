@@ -35,7 +35,7 @@ class Grid extends Extended
      * @return void
      */
     protected function _construct()
-    {
+    {   
         parent::_construct();
         $this->setId('elementGrid');
         $this->setDefaultSort('title');
@@ -46,32 +46,10 @@ class Grid extends Extended
      * @return $this
      */
     protected function _prepareCollection()
-    {
-        
-        //EAV model, creating new entities, flavour #1
-        $employee1 = $this->elementFactory->create();
-        $employee1->setDepartment_id($department1->getId());
-        $employee1->setEmail('goran@mail.loc');
-        $employee1->setFirstName('Goran');
-        $employee1->setLastName('Gorvat');
-        $employee1->setServiceYears(3);
-        $employee1->setDob('1984-04-18');
-        $employee1->setSalary(3800.00);
-        $employee1->setVatNumber('GB123451234');
-        $employee1->setNote('Note #1');
-        $employee1->save();
-        
-        
-        
-        
-        /*
-        
-        
+    {   
         $collection = $this->elementFactory->create()->getCollection();
-        $collection->addFieldToFilter('entity_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
-        $this->setCollection($collection); */
-        
-        die('okok');
+        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
+        $this->setCollection($collection);
         
         return parent::_prepareCollection();
     }
@@ -91,10 +69,10 @@ class Grid extends Extended
         );
 
         $this->addColumn(
-            'sort_order',
+            'description',
             [
-                'header' => __('Sort Order'),
-                'index'  => 'sort_order'
+                'header' => __('Description'),
+                'index'  => 'description'
             ]
         );
 
@@ -111,6 +89,6 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/element/edit', ['element_id' => $row->getElementId(), 'group_id' => $row->getGroupId()]);
+        return $this->getUrl('*/element/edit', ['element_id' => $row->getId(), 'group_id' => $row->getGroupId()]);
     }
 }
