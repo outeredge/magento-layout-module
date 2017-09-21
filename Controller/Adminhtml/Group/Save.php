@@ -7,6 +7,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\GroupFactory;
+use OuterEdge\Layout\Model\ElementFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Exception;
 
@@ -22,6 +23,7 @@ class Save extends Group
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param GroupFactory $groupFactory
+     * @param ElementFactory $elementFactory
      * @param DateTime $dateTime
      */
     public function __construct(
@@ -29,6 +31,7 @@ class Save extends Group
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
         GroupFactory $groupFactory,
+        ElementFactory $elementFactory,
         DateTime $dateTime
     ) {
         $this->dateTime = $dateTime;
@@ -36,7 +39,8 @@ class Save extends Group
             $context,
             $coreRegistry,
             $resultPageFactory,
-            $groupFactory
+            $groupFactory,
+            $elementFactory
         );
     }
 
@@ -55,7 +59,8 @@ class Save extends Group
 
             $model = $this->groupFactory->create();
 
-            $groupId = $this->getRequest()->getParam('group_id');
+            $groupId = $this->getRequest()->getParam('entity_id');
+           
             if ($groupId) {
                 $model->load($groupId);
 

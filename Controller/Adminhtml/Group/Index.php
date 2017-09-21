@@ -7,6 +7,7 @@ use Magento\Backend\Model\View\Result\Page;
 
 class Index extends Group
 {
+    
     /**
      * @return Page
      */
@@ -16,6 +17,6 @@ class Index extends Group
         $resultPage->addContent(
             $resultPage->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Group')
         );
-        return $resultPage;
+        return $resultPage;    
     }
 }

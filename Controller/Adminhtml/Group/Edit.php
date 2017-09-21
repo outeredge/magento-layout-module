@@ -13,7 +13,7 @@ class Edit extends Group
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('group_id');
+        $id = $this->getRequest()->getParam('entity_id');
 
         $model = $this->groupFactory->create();
 
@@ -28,11 +28,12 @@ class Edit extends Group
         }
 
         $data = $this->_session->getGroupData(true);
+        
         if (!empty($data)) {
             $model->setData($data);
         }
 
-        $this->_coreRegistry->register('group', $model);
+        $this->_coreRegistry->register('groupModel', $model);
 
         $item = $id ? __('Edit Group') : __('New Group');
 

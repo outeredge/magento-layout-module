@@ -9,7 +9,7 @@ class Collection extends AbstractCollection
     /**
      * @var string
      */
-    protected $_idFieldName = 'group_id';
+    protected $_idFieldName = 'entity_id';
 
     /**
      * Define resource model

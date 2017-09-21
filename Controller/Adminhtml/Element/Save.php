@@ -7,6 +7,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Api\ImageProcessorInterface;
@@ -43,6 +44,7 @@ class Save extends Element
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param ElementFactory $elementFactory
+     * @param GroupFactory $groupFactory
      * @param DateTime $dateTime
      * @param UploaderFactory $uploaderFactory
      * @param ImageProcessorInterface $imageProcessor
@@ -54,6 +56,7 @@ class Save extends Element
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
         ElementFactory $elementFactory,
+        GroupFactory $groupFactory,
         DateTime $dateTime,
         UploaderFactory $uploaderFactory,
         ImageProcessorInterface $imageProcessor,
@@ -69,7 +72,8 @@ class Save extends Element
             $context,
             $coreRegistry,
             $resultPageFactory,
-            $elementFactory
+            $elementFactory,
+            $groupFactory
         );
     }
 
@@ -141,7 +145,7 @@ class Save extends Element
                     return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
                 }
                 return $resultRedirect->setPath('*/group/edit', [
-                    'group_id' => $model->getGroupId(),
+                    'entity_id' => $model->getGroupId(),
                     'active_tab' => 'elements'
                 ], ['error' => false]);
             } catch (Exception $e) {

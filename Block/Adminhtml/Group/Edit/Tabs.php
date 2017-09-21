@@ -1,6 +1,6 @@
 <?php
 
-namespace  OuterEdge\Layout\Block\Adminhtml\Group\Edit;
+namespace OuterEdge\Layout\Block\Adminhtml\Group\Edit;
 
 use Magento\Backend\Block\Widget\Tabs as WidgetTabs;
 
@@ -32,7 +32,7 @@ class Tabs extends WidgetTabs
             ]
         );
 
-        if ($this->getRequest()->getParam('group_id')) {
+        if ($this->getRequest()->getParam('entity_id')) {
             $this->addTab(
                 'elements',
                 [

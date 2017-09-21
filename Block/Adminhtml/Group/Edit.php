@@ -42,7 +42,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'group_id';
+        $this->_objectId = 'entity_id';
         $this->_controller = 'adminhtml_group';
 
         parent::_construct();
@@ -68,7 +68,7 @@ class Edit extends Container
             ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
         );
 
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
         if ($group->getId()) {
             $this->addButton(
                 'add_new_element',

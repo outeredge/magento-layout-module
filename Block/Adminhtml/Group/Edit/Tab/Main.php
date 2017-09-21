@@ -41,7 +41,7 @@ class Main extends Generic
      */
     protected function _prepareForm()
     {
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
 
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
@@ -50,19 +50,36 @@ class Main extends Generic
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Group Properties')]);
 
         if ($group->getId()) {
-            $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
+            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
+            $fieldset->addField(
+                'group_code',
+                'text',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Template'),
+                    'title'    => __('Template'),
+                    'readonly' => true,
+                    'required' => true,
+                    'note'  => 'This code represent the template class where field\'s are defined'
+                ]
+            );
+        } else {
+            $fieldset->addField(
+                'group_code',
+                'select',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Code'),
+                    'title'    => __('Code'),
+                    'options' => [
+                        'base' => __('Base'), 
+                        'showrooms' => __('Showrooms'),
+                        'homepage' => __('Homepage')],
+                    'required' => true,
+                    'note'  => 'This code represent the template class where field\'s are defined'
+                ]
+            );
         }
-
-        $fieldset->addField(
-            'group_code',
-            'text',
-            [
-                'name'     => 'group[group_code]',
-                'label'    => __('Code'),
-                'title'    => __('Code'),
-                'required' => true
-            ]
-        );
 
         $fieldset->addField(
             'title',

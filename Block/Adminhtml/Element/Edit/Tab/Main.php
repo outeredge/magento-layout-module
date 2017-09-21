@@ -7,9 +7,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
+use OuterEdge\Layout\Helper\Templates\Factory as TemplatesHelper;
 
 class Main extends Generic
 {
+    protected $_templates;
+    
     /**
      * @var Config
      */
@@ -20,6 +23,7 @@ class Main extends Generic
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
+     * @param TemplatesHelper $templates
      * @param array $data
      */
     public function __construct(
@@ -27,9 +31,11 @@ class Main extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Config $wysiwygConfig,
+        TemplatesHelper $templates,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
+        $this->_templates = $templates;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -41,9 +47,10 @@ class Main extends Generic
      */
     protected function _prepareForm()
     {
-        $element = $this->_coreRegistry->registry('element');
+        $element = $this->_coreRegistry->registry('elementModel');
+        $groupCode = $this->_coreRegistry->registry('groupCode');     
         $groupId = $this->getRequest()->getParam('group_id');
-
+        
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'enctype' => 'multipart/form-data', 'action' => $this->getData('action'), 'method' => 'post']]
         );
@@ -52,23 +59,28 @@ class Main extends Generic
         $fieldset->addType('image', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image');
 
         if ($element->getId()) {
-            $fieldset->addField('element_id', 'hidden', ['name' => 'element_id']);
+            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         } elseif ($groupId) {
             $element->setGroupId($groupId);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
-
+        
+        //Ask factory template for group code name
+        $template = $this->_templates->getAdapter($groupCode);
+        $templateData = $template->mappingFields();
+        
+        //Fixed fields
         $fieldset->addField(
             'title',
             'text',
             [
-                'name'     => 'title',
-                'label'    => __('Title'),
-                'title'    => __('Title')
+                'name'  => 'title',
+                'label' => __('Title'),
+                'title' => __('Title')
             ]
         );
-
+        
         $fieldset->addField(
             'description',
             'editor',
@@ -86,37 +98,54 @@ class Main extends Generic
             ]
         );
 
-        $fieldset->addField(
-            'link',
-            'text',
-            [
-                'name'  => 'link',
-                'label' => __('Link'),
-                'title' => __('Link')
-            ]
-        );
-
-        $fieldset->addField(
-            'link_text',
-            'text',
-            [
-                'name'  => 'link_text',
-                'label' => __('Text for link'),
-                'title' => __('Text for link')
-            ]
-        );
-
-        $fieldset->addField(
-            'image',
-            'image',
-            [
-                'name'  => 'image',
-                'label' => __('Image'),
-                'title' => __('Image'),
-                'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
-            ]
-        );
-
+        //Dynamic fields
+        foreach ($templateData as $key => $field) {
+            $label = ucfirst(str_replace("_"," ",$key));
+          
+            switch ($field) {
+                case 'image':
+                    $fieldset->addField(
+                        $key,
+                        'image',
+                        [
+                            'name'  => $key,
+                            'label' => __($label),
+                            'title' => __($label),
+                            'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
+                        ]
+                    );
+                    break;
+                case 'description':
+                    $fieldset->addField(
+                        $key,
+                        'editor',
+                        [
+                            'name'    => $key,
+                            'label'   => __($label),
+                            'title'   => __($label),
+                            'wysiwyg' => true,
+                            'config'  => $this->_wysiwygConfig->getConfig([
+                                'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
+                                'add_variables' => false,
+                                'add_widgets'   => false,
+                                'add_images'    => false
+                            ])
+                        ]
+                    );
+                    break;
+                default:
+                    $fieldset->addField(
+                        $key,
+                        $field,
+                        [
+                            'name'     => $key,
+                            'label'    => __($label),
+                            'title'    => __($label)
+                        ]
+                    );
+            }
+        }
+        
         $fieldset->addField(
             'sort_order',
             'text',
@@ -126,7 +155,7 @@ class Main extends Generic
                 'title' => __('Sort Order')
             ]
         );
-
+        
         $form->setValues($element->getData());
         $this->setForm($form);
 

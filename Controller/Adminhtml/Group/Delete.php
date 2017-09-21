@@ -13,7 +13,8 @@ class Delete extends Group
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('group_id');
+        $id = $this->getRequest()->getParam('entity_id');
+       
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($id) {
@@ -26,7 +27,7 @@ class Delete extends Group
                 return $resultRedirect->setPath('*/*/');
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['group_id' => $id]);
+                return $resultRedirect->setPath('*/*/edit', ['entity_id' => $id]);
             }
         }
         
