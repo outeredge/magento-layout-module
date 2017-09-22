@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Block\Adminhtml\Group;
+namespace OuterEdge\Layout\Block\Adminhtml\TemplateFields;
 
 use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Framework\Registry;
@@ -36,14 +36,14 @@ class Edit extends Container
     }
 
     /**
-     * Initialize group edit block
+     * Initialize TemplateFields edit block
      *
      * @return void
      */
     protected function _construct()
     {
         $this->_objectId = 'entity_id';
-        $this->_controller = 'adminhtml_group';
+        $this->_controller = 'adminhtml_templateFields';
 
         parent::_construct();
 
@@ -60,25 +60,13 @@ class Edit extends Container
             ]
         );
 
-        $this->buttonList->update('save', 'label', __('Save Group'));
+        $this->buttonList->update('save', 'label', __('Save Template'));
         $this->buttonList->update('save', 'class', 'save primary');
         $this->buttonList->update(
             'save',
             'data_attribute',
             ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
         );
-
-        $group = $this->_coreRegistry->registry('groupModel');
-        if ($group->getId()) {
-            $this->addButton(
-                'add_new_element',
-                [
-                    'label' => __('Add New Element'),
-                    'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
-                ]
-            );
-        }
     }
 
     /**
@@ -87,11 +75,11 @@ class Edit extends Container
      * @return Phrase
      */
     public function getHeaderText()
-    {die();
-        if ($this->_coreRegistry->registry('groupModel')->getId()) {
-            return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('groupModel')->getTitle()));
+    {
+        if ($this->_coreRegistry->registry('templateFields')->getId()) {
+            return __('Edit Field "%1"', $this->escapeHtml($this->_coreRegistry->registry('templateFields')->getTemplateFields()));
         }
-        return __('New Group');
+        return __('New Template Fields');
     }
 
     /**

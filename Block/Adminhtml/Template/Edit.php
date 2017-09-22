@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Block\Adminhtml\Group;
+namespace OuterEdge\Layout\Block\Adminhtml\Template;
 
 use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Framework\Registry;
@@ -36,17 +36,20 @@ class Edit extends Container
     }
 
     /**
-     * Initialize group edit block
+     * Initialize Template edit block
      *
      * @return void
      */
     protected function _construct()
     {
         $this->_objectId = 'entity_id';
-        $this->_controller = 'adminhtml_group';
+        $this->_controller = 'adminhtml_template';
 
         parent::_construct();
-
+        
+       // $this->removeButton('delete');
+       // $this->removeButton('reset');
+        
         $this->addButton(
             'save_and_edit_button',
             [
@@ -68,14 +71,14 @@ class Edit extends Container
             ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
         );
 
-        $group = $this->_coreRegistry->registry('groupModel');
-        if ($group->getId()) {
+        $template = $this->_coreRegistry->registry('templateModel');
+        if ($template->getId()) {
             $this->addButton(
                 'add_new_element',
                 [
-                    'label' => __('Add New Element'),
+                    'label' => __('Add New Field'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
+                    'onclick' => "setLocation('" . $this->getUrl('*/templatefields/new/', ['template_id' => $template->getId()]) . "')"
                 ]
             );
         }
@@ -87,11 +90,11 @@ class Edit extends Container
      * @return Phrase
      */
     public function getHeaderText()
-    {die();
-        if ($this->_coreRegistry->registry('groupModel')->getId()) {
-            return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('groupModel')->getTitle()));
+    {
+        if ($this->_coreRegistry->registry('templateModel')->getId()) {
+            return __('Edit Template "%1"', $this->escapeHtml($this->_coreRegistry->registry('templateModel')->getTemplate()));
         }
-        return __('New Group');
+        return __('New Template');
     }
 
     /**
