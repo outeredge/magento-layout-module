@@ -49,6 +49,7 @@ class Grid extends Extended
     {
         $collection = $this->templateFieldsFactory->create()->getCollection();
         $collection->addFieldToFilter('template_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
+        $collection->setOrder('sort_order', 'ASC');
         $this->setCollection($collection);
         
         return parent::_prepareCollection();
