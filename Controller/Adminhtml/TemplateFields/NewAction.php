@@ -1,6 +1,6 @@
 <?php
 
-namespace OuterEdge\Layout\Controller\Adminhtml\Element;
+namespace OuterEdge\Layout\Controller\Adminhtml\TemplateFields;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -22,9 +22,6 @@ class NewAction extends Action
         Context $context,
         ForwardFactory $forwardFactory
     ) {
-        
-        die('okok');
-        
         $this->forwardFactory = $forwardFactory;
         parent::__construct($context);
     }

@@ -34,7 +34,7 @@ class Main extends Generic
         $this->_wysiwygConfig = $wysiwygConfig;
         parent::__construct($context, $registry, $formFactory, $data);
     }
-
+       
     /**
      * Prepare form
      *
@@ -44,6 +44,7 @@ class Main extends Generic
     protected function _prepareForm()
     {
         $templateFields = $this->_coreRegistry->registry('templateFieldsModel');
+        $templateId = $this->getRequest()->getParam('template_id');
 
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
@@ -53,6 +54,10 @@ class Main extends Generic
 
         if ($templateFields->getId()) {
             $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
+            $fieldset->addField('template_id', 'hidden', ['name' => 'template_id']);
+        } elseif ($templateId) {
+            $templateFields->setTemplateId($templateId);
+            $fieldset->addField('template_id', 'hidden', ['name' => 'template_id']);
         }
         
         $fieldset->addField(
@@ -73,6 +78,16 @@ class Main extends Generic
                 'name'  => 'type',
                 'label' => __('Type'),
                 'title' => __('Type')
+            ]
+        );
+        
+        $fieldset->addField(
+            'sort_order',
+            'text',
+            [
+                'name'  => 'sort_order',
+                'label' => __('Sort Order'),
+                'title' => __('Sort Order')
             ]
         );
         

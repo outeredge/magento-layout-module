@@ -60,7 +60,7 @@ class Edit extends Container
             ]
         );
 
-        $this->buttonList->update('save', 'label', __('Save Template'));
+        $this->buttonList->update('save', 'label', __('Save Field'));
         $this->buttonList->update('save', 'class', 'save primary');
         $this->buttonList->update(
             'save',
@@ -91,4 +91,28 @@ class Edit extends Container
     {
         return $this->getUrl('*/*/save', ['_current' => true, 'back' => null]);
     }
+    
+     /**
+     * Get URL for back (reset) button
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        return $this->getUrl('*/template/edit', ['entity_id' => $this->getTemplateId(), 'active_tab' => 'fields']);
+    }
+    
+     /**
+     * Get template id
+     *
+     * @return int
+     */
+    private function getTemplateId()
+    {
+        if ($this->getRequest()->getParam('template_id')) {
+            return $this->getRequest()->getParam('template_id');
+        }
+        return $this->_coreRegistry->registry('templateFieldsModel')->getTemplateId();
+    }
+
 }

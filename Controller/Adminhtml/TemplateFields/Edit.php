@@ -1,53 +1,54 @@
 <?php
 
-namespace OuterEdge\Layout\Controller\Adminhtml\Element;
+namespace OuterEdge\Layout\Controller\Adminhtml\TemplateFields;
 
-use OuterEdge\Layout\Controller\Adminhtml\Element;
+use OuterEdge\Layout\Controller\Adminhtml\TemplateFields;
 use Magento\Framework\Controller\ResultInterface;
 
-class Edit extends Element
+class Edit extends TemplateFields
 {
-    /**
+     /**
      * @return ResultInterface
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('template_id');
-        $groupId = $this->getRequest()->getParam('group_id');
-
-        $model = $this->elementFactory->create();
+        $id = $this->getRequest()->getParam('entity_id');
+        $templateId = $this->getRequest()->getParam('template_id');
+ 
+        $model = $this->templateFieldsFactory->create();
 
         if ($id) {
             $model->load($id);
 
             if (!$model->getId()) {
-                $this->messageManager->addError(__('This element no longer exists.'));
+                $this->messageManager->addError(__('This field no longer exists.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
             }
         }
 
-        $data = $this->_session->getElementData(true);
+        $data = $this->_session->getTemplateFieldsData(true);
+        
         if (!empty($data)) {
             $model->setData($data);
         }
 
-        $groupModel = $this->groupFactory->create();
-        if ($groupId) {
-            $groupModel->load($groupId);   
+        /*$templateModel = $this->groupFactory->create();
+        if ($templateId) {
+            $templateModel->load($templateId);   
         } else {
-            $groupModel->load($model->getGroupId());
+            $templateModel->load($model->gettemplateId());
         }
         
-        $this->_coreRegistry->register('groupCode', $groupModel->getGroupCode());
+        $this->_coreRegistry->register('groupCode', $templateModel->getGroupCode()); */
         
-        $this->_coreRegistry->register('elementModel', $model);
+        $this->_coreRegistry->register('templateFieldsModel', $model);
 
-        $item = $id ? __('Edit Element') : __('New Element');
+        $item = $id ? __('Edit Field') : __('New Field');
 
         $resultPage = $this->createActionPage($item);
-        $resultPage->getConfig()->getTitle()->prepend($id ? $model->getTitle() : __('New Element'));
+        $resultPage->getConfig()->getTitle()->prepend($id ? $model->getTitle() : __('New Field'));
         return $resultPage;
     }
 }

@@ -47,8 +47,8 @@ class Edit extends Container
 
         parent::_construct();
         
-       // $this->removeButton('delete');
-       // $this->removeButton('reset');
+        $this->removeButton('delete');
+        $this->removeButton('reset');
         
         $this->addButton(
             'save_and_edit_button',
@@ -78,7 +78,7 @@ class Edit extends Container
                 [
                     'label' => __('Add New Field'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/templatefields/new/', ['template_id' => $template->getId()]) . "')"
+                    'onclick' => "setLocation('" . $this->getUrl('*/templateFields/new/', ['template_id' => $template->getId()]) . "')"
                 ]
             );
         }

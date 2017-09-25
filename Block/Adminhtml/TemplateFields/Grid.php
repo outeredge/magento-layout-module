@@ -48,7 +48,9 @@ class Grid extends Extended
     protected function _prepareCollection()
     {
         $collection = $this->templateFieldsFactory->create()->getCollection();
+        $collection->addFieldToFilter('template_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
         $this->setCollection($collection);
+        
         return parent::_prepareCollection();
     }
 
@@ -79,7 +81,7 @@ class Grid extends Extended
         return parent::_prepareColumns();
     }
 
-    /**
+     /**
      * Return url of given row
      *
      * @param DataObject $row
@@ -87,6 +89,7 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/edit', ['entity_id' => $row->getId()]);
+        return $this->getUrl('*/templateFields/edit', ['entity_id' => $row->getId(), 'template_id' => $row->getTemplateId()]);
     }
+
 }

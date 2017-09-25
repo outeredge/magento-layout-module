@@ -32,15 +32,6 @@ class Edit extends Element
         if (!empty($data)) {
             $model->setData($data);
         }
-
-        $groupModel = $this->groupFactory->create();
-        if ($groupId) {
-            $groupModel->load($groupId);   
-        } else {
-            $groupModel->load($model->getGroupId());
-        }
-        
-        $this->_coreRegistry->register('groupCode', $groupModel->getGroupCode());
         
         $this->_coreRegistry->register('elementModel', $model);
 

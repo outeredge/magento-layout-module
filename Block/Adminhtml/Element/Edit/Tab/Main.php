@@ -7,7 +7,7 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
-use OuterEdge\Layout\Helper\Templates\Factory as TemplatesHelper;
+use OuterEdge\Layout\Helper\Data as TemplatesHelper;
 
 class Main extends Generic
 {
@@ -48,7 +48,6 @@ class Main extends Generic
     protected function _prepareForm()
     {
         $element = $this->_coreRegistry->registry('elementModel');
-        $groupCode = $this->_coreRegistry->registry('groupCode');     
         $groupId = $this->getRequest()->getParam('group_id');
         
         $form = $this->_formFactory->create(
@@ -67,8 +66,7 @@ class Main extends Generic
         }
         
         //Ask factory template for group code name
-        $template = $this->_templates->getAdapter($groupCode);
-        $templateData = $template->mappingFields();
+        $templateData = $this->_templates->getFieldsTemplate($groupId);
         
         //Fixed fields
         $fieldset->addField(
