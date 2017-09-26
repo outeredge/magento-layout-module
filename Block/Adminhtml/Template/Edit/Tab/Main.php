@@ -53,7 +53,7 @@ class Main extends Generic
                     'label'    => __('Code'),
                     'title'    => __('Code'),
                     'required' => true,
-                    'note'  => 'This code represent the template name''
+                    'note'  => 'This code represent the template name'
                 ]
             );
  
