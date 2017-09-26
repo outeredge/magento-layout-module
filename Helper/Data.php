@@ -191,4 +191,22 @@ class Data extends AbstractHelper
  
         return $data;
     }
+    
+    /**
+     * @return ElementsEav
+     */
+    public function getElementsWithFieldsByGroup($id, $field = 'group_code')
+    {
+        $group = $this->getGroup($id, $field);
+        $elements = $this->getElementCollection()->addFieldToFilter('group_id', ['eq' => $group->getId()]);
+        
+        $elementsData = [];
+        foreach ($elements as $element) {
+             $data = $this->elementFactory->create();
+             $data->load($element->getId());
+             $elementsData[] = $data->getData();
+        }
+       
+        return $elementsData;
+    }
 }
