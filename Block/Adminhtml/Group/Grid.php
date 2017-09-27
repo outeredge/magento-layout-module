@@ -48,7 +48,8 @@ class Grid extends Extended
     protected function _prepareCollection()
     {
         $collection = $this->groupFactory->create()->getCollection();
-        $collection->getSelect()->join('layout_template as ly', 'main_table.template_id = ly.entity_id', 'ly.code as template_name');
+        $collection->getSelect()
+            ->join('layout_template as ly', 'main_table.template_id = ly.entity_id', 'ly.code as template_name');
 
         $this->setCollection($collection);
         return parent::_prepareCollection();

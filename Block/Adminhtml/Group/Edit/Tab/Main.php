@@ -84,19 +84,18 @@ class Main extends Generic
                 ]
             );
         } else {
-            
              $fieldset->addField(
-                'template_id',
-                'select',
-                [
+                 'template_id',
+                 'select',
+                 [
                     'name'     => 'group[template_id]',
                     'label'    => __('Template Name'),
                     'title'    => __('Template Name'),
                     'options' => $this->_templates->getTemplates(),
                     'required' => true,
                     'note'  => 'This code represent the template where field\'s are defined'
-                ]
-            );
+                 ]
+             );
             
             $fieldset->addField(
                 'group_code',

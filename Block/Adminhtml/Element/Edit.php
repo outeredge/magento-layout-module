@@ -41,7 +41,7 @@ class Edit extends Container
      * @return void
      */
     protected function _construct()
-    {   
+    {
         $this->_objectId = 'element_id';
         $this->_controller = 'adminhtml_element';
 
@@ -77,7 +77,10 @@ class Edit extends Container
     public function getHeaderText()
     {
         if ($this->_coreRegistry->registry('elementModel')->getId()) {
-            return __('Edit Element "%1"', $this->escapeHtml($this->_coreRegistry->registry('elementModel')->getTitle()));
+            return __(
+                'Edit Element "%1"',
+                $this->escapeHtml($this->_coreRegistry->registry('elementModel')->getTitle())
+            );
         }
         return __('New Element');
     }

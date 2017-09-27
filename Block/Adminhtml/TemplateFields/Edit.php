@@ -77,7 +77,10 @@ class Edit extends Container
     public function getHeaderText()
     {
         if ($this->_coreRegistry->registry('templateFields')->getId()) {
-            return __('Edit Field "%1"', $this->escapeHtml($this->_coreRegistry->registry('templateFields')->getTemplateFields()));
+            return __(
+                'Edit Field "%1"',
+                $this->escapeHtml($this->_coreRegistry->registry('templateFields')->getTemplateFields())
+            );
         }
         return __('New Template Fields');
     }
@@ -114,5 +117,4 @@ class Edit extends Container
         }
         return $this->_coreRegistry->registry('templateFieldsModel')->getTemplateId();
     }
-
 }

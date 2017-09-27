@@ -15,8 +15,7 @@ class InstallData implements InstallDataInterface
     
     public function __construct(
         \OuterEdge\Layout\Setup\ElementSetupFactory $elementSetupFactory
-    )
-    {
+    ) {
         $this->elementSetupFactory = $elementSetupFactory;
     }
     /**
@@ -30,28 +29,44 @@ class InstallData implements InstallDataInterface
         $elementSetup = $this->elementSetupFactory->create(['setup' => $setup]);
         $elementSetup->installEntities();
         $elementSetup->addAttribute(
-            $elementEntity, 'image', ['type' => 'text']
+            $elementEntity,
+            'image',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'address', ['type' => 'text']
+            $elementEntity,
+            'address',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'open_hours', ['type' => 'text']
+            $elementEntity,
+            'open_hours',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'telephone', ['type' => 'text']
+            $elementEntity,
+            'telephone',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'latitude', ['type' => 'text']
+            $elementEntity,
+            'latitude',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'longitude', ['type' => 'text']
+            $elementEntity,
+            'longitude',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'link', ['type' => 'text']
+            $elementEntity,
+            'link',
+            ['type' => 'text']
         );
         $elementSetup->addAttribute(
-            $elementEntity, 'link_text', ['type' => 'text']
+            $elementEntity,
+            'link_text',
+            ['type' => 'text']
         );
         $setup->endSetup();
     }

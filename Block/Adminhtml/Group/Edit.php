@@ -75,7 +75,8 @@ class Edit extends Container
                 [
                     'label' => __('Add New Element'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
+                    'onclick' =>
+                        "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
                 ]
             );
         }
@@ -87,7 +88,7 @@ class Edit extends Container
      * @return Phrase
      */
     public function getHeaderText()
-    {die();
+    {
         if ($this->_coreRegistry->registry('groupModel')->getId()) {
             return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('groupModel')->getTitle()));
         }

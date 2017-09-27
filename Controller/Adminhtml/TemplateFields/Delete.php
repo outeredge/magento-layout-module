@@ -25,7 +25,11 @@ class Delete extends TemplateFields
             try {
                 $model->delete();
                 $this->messageManager->addSuccess(__('You deleted the field.'));
-                return $resultRedirect->setPath('*/template/edit', ['entity_id' => $templateId, 'active_tab' => 'fields']);
+                return $resultRedirect->setPath(
+                    '*/template/edit',
+                    ['entity_id' => $templateId,
+                    'active_tab' => 'fields']
+                );
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 return $resultRedirect->setPath('*/*/edit', ['entity_id' => $id]);

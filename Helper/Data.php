@@ -168,12 +168,13 @@ class Data extends AbstractHelper
         $group = $this->groupFactory->create();
         $group->load($idGroup);
         
-        $templateFields = $this->getTemplateFieldsCollection()->addFieldToFilter('template_id', ['eq' => $group->getTemplateId()]);
+        $templateFields = $this->getTemplateFieldsCollection()
+            ->addFieldToFilter('template_id', ['eq' => $group->getTemplateId()]);
         $templateFields->setOrder('sort_order', 'ASC');
         
-        $templateData = array();
+        $templateData = [];
         foreach ($templateFields->getData() as $fields) {
-            $templateData[$fields['label']] = $fields['type']; 
+            $templateData[$fields['label']] = $fields['type'];
         }
  
         return $templateData;
@@ -184,9 +185,9 @@ class Data extends AbstractHelper
         $template = $this->getTemplateCollection();
         $template->setOrder('sort_order', 'ASC');
         
-        $data = array();
+        $data = [];
         foreach ($template->getData() as $temp) {
-            $data[$temp['entity_id']] = $temp['code']; 
+            $data[$temp['entity_id']] = $temp['code'];
         }
  
         return $data;

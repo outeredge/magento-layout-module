@@ -78,13 +78,23 @@ class Save extends Template
                 $this->_session->setTemplateData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['template_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath(
+                        '*/*/edit',
+                        ['template_id' => $model->getId(),
+                        '_current' => true],
+                        ['error' => false]
+                    );
                 }
                 return $resultRedirect->setPath('*/*/', [], ['error' => false]);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setTemplateData($data);
-                return $resultRedirect->setPath('*/*/edit', ['template_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath(
+                    '*/*/edit',
+                    ['template_id' => $model->getId(),
+                    '_current' => true],
+                    ['error' => true]
+                );
             }
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);

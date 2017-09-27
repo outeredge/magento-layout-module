@@ -122,7 +122,10 @@ class Save extends Element
                             ->setName($imageData['name'])
                             ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
                             ->setType($imageData['type']);
-                        $data['image'] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
+                        $data['image'] = $this->imageProcessor->processImageContent(
+                            Image::LAYOUT_IMAGE_DIR,
+                            $imageContentDataObject
+                        );
                     } else {
                         unset($data['image']);
                     }
@@ -142,7 +145,12 @@ class Save extends Element
                 $this->_session->setElementData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath(
+                        '*/*/edit',
+                        ['element_id' => $model->getId(),
+                        '_current' => true],
+                        ['error' => false]
+                    );
                 }
                 return $resultRedirect->setPath('*/group/edit', [
                     'entity_id' => $model->getGroupId(),
@@ -151,7 +159,12 @@ class Save extends Element
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setElementData($data);
-                return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath(
+                    '*/*/edit',
+                    ['element_id' => $model->getId(),
+                    '_current' => true],
+                    ['error' => true]
+                );
             }
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);

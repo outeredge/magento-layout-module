@@ -68,7 +68,7 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addColumn(
                 'type',
-                 Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 64,
                 [],
                 'Type'
@@ -164,7 +164,7 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addColumn(
                 'description',
-                 Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 '2M',
                 [],
                 'Description'
@@ -616,4 +616,3 @@ class InstallSchema implements InstallSchemaInterface
         $setup->endSetup();
     }
 }
-

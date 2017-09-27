@@ -42,20 +42,19 @@ class Main extends Generic
 
         if ($template->getId()) {
             $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
-    
-        } 
+        }
     
         $fieldset->addField(
             'code',
-                'text',
-                [
+            'text',
+            [
                     'name'     => 'template[code]',
                     'label'    => __('Code'),
                     'title'    => __('Code'),
                     'required' => true,
                     'note'  => 'This code represent the template name'
                 ]
-            );
+        );
  
         $fieldset->addField(
             'sort_order',

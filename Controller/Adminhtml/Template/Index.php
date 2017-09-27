@@ -17,6 +17,6 @@ class Index extends Template
         $resultPage->addContent(
             $resultPage->getLayout()->createBlock('OuterEdge\Layout\Block\Adminhtml\Template')
         );
-        return $resultPage;    
+        return $resultPage;
     }
 }

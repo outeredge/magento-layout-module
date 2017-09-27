@@ -75,7 +75,12 @@ class Save extends TemplateFields
                 $this->_session->setTemplateFieldsData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath(
+                        '*/*/edit',
+                        ['entity_id' => $model->getId(),
+                        '_current' => true],
+                        ['error' => false]
+                    );
                 }
                 return $resultRedirect->setPath('*/template/edit', [
                     'entity_id' => $model->getTemplateId(),
@@ -84,7 +89,12 @@ class Save extends TemplateFields
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setGroupData($data);
-                return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath(
+                    '*/*/edit',
+                    ['entity_id' => $model->getId(),
+                    '_current' => true],
+                    ['error' => true]
+                );
             }
         }
         

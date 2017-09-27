@@ -78,7 +78,10 @@ class Edit extends Container
                 [
                     'label' => __('Add New Field'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/templateFields/new/', ['template_id' => $template->getId()]) . "')"
+                    'onclick' => "setLocation('" . $this->getUrl(
+                        '*/templateFields/new/',
+                        ['template_id' => $template->getId()]
+                    ) . "')"
                 ]
             );
         }
@@ -92,7 +95,10 @@ class Edit extends Container
     public function getHeaderText()
     {
         if ($this->_coreRegistry->registry('templateModel')->getId()) {
-            return __('Edit Template "%1"', $this->escapeHtml($this->_coreRegistry->registry('templateModel')->getTemplate()));
+            return __(
+                'Edit Template "%1"',
+                $this->escapeHtml($this->_coreRegistry->registry('templateModel')->getTemplate())
+            );
         }
         return __('New Template');
     }

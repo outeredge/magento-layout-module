@@ -35,7 +35,7 @@ class Grid extends Extended
      * @return void
      */
     protected function _construct()
-    {   
+    {
         parent::_construct();
         $this->setId('elementGrid');
         $this->setDefaultSort('title');
@@ -46,7 +46,7 @@ class Grid extends Extended
      * @return $this
      */
     protected function _prepareCollection()
-    {   
+    {
         $collection = $this->elementFactory->create()->getCollection();
         $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
         $this->setCollection($collection);

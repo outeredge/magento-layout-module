@@ -51,7 +51,11 @@ class Main extends Generic
         $groupId = $this->getRequest()->getParam('group_id');
         
         $form = $this->_formFactory->create(
-            ['data' => ['id' => 'edit_form', 'enctype' => 'multipart/form-data', 'action' => $this->getData('action'), 'method' => 'post']]
+            ['data' => [
+                'id' => 'edit_form',
+                'enctype' => 'multipart/form-data',
+                'action' => $this->getData('action'),
+                'method' => 'post']]
         );
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Properties')]);
@@ -98,7 +102,7 @@ class Main extends Generic
 
         //Dynamic fields
         foreach ($templateData as $key => $field) {
-            $label = ucfirst(str_replace("_"," ",$key));
+            $label = ucfirst(str_replace("_", " ", $key));
           
             switch ($field) {
                 case 'image':

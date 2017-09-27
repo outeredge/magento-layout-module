@@ -90,7 +90,8 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/templateFields/edit', ['entity_id' => $row->getId(), 'template_id' => $row->getTemplateId()]);
+        return $this->getUrl('*/templateFields/edit', [
+            'entity_id' => $row->getId(),
+            'template_id' => $row->getTemplateId()]);
     }
-
 }

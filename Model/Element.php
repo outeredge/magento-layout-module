@@ -12,5 +12,4 @@ class Element extends AbstractModel
     {
         $this->_init('OuterEdge\Layout\Model\ResourceModel\Element');
     }
-
 }

@@ -82,13 +82,22 @@ class Save extends Group
                 $this->_session->setGroupData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath(
+                        '*/*/edit',
+                        ['group_id' => $model->getId(), '_current' => true],
+                        ['error' => false]
+                    );
                 }
                 return $resultRedirect->setPath('*/*/', [], ['error' => false]);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setGroupData($data);
-                return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath(
+                    '*/*/edit',
+                    ['group_id' => $model->getId(),
+                    '_current' => true],
+                    ['error' => true]
+                );
             }
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);

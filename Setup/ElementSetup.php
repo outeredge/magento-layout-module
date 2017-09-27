@@ -6,7 +6,8 @@ use Magento\Eav\Setup\EavSetup;
 
 class ElementSetup extends EavSetup
 {
-    public function getDefaultEntities() {
+    public function getDefaultEntities()
+    {
         $elementEntity = \OuterEdge\Layout\Model\Element::ENTITY;
         $entities = [
             $elementEntity => [
