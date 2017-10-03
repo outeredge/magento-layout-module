@@ -73,11 +73,24 @@ class Main extends Generic
        
         $fieldset->addField(
             'type',
-            'text',
+            'select',
             [
                 'name'  => 'type',
                 'label' => __('Type'),
-                'title' => __('Type')
+                'title' => __('Type'),
+                'options' => [
+                    'text'      => __('Text'), 
+                    'image'     => __('Image'),
+                    'editor'    => __('Editor'),
+                    'textarea'  => __('Textarea'),
+                    'password'  => __('Password'),
+                    'note'      => __('Note'),
+                    'time'      => __('Time'),
+                    'link'      => __('Link'),
+                    'label'     => __('Label'),
+                    'file'      => __('File'),
+                    'date'      => __('Date'),
+                    'checkbox'  => __('Checkbox')],
             ]
         );
         
