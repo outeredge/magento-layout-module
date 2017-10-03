@@ -14,6 +14,7 @@ use OuterEdge\Layout\Model\TemplateFieldsFactory;
 use OuterEdge\Layout\Model\ResourceModel\TemplateFields\CollectionFactory as TemplateFieldsCollectionFactory;
 use OuterEdge\Layout\Model\TemplateFactory;
 use OuterEdge\Layout\Model\ResourceModel\Template\CollectionFactory as TemplateCollectionFactory;
+use Magento\Eav\Model\Config;
 
 class Data extends AbstractHelper
 {
@@ -58,6 +59,11 @@ class Data extends AbstractHelper
     protected $templateCollectionFactory;
     
     /**
+     * @var Config
+     */
+    protected $eavConfig;
+    
+    /**
      * @param Context $context
      * @param GroupFactory $groupFactory
      * @param GroupCollectionFactory $groupCollectionFactory
@@ -67,6 +73,7 @@ class Data extends AbstractHelper
      * @param TemplateFieldsCollectionFactory $templateFieldsCollectionFactory
      * @param TemplateFactory $templateFactory
      * @param TemplateCollectionFactory $templateCollectionFactory
+     * @param Config $eavConfig
      */
     public function __construct(
         Context $context,
@@ -77,7 +84,8 @@ class Data extends AbstractHelper
         TemplateFieldsFactory $templateFieldsFactory,
         TemplateFieldsCollectionFactory $templateFieldsCollectionFactory,
         TemplateFactory $templateFactory,
-        TemplateCollectionFactory $templateCollectionFactory
+        TemplateCollectionFactory $templateCollectionFactory,
+        Config $eavConfig
     ) {
         $this->groupFactory = $groupFactory;
         $this->groupCollectionFactory = $groupCollectionFactory;
@@ -87,6 +95,7 @@ class Data extends AbstractHelper
         $this->templateFieldsCollectionFactory = $templateFieldsCollectionFactory;
         $this->templateFactory = $templateFactory;
         $this->templateCollectionFactory = $templateCollectionFactory;
+        $this->eavConfig = $eavConfig;
         parent::__construct($context);
     }
 
@@ -174,7 +183,7 @@ class Data extends AbstractHelper
         
         $templateData = [];
         foreach ($templateFields->getData() as $fields) {
-            $templateData[$fields['label']] = $fields['type'];
+            $templateData[$fields['identifier']] = [$fields['label'] => $fields['type']];
         }
  
         return $templateData;
@@ -209,5 +218,30 @@ class Data extends AbstractHelper
         }
        
         return $elementsData;
+    }
+    
+    /**
+     * Get all attribute options from layout_element entity
+     * @return EavConfig
+     */
+    public function getAttributeOptions($templateId)
+    {
+        $data = $this->eavConfig->getEntityAttributeCodes('layout_element');
+        
+        //get identifiers by template
+        $templateFields = $this->getTemplateFieldsCollection()
+            ->addFieldToFilter('template_id', ['eq' => $templateId]);
+        
+        $identifiersInUse = [];
+        foreach ($templateFields->getData() as $fields) {
+            $identifiersInUse[] = $fields['identifier'];
+        }
+        
+        $newData = [];
+        foreach ($data as $row) {
+            $newData[$row] = $row;
+        }
+       
+        return array_diff($newData, $identifiersInUse);
     }
 }

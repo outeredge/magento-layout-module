@@ -102,15 +102,17 @@ class Main extends Generic
 
         //Dynamic fields
         foreach ($templateData as $key => $field) {
-            $label = ucfirst(str_replace("_", " ", $key));
+            $label = ucfirst(str_replace("_", " ", key($field)));
+            $identifier = $key;
+            $type = reset($field);
           
-            switch ($field) {
+            switch ($type) {
                 case 'image':
                     $fieldset->addField(
-                        $key,
+                        $identifier,
                         'image',
                         [
-                            'name'  => $key,
+                            'name'  => $identifier,
                             'label' => __($label),
                             'title' => __($label),
                             'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
@@ -119,10 +121,10 @@ class Main extends Generic
                     break;
                 case 'description':
                     $fieldset->addField(
-                        $key,
+                        $identifier,
                         'editor',
                         [
-                            'name'    => $key,
+                            'name'    => $identifier,
                             'label'   => __($label),
                             'title'   => __($label),
                             'wysiwyg' => true,
@@ -137,10 +139,10 @@ class Main extends Generic
                     break;
                 default:
                     $fieldset->addField(
-                        $key,
-                        $field,
+                        $identifier,
+                        $type,
                         [
-                            'name'     => $key,
+                            'name'     => $identifier,
                             'label'    => __($label),
                             'title'    => __($label)
                         ]

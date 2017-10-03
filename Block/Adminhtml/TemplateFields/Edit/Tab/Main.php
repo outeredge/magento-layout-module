@@ -7,10 +7,14 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
+use OuterEdge\Layout\Helper\Data as Helper;
 
 class Main extends Generic
 {
-    protected $_templates;
+    /**
+     * @var Helper
+     */
+    protected $helper;
     
     /**
      * @var Config
@@ -22,6 +26,7 @@ class Main extends Generic
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
+     * @param Helper $helper
      * @param array $data
      */
     public function __construct(
@@ -29,9 +34,11 @@ class Main extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Config $wysiwygConfig,
+        Helper $helper,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
+        $this->helper = $helper;
         parent::__construct($context, $registry, $formFactory, $data);
     }
        
@@ -59,6 +66,17 @@ class Main extends Generic
             $templateFields->setTemplateId($templateId);
             $fieldset->addField('template_id', 'hidden', ['name' => 'template_id']);
         }
+       
+        $fieldset->addField(
+            'identifier',
+            'select',
+            [
+                'name'  => 'identifier',
+                'label' => __('Attribute'),
+                'title' => __('Attribute'),
+                'options' => $this->helper->getAttributeOptions($templateId)
+            ]
+        );
         
         $fieldset->addField(
             'label',
@@ -70,7 +88,6 @@ class Main extends Generic
             ]
         );
         
-       
         $fieldset->addField(
             'type',
             'select',

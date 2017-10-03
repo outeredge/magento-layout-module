@@ -60,6 +60,13 @@ class InstallSchema implements InstallSchemaInterface
                 'Template FK'
             )
             ->addColumn(
+                'identifier',
+                Table::TYPE_TEXT,
+                64,
+                [],
+                'Identifier'
+            )
+            ->addColumn(
                 'label',
                 Table::TYPE_TEXT,
                 64,

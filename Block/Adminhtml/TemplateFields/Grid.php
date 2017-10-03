@@ -62,6 +62,14 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
+            'identifier',
+            [
+                'header' => __('Attribute Identifier'),
+                'index'  => 'identifier'
+            ]
+        );
+        
+        $this->addColumn(
             'label',
             [
                 'header' => __('Label'),
