@@ -67,16 +67,29 @@ class Main extends Generic
             $fieldset->addField('template_id', 'hidden', ['name' => 'template_id']);
         }
        
-        $fieldset->addField(
-            'identifier',
-            'select',
-            [
-                'name'  => 'identifier',
-                'label' => __('Attribute'),
-                'title' => __('Attribute'),
-                'options' => $this->helper->getAttributeOptions($templateId)
-            ]
-        );
+        if ($templateFields->getIdentifier()) {
+            $fieldset->addField(
+                'identifier',
+                'text',
+                [
+                    'name'  => 'identifier',
+                    'label' => __('Attribute'),
+                    'title' => __('Attribute'),
+                    'readonly' => true,
+                ]
+            );
+        } else {
+            $fieldset->addField(
+                'identifier',
+                'select',
+                [
+                    'name'  => 'identifier',
+                    'label' => __('Attribute'),
+                    'title' => __('Attribute'),
+                    'options' => $this->helper->getAttributeOptions($templateId)
+                ]
+            );
+        }
         
         $fieldset->addField(
             'label',
