@@ -164,7 +164,16 @@ class Data extends AbstractHelper
     {
         $group = $this->getGroup($id, $field);
         $elements = $this->getElementCollection()->addFieldToFilter('group_id', ['eq' => $group->getId()]);
-        $group->setData('elements', $elements);
+        
+        $elementsData = [];
+        foreach ($elements as $element) {
+             $data = $this->elementFactory->create();
+             $data->load($element->getId());
+             $elementsData[] = $data;
+        }
+       
+        $group->setData('elements', $elementsData);
+       
         return $group;
     }
     
