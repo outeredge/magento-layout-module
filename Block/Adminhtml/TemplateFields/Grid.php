@@ -49,6 +49,13 @@ class Grid extends Extended
     {
         $collection = $this->templateFieldsFactory->create()->getCollection();
         $collection->addFieldToFilter('template_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
+        $collection
+            ->getSelect()
+            ->join(
+                array('eav' => 'eav_attribute'),
+                'main_table.eav_attribute_id = eav.attribute_id',
+                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+            );
         $collection->setOrder('sort_order', 'ASC');
         $this->setCollection($collection);
         
@@ -62,26 +69,26 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'identifier',
+            'attribute_code',
             [
-                'header' => __('Attribute Identifier'),
-                'index'  => 'identifier'
+                'header' => __('Eav Attribute'),
+                'index'  => 'attribute_code'
             ]
         );
         
         $this->addColumn(
-            'label',
+            'frontend_label',
             [
                 'header' => __('Label'),
-                'index'  => 'label'
+                'index'  => 'frontend_label'
             ]
         );
 
         $this->addColumn(
-            'type',
+            'frontend_input',
             [
                 'header' => __('Type'),
-                'index'  => 'type'
+                'index'  => 'frontend_input'
             ]
         );
 

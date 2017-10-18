@@ -67,42 +67,44 @@ class Main extends Generic
             $fieldset->addField('template_id', 'hidden', ['name' => 'template_id']);
         }
        
-        if ($templateFields->getIdentifier()) {
+        if ($templateFields->getEavAttributeId()) {
             $fieldset->addField(
-                'identifier',
+                'attribute_code',
                 'text',
                 [
-                    'name'  => 'identifier',
-                    'label' => __('Attribute'),
-                    'title' => __('Attribute'),
+                    'name'  => 'attribute_code',
+                    'label' => __('Eav Attribute'),
+                    'title' => __('Eav Attribute'),
                     'readonly' => true,
+                    'note' => 'Attribute code created in eav_attribute table'
                 ]
             );
         } else {
             $fieldset->addField(
-                'identifier',
-                'select',
+                'new_attribute_code',
+                'text',
                 [
-                    'name'  => 'identifier',
-                    'label' => __('Attribute'),
-                    'title' => __('Attribute'),
-                    'options' => $this->helper->getAttributeOptions($templateId)
+                    'name'  => 'new_attribute_code',
+                    'label' => __('New Eav Attribute'),
+                    'title' => __('New Eav Attribute'),
+                    'note' => 'New eav attribute_code to be created in eav_attribute table'
                 ]
             );
         }
         
         $fieldset->addField(
-            'label',
+            'frontend_label',
             'text',
             [
-                'name'  => 'label',
+                'name'  => 'frontend_label',
                 'label' => __('Label'),
-                'title' => __('Label')
+                'title' => __('Label'),
+                'note' => 'frontend_label'
             ]
         );
         
         $fieldset->addField(
-            'type',
+            'frontend_input',
             'select',
             [
                 'name'  => 'type',
@@ -121,6 +123,7 @@ class Main extends Generic
                     'file'      => __('File'),
                     'date'      => __('Date'),
                     'checkbox'  => __('Checkbox')],
+                'note' => 'frontend_input  TODO: WE HAVE ALL THIS TYPES????'
             ]
         );
         

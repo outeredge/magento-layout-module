@@ -60,25 +60,11 @@ class InstallSchema implements InstallSchemaInterface
                 'Template FK'
             )
             ->addColumn(
-                'identifier',
-                Table::TYPE_TEXT,
-                64,
-                [],
-                'Identifier'
-            )
-            ->addColumn(
-                'label',
-                Table::TYPE_TEXT,
-                64,
-                [],
-                'Label'
-            )
-            ->addColumn(
-                'type',
-                Table::TYPE_TEXT,
-                64,
-                [],
-                'Type'
+                'eav_attribute_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'Eav Attribute Id'
             )
             ->addColumn(
                 'sort_order',
@@ -86,13 +72,16 @@ class InstallSchema implements InstallSchemaInterface
                 null,
                 ['nullable' => false, 'default' => '0'],
                 'Sort Order'
-            )
-            ->addForeignKey(
+            )->addForeignKey(
                 $setup->getFkName('layout_template_fields', 'template_id', 'layout_template', 'entity_id'),
                 'template_id',
                 $setup->getTable('layout_template'),
                 'entity_id',
-                Table::ACTION_CASCADE
+                Table::ACTION_CASCADE)
+            >addIndex(
+                $setup->getIdxName('layout_template_fields', ['eav_attribute_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
+                'eav_attribute_id',
+                ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
             )->setComment('Layout Element Fields Table');
         $setup->getConnection()->createTable($table);
         
