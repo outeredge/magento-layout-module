@@ -124,6 +124,18 @@ class Data extends AbstractHelper
         }
         return $element;
     }
+    
+    /**
+     * @return Template
+     */
+    public function getTemplate($id = false, $field = null)
+    {
+        $template = $this->templateFactory->create();
+        if ($id) {
+            $template->load($id, $field);
+        }
+        return $template;
+    }
 
     /**
      * @return GroupCollection
@@ -188,11 +200,18 @@ class Data extends AbstractHelper
         
         $templateFields = $this->getTemplateFieldsCollection()
             ->addFieldToFilter('template_id', ['eq' => $group->getTemplateId()]);
+        $templateFields
+            ->getSelect()
+            ->join(
+                array('eav' => 'eav_attribute'),
+                'main_table.eav_attribute_id = eav.attribute_id',
+                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+            );
         $templateFields->setOrder('sort_order', 'ASC');
         
         $templateData = [];
         foreach ($templateFields->getData() as $fields) {
-            $templateData[$fields['identifier']] = [$fields['label'] => $fields['type']];
+            $templateData[$fields['attribute_code']] = [$fields['frontend_label'] => $fields['frontend_input']];
         }
  
         return $templateData;
@@ -240,10 +259,17 @@ class Data extends AbstractHelper
         //get identifiers by template
         $templateFields = $this->getTemplateFieldsCollection()
             ->addFieldToFilter('template_id', ['eq' => $templateId]);
+        $templateFields
+            ->getSelect()
+            ->join(
+                array('eav' => 'eav_attribute'),
+                'main_table.eav_attribute_id = eav.attribute_id',
+                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+            );
         
         $identifiersInUse = [];
         foreach ($templateFields->getData() as $fields) {
-            $identifiersInUse[] = $fields['identifier'];
+            $identifiersInUse[] = $fields['attribute_code'];
         }
         
         $newData = [];
