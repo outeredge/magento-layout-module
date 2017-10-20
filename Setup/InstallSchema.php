@@ -77,8 +77,8 @@ class InstallSchema implements InstallSchemaInterface
                 'template_id',
                 $setup->getTable('layout_template'),
                 'entity_id',
-                Table::ACTION_CASCADE)
-            >addIndex(
+                Table::ACTION_CASCADE
+            )->addIndex(
                 $setup->getIdxName('layout_template_fields', ['eav_attribute_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
                 'eav_attribute_id',
                 ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
