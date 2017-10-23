@@ -118,6 +118,8 @@ class Main extends Generic
                             'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
                         ]
                     );
+                    $fieldset->addField('image_identifier', 'hidden', ['name' => 'image_identifier']);
+                    $element->setImageIdentifier($identifier);
                     break;
                 case 'description':
                     $fieldset->addField(
