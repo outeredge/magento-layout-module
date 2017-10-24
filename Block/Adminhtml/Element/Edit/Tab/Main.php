@@ -74,11 +74,11 @@ class Main extends Generic
        
         $count = 0;
         //Dynamic fields
-        foreach ($templateData as $key => $field) {      
+        foreach ($templateData as $key => $field) {
             $label = ucfirst(str_replace("_", " ", key($field)));
             $identifier = $key;
             $type = reset($field);
-          
+            
             switch ($type) {
                 case 'image':
                     $fieldset->addField(
@@ -95,7 +95,7 @@ class Main extends Generic
                     $fieldset->addField("image_identifier[$count]", 'hidden', ['name' => "image_identifier[$count]"]);
                     $element->setData("image_identifier[$count]", $identifier);
                     break;
-                case 'description':
+                case 'editor':
                     $fieldset->addField(
                         $identifier,
                         'editor',

@@ -77,10 +77,9 @@ class Main extends Generic
                 'text',
                 [
                     'name'  => 'attribute_code',
-                    'label' => __('Eav Attribute'),
-                    'title' => __('Eav Attribute'),
-                    'readonly' => true,
-                    'note' => 'Attribute code created in eav_attribute table'
+                    'label' => __('Field Code'),
+                    'title' => __('Field Code'),
+                    'readonly' => true
                 ]
             );
         } else {
@@ -89,9 +88,8 @@ class Main extends Generic
                 'text',
                 [
                     'name'  => 'attribute_code',
-                    'label' => __('Eav Attribute'),
-                    'title' => __('Eav Attribute'),
-                    'note' => 'New eav attribute_code to be created in eav_attribute table'
+                    'label' => __('Field Code'),
+                    'title' => __('Field Code')
                 ]
             );
         }
@@ -103,7 +101,7 @@ class Main extends Generic
                 'name'  => 'frontend_label',
                 'label' => __('Label'),
                 'title' => __('Label'),
-                'note' => 'frontend_label'
+                'required' => true
             ]
         );
         
@@ -115,41 +113,16 @@ class Main extends Generic
                 'label' => __('Frontend Type'),
                 'title' => __('Frontend Type'),
                 'options' => [
-                    'text'      => __('Text'), 
-                    'image'     => __('Image'),
-                    'editor'    => __('Editor'),
-                    'textarea'  => __('Textarea'),
-                    'password'  => __('Password'),
-                    'note'      => __('Note'),
-                    'time'      => __('Time'),
-                    'link'      => __('Link'),
-                    'label'     => __('Label'),
-                    'file'      => __('File'),
-                    'date'      => __('Date'),
-                    'checkbox'  => __('Checkbox')],
-                'note' => 'frontend_input'
+                    'text'          => __('Text Field'), 
+                    'textarea'      => __('Text Area'),
+                    'date'          => __('Date'),
+                    'boolean'       => __('Yes/No'),
+                    'multiselect'   => __('Multiple Select'),
+                    'select'        => __('Dropdown'),
+                    'editor'        => __('Editor')]
             ]
         );
         
-        if (!$templateFields->getEavAttributeId()) {
-            $fieldset->addField(
-                'backend_input',
-                'select',
-                [
-                    'name'  => 'backend_input',
-                    'label' => __('Backend Type'),
-                    'title' => __('Backend Type'),
-                    'options' => [
-                        'datetime' => __('Datetime'), 
-                        'decimal'  => __('Decimal'),
-                        'int'      => __('Int'),
-                        'text'     => __('Text'),
-                        'varchar'  => __('Varchar')],
-                    'note' => 'backend_type'
-                ]
-            );
-        }
-
         $fieldset->addField(
             'sort_order',
             'text',

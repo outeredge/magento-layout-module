@@ -15,6 +15,7 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\App\ResourceConnection;
 use Zend_Validate_Regex;
 use Exception;
+use Magento\Eav\Model\Entity\Attribute;
 
 class Save extends TemplateFields
 {
@@ -29,6 +30,11 @@ class Save extends TemplateFields
     protected $dateTime;
 
     /**
+     * @var Attribute
+     */
+    private $eavAttribute;
+    
+    /**
      * @param Context $context
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
@@ -38,6 +44,7 @@ class Save extends TemplateFields
      * @param EavSetupFactory $eavSetupFactory
      * @param ElementSetupFactory $elementSetupFactory
      * @param ResourceConnection $resource
+     * @param Attribute $eavAttribute
      */
     public function __construct(
         Context $context,
@@ -48,10 +55,12 @@ class Save extends TemplateFields
         EavConfig $eavConfig,
         EavSetupFactory $eavSetupFactory,
         ElementSetupFactory $elementSetupFactory,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        Attribute $eavAttribute
     ) {
         $this->dateTime = $dateTime;
         $this->resource = $resource;
+        $this->eavAttribute = $eavAttribute;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -167,7 +176,7 @@ class Save extends TemplateFields
             $elementEntity,
             $row['attribute_code'],
             [
-            'type' => $row['backend_input']
+            'type' => $this->getBackendTypeByInput($row['frontend_input'])
             ]
         );
         
@@ -208,5 +217,25 @@ class Save extends TemplateFields
                 $data,
                 $connection->quoteInto('attribute_id=?', $row['eav_attribute_id'])
             );
+    }
+    
+    /**
+     * Detect backend storage type using frontend input type
+     *
+     * @param string $type frontend_input field value
+     * @return string backend_type field value
+     */
+    protected function getBackendTypeByInput($type)
+    {
+        switch ($type) {
+            case 'editor':
+                $field = 'text';
+                break;
+            default:
+                $field = $this->eavAttribute->getBackendTypeByInput($type);
+                break;
+        }
+        
+        return $field; 
     }
 }
