@@ -71,37 +71,10 @@ class Main extends Generic
         
         //Ask factory template for group code name
         $templateData = $this->_templates->getFieldsTemplate($groupId);
-        
-        //Fixed fields
-        $fieldset->addField(
-            'title',
-            'text',
-            [
-                'name'  => 'title',
-                'label' => __('Title'),
-                'title' => __('Title')
-            ]
-        );
-        
-        $fieldset->addField(
-            'description',
-            'editor',
-            [
-                'name'    => 'description',
-                'label'   => __('Description'),
-                'title'   => __('Description'),
-                'wysiwyg' => true,
-                'config'  => $this->_wysiwygConfig->getConfig([
-                    'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
-                    'add_variables' => false,
-                    'add_widgets'   => false,
-                    'add_images'    => false
-                ])
-            ]
-        );
-
+       
+        $count = 0;
         //Dynamic fields
-        foreach ($templateData as $key => $field) {
+        foreach ($templateData as $key => $field) {      
             $label = ucfirst(str_replace("_", " ", key($field)));
             $identifier = $key;
             $type = reset($field);
@@ -118,8 +91,9 @@ class Main extends Generic
                             'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
                         ]
                     );
-                    $fieldset->addField('image_identifier', 'hidden', ['name' => 'image_identifier']);
-                    $element->setImageIdentifier($identifier);
+                    $count++;
+                    $fieldset->addField("image_identifier[$count]", 'hidden', ['name' => "image_identifier[$count]"]);
+                    $element->setData("image_identifier[$count]", $identifier);
                     break;
                 case 'description':
                     $fieldset->addField(

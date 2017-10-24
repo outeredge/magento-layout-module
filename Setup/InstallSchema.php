@@ -152,20 +152,6 @@ class InstallSchema implements InstallSchemaInterface
                 'Group FK'
             )
             ->addColumn(
-                'title',
-                Table::TYPE_TEXT,
-                64,
-                [],
-                'Title'
-            )
-            ->addColumn(
-                'description',
-                Table::TYPE_TEXT,
-                '2M',
-                [],
-                'Description'
-            )
-            ->addColumn(
                 'sort_order',
                 Table::TYPE_INTEGER,
                 null,

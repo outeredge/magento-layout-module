@@ -64,7 +64,7 @@ class Main extends Generic
                     'name'     => 'group[template_id]',
                     'label'    => __('Template Name'),
                     'title'    => __('Template Name'),
-                    'readonly' => true,
+                    'disabled' => true,
                     'required' => true,
                     'values' => $this->_templates->getTemplates(),
                     'note'  => 'This code represent the template where field\'s are defined'

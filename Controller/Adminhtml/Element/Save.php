@@ -110,29 +110,32 @@ class Save extends Element
             } else {
                 $data['created_at'] = $this->dateTime->date();
             }
-
-            $imageIdentifier = $data['image_identifier'];
-            if (isset($data[$imageIdentifier]['delete']) && $data[$imageIdentifier]['delete']) {
-                $data[$imageIdentifier] = null;
-            } else {
-                try {
-                    $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
-                    $imageData = $uploader->validateFile();
-                    if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
-                        $imageContentDataObject = $this->imageContentFactory->create()
-                            ->setName($imageData['name'])
-                            ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
-                            ->setType($imageData['type']);
-                        $data[$imageIdentifier] = $this->imageProcessor->processImageContent(
-                            Image::LAYOUT_IMAGE_DIR,
-                            $imageContentDataObject
-                        );
+            
+            if (isset($data['image_identifier'])) {
+                foreach ($data['image_identifier'] as $imageIdentifier) {
+                    if (isset($data[$imageIdentifier]['delete']) && $data[$imageIdentifier]['delete']) {
+                        $data[$imageIdentifier] = null;
                     } else {
-                        unset($data[$imageIdentifier]);
+                        try {
+                            $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
+                            $imageData = $uploader->validateFile();
+                            if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
+                                $imageContentDataObject = $this->imageContentFactory->create()
+                                    ->setName($imageData['name'])
+                                    ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
+                                    ->setType($imageData['type']);
+                                $data[$imageIdentifier] = $this->imageProcessor->processImageContent(
+                                    Image::LAYOUT_IMAGE_DIR,
+                                    $imageContentDataObject
+                                );
+                            } else {
+                                unset($data[$imageIdentifier]);
+                            }
+                        } catch (Exception $e) {
+                            // The file was probably not uploaded - skip and continue with model saving
+                            unset($data[$imageIdentifier]);
+                        }
                     }
-                } catch (Exception $e) {
-                    // The file was probably not uploaded - skip and continue with model saving
-                    unset($data[$imageIdentifier]);
                 }
             }
 
