@@ -17,6 +17,9 @@ class ElementSetup extends EavSetup
                     'group_id' => [
                         'type' => 'static',
                     ],
+                    'title' => [
+                        'type' => 'static',
+                    ],
                     'sort_order' => [
                         'type' => 'static',
                     ],

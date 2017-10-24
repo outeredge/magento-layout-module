@@ -203,9 +203,9 @@ class Data extends AbstractHelper
         $templateFields
             ->getSelect()
             ->join(
-                array('eav' => 'eav_attribute'),
+                ['eav' => 'eav_attribute'],
                 'main_table.eav_attribute_id = eav.attribute_id',
-                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+                ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
         $templateFields->setOrder('sort_order', 'ASC');
         
@@ -262,9 +262,9 @@ class Data extends AbstractHelper
         $templateFields
             ->getSelect()
             ->join(
-                array('eav' => 'eav_attribute'),
+                ['eav' => 'eav_attribute'],
                 'main_table.eav_attribute_id = eav.attribute_id',
-                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+                ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
         
         $identifiersInUse = [];

@@ -49,7 +49,7 @@ class Grid extends Extended
     {
         $collection = $this->elementFactory->create()->getCollection();
         $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
-        $this->setCollection($collection);        
+        $this->setCollection($collection);
         
         return parent::_prepareCollection();
     }
@@ -61,10 +61,10 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'entity_id',
+            'title',
             [
-                'header' => __('Id'),
-                'index'  => 'entity_id'
+                'header' => __('Title'),
+                'index'  => 'title'
             ]
         );
 

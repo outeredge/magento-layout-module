@@ -1,8 +1,10 @@
 <?php
 namespace OuterEdge\Layout\Setup;
+
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+
 /**
  * @codeCoverageIgnore
  */

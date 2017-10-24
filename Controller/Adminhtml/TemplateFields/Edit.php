@@ -19,9 +19,9 @@ class Edit extends TemplateFields
         $model = $this->templateFieldsFactory->create()->getCollection();
         $model->getSelect()
             ->join(
-                array('eav' => 'eav_attribute'),
+                ['eav' => 'eav_attribute'],
                 'main_table.eav_attribute_id = eav.attribute_id',
-                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+                ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
             
         if ($id) {
@@ -29,12 +29,12 @@ class Edit extends TemplateFields
             $model = $model->getFirstItem();
         
             if (!$model->getId()) {
-               $this->messageManager->addError(__('This field no longer exists.'));
+                $this->messageManager->addError(__('This field no longer exists.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
             }
         } else {
-            $model = $this->templateFieldsFactory->create(); 
+            $model = $this->templateFieldsFactory->create();
         }
         
         $data = $this->_session->getTemplateFieldsData(true);

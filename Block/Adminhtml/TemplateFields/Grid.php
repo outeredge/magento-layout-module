@@ -52,9 +52,9 @@ class Grid extends Extended
         $collection
             ->getSelect()
             ->join(
-                array('eav' => 'eav_attribute'),
+                ['eav' => 'eav_attribute'],
                 'main_table.eav_attribute_id = eav.attribute_id',
-                array('eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input')
+                ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
         $collection->setOrder('sort_order', 'ASC');
         $this->setCollection($collection);

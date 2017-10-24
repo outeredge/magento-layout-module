@@ -113,7 +113,7 @@ class Main extends Generic
                 'label' => __('Frontend Type'),
                 'title' => __('Frontend Type'),
                 'options' => [
-                    'text'          => __('Text Field'), 
+                    'text'          => __('Text Field'),
                     'textarea'      => __('Text Area'),
                     'date'          => __('Date'),
                     'boolean'       => __('Yes/No'),

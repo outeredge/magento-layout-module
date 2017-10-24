@@ -72,6 +72,17 @@ class Main extends Generic
         //Ask factory template for group code name
         $templateData = $this->_templates->getFieldsTemplate($groupId);
        
+        //Fixed fields
+        $fieldset->addField(
+            'title',
+            'text',
+            [
+                'name'  => 'title',
+                'label' => __('Title'),
+                'title' => __('Title')
+            ]
+        );
+ 
         $count = 0;
         //Dynamic fields
         foreach ($templateData as $key => $field) {

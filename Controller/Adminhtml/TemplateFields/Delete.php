@@ -21,7 +21,7 @@ class Delete extends TemplateFields
             $model->load($id);
 
             $templateId = $model->getTemplateId();
-
+            
             try {
                 $model->delete();
                 $this->messageManager->addSuccess(__('You deleted the field.'));

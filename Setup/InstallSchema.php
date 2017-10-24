@@ -61,9 +61,9 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addColumn(
                 'eav_attribute_id',
-                Table::TYPE_INTEGER,
+                Table::TYPE_SMALLINT,
                 null,
-                ['unsigned' => true, 'nullable' => false],
+                ['unsigned' => true, 'nullable' => false, 'default' => '0'],
                 'Eav Attribute Id'
             )
             ->addColumn(
@@ -82,6 +82,12 @@ class InstallSchema implements InstallSchemaInterface
                 $setup->getIdxName('layout_template_fields', ['eav_attribute_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
                 'eav_attribute_id',
                 ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
+            )->addForeignKey(
+                $setup->getFkName('layout_template_fields', 'eav_attribute_id', 'eav_attribute', 'attribute_id'),
+                'eav_attribute_id',
+                $setup->getTable('eav_attribute'),
+                'attribute_id',
+                Table::ACTION_CASCADE
             )->setComment('Layout Element Fields Table');
         $setup->getConnection()->createTable($table);
         
@@ -150,6 +156,13 @@ class InstallSchema implements InstallSchemaInterface
                 null,
                 ['unsigned' => true, 'nullable' => false],
                 'Group FK'
+            )
+            ->addColumn(
+                'title',
+                Table::TYPE_TEXT,
+                64,
+                [],
+                'Title'
             )
             ->addColumn(
                 'sort_order',

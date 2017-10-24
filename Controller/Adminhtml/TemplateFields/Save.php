@@ -96,7 +96,7 @@ class Save extends TemplateFields
                 }
             }
             
-            //EAV Attribute 
+            //EAV Attribute
             if ($fieldId) {
                 //Update attribute
                 $this->updateEavAttribute($data);
@@ -115,14 +115,14 @@ class Save extends TemplateFields
                         );
                         return $this->returnResult('*/*/', [], ['error' => true]);
                     }
-                } 
+                }
                 $data['attribute_code'] = $attributeCode;
                 
                 $eavAttributeId = $this->createEavAttribute($data);
                 
                 if (!$eavAttributeId) {
                     $this->messageManager->addError(__('Error creating new attribute.'));
-                    return $this->returnResult('*/*/', [], ['error' => true]);   
+                    return $this->returnResult('*/*/', [], ['error' => true]);
                 }
                 
                 $data += ['eav_attribute_id' => $eavAttributeId];
@@ -160,7 +160,6 @@ class Save extends TemplateFields
                     ['error' => true]
                 );
             }
-           
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
@@ -192,14 +191,13 @@ class Save extends TemplateFields
         ];
         
         if ($result['attribute_id']) {
-            
             $connection->update(
-            $this->resource->getTableName('eav_attribute'),
+                $this->resource->getTableName('eav_attribute'),
                 $data,
                 $connection->quoteInto('attribute_id=?', $result['attribute_id'])
             );
             
-            return $result['attribute_id'];    
+            return $result['attribute_id'];
         }
         return false;
     }
@@ -214,9 +212,9 @@ class Save extends TemplateFields
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->update(
             $this->resource->getTableName('eav_attribute'),
-                $data,
-                $connection->quoteInto('attribute_id=?', $row['eav_attribute_id'])
-            );
+            $data,
+            $connection->quoteInto('attribute_id=?', $row['eav_attribute_id'])
+        );
     }
     
     /**
@@ -236,6 +234,6 @@ class Save extends TemplateFields
                 break;
         }
         
-        return $field; 
+        return $field;
     }
 }
