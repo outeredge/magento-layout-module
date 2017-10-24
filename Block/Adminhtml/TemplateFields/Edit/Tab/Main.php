@@ -119,7 +119,8 @@ class Main extends Generic
                     'boolean'       => __('Yes/No'),
                     'multiselect'   => __('Multiple Select'),
                     'select'        => __('Dropdown'),
-                    'editor'        => __('Editor')]
+                    'editor'        => __('Editor'),
+                    'image'         => __('Image')]
             ]
         );
         
