@@ -20,11 +20,6 @@ use Magento\Eav\Model\Entity\Attribute;
 class Save extends TemplateFields
 {
     /**
-     * @var ResourceConnection
-     */
-    private $resource;
-    
-    /**
      * @var DateTime
      */
     protected $dateTime;
@@ -59,7 +54,6 @@ class Save extends TemplateFields
         Attribute $eavAttribute
     ) {
         $this->dateTime = $dateTime;
-        $this->resource = $resource;
         $this->eavAttribute = $eavAttribute;
         parent::__construct(
             $context,
@@ -68,7 +62,8 @@ class Save extends TemplateFields
             $templateFieldsFactory,
             $eavConfig,
             $eavSetupFactory,
-            $elementSetupFactory
+            $elementSetupFactory,
+            $resource
         );
     }
 

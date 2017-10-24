@@ -5,6 +5,7 @@ namespace OuterEdge\Layout\Controller\Adminhtml\TemplateFields;
 use OuterEdge\Layout\Controller\Adminhtml\TemplateFields;
 use Magento\Backend\Model\View\Result\Redirect;
 use Exception;
+use Magento\Framework\App\ResourceConnection;
 
 class Delete extends TemplateFields
 {
@@ -21,9 +22,18 @@ class Delete extends TemplateFields
             $model->load($id);
 
             $templateId = $model->getTemplateId();
+            $eavAttributeId = $model->getEavAttributeId();
             
             try {
                 $model->delete();
+                
+                //Delete attribute
+                $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+                $connection->delete(
+                    $this->resource->getTableName('eav_attribute'),
+                    $connection->quoteInto('attribute_id=?', $eavAttributeId)
+                );
+                
                 $this->messageManager->addSuccess(__('You deleted the field.'));
                 return $resultRedirect->setPath(
                     '*/template/edit',

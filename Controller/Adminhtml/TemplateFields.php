@@ -11,6 +11,7 @@ use OuterEdge\Layout\Setup\ElementSetupFactory;
 use Magento\Eav\Model\Config as EavConfig;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Phrase;
+use Magento\Framework\App\ResourceConnection;
 
 abstract class TemplateFields extends Action
 {
@@ -50,6 +51,11 @@ abstract class TemplateFields extends Action
      * @var ElementSetupFactory
      */
     protected $elementSetupFactory;
+    
+    /**
+     * @var ResourceConnection
+     */
+    protected $resource;
 
     /**
      * @param Context $context
@@ -59,6 +65,7 @@ abstract class TemplateFields extends Action
      * @param EavConfig $eavConfig
      * @param EavSetupFactory $eavSetupFactory
      * @param ElementSetupFactory $elementSetupFactory
+     * @param ResourceConnection $resource
      */
     public function __construct(
         Context $context,
@@ -67,7 +74,8 @@ abstract class TemplateFields extends Action
         TemplateFieldsFactory $templateFieldsFactory,
         EavConfig $eavConfig,
         EavSetupFactory $eavSetupFactory,
-        ElementSetupFactory $elementSetupFactory
+        ElementSetupFactory $elementSetupFactory,
+        ResourceConnection $resource
     ) {
         $this->_coreRegistry = $coreRegistry;
         $this->resultPageFactory = $resultPageFactory;
@@ -75,6 +83,7 @@ abstract class TemplateFields extends Action
         $this->eavConfig = $eavConfig;
         $this->eavSetupFactory = $eavSetupFactory;
         $this->elementSetupFactory = $elementSetupFactory;
+        $this->resource = $resource;
         parent::__construct($context);
     }
 
