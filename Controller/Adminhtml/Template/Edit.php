@@ -38,7 +38,7 @@ class Edit extends Template
         $item = $id ? __('Edit Template') : __('New Template');
 
         $resultPage = $this->createActionPage($item);
-        $resultPage->getConfig()->getTitle()->prepend($id ? $model->getTitle() : __('New Template'));
+        $resultPage->getConfig()->getTitle()->prepend($id ? ucfirst($model->getCode()) : __('New Template'));
         return $resultPage;
     }
 }

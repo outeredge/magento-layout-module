@@ -48,7 +48,7 @@ class Edit extends TemplateFields
         $item = $id ? __('Edit Field') : __('New Field');
 
         $resultPage = $this->createActionPage($item);
-        $resultPage->getConfig()->getTitle()->prepend($id ? $model->getTitle() : __('New Field'));
+        $resultPage->getConfig()->getTitle()->prepend($id ? ucfirst($model->getAttributeCode()) : __('New Field'));
         return $resultPage;
     }
 }
