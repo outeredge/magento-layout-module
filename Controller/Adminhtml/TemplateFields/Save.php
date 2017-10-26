@@ -75,6 +75,7 @@ class Save extends TemplateFields
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+        
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($data) {
@@ -108,7 +109,7 @@ class Save extends TemplateFields
                                 $attributeCode
                             )
                         );
-                        return $this->returnResult('*/*/', [], ['error' => true]);
+                        return $resultRedirect->setPath('*/templateFields/new', ['template_id' => $data['template_id']], ['error' => true]);    
                     }
                 }
                 $data['attribute_code'] = $attributeCode;
@@ -117,7 +118,7 @@ class Save extends TemplateFields
                 
                 if (!$eavAttributeId) {
                     $this->messageManager->addError(__('Error creating new attribute.'));
-                    return $this->returnResult('*/*/', [], ['error' => true]);
+                    return $resultRedirect->setPath('*/templateFields/new', ['template_id' => $data['template_id']], ['error' => true]);
                 }
                 
                 $data += ['eav_attribute_id' => $eavAttributeId];
@@ -165,6 +166,12 @@ class Save extends TemplateFields
     public function createEavAttribute($row)
     {
         $elementEntity = \OuterEdge\Layout\Model\Element::ENTITY;
+        $attributeExist = $this->eavConfig->getAttribute($elementEntity, $row['attribute_code']);
+        if ($attributeExist->getId()) {
+            $this->messageManager->addError(__('Attribute name already exist.'));
+            return false;
+        }
+        
         $elementSetup = $this->elementSetupFactory->create();
         $elementSetup->addAttribute(
             $elementEntity,
@@ -179,7 +186,7 @@ class Save extends TemplateFields
             $this->resource->getTableName('eav_attribute')
         )->where('attribute_code = :attribute_code');
         $result = $connection->fetchRow($select, ['attribute_code' => $row['attribute_code']]);
-      
+        
         $data = [
             'frontend_label' => $row['frontend_label'],
             'frontend_input' => $row['frontend_input']
@@ -191,7 +198,7 @@ class Save extends TemplateFields
                 $data,
                 $connection->quoteInto('attribute_id=?', $result['attribute_id'])
             );
-            
+        
             return $result['attribute_id'];
         }
         return false;
