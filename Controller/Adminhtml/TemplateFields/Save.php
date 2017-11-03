@@ -109,7 +109,7 @@ class Save extends TemplateFields
                                 $attributeCode
                             )
                         );
-                        return $resultRedirect->setPath('*/templateFields/new', ['template_id' => $data['template_id']], ['error' => true]);    
+                        return $resultRedirect->setPath('*/templateFields/new', ['template_id' => $data['template_id']], ['error' => true]);
                     }
                 }
                 $data['attribute_code'] = $attributeCode;
