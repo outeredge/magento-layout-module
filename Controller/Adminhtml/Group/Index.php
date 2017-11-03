@@ -7,6 +7,7 @@ use Magento\Backend\Model\View\Result\Page;
 
 class Index extends Group
 {
+    
     /**
      * @return Page
      */

@@ -48,6 +48,9 @@ class Grid extends Extended
     protected function _prepareCollection()
     {
         $collection = $this->groupFactory->create()->getCollection();
+        $collection->getSelect()
+            ->join('layout_template as ly', 'main_table.template_id = ly.entity_id', 'ly.code as template_name');
+
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -95,6 +98,6 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/edit', ['group_id' => $row->getGroupId()]);
+        return $this->getUrl('*/*/edit', ['entity_id' => $row->getId()]);
     }
 }

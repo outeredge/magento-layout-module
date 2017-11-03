@@ -7,9 +7,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
+use OuterEdge\Layout\Helper\Data as TemplatesHelper;
 
 class Main extends Generic
 {
+    protected $_templates;
+    
     /**
      * @var Config
      */
@@ -20,6 +23,7 @@ class Main extends Generic
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
+     * @param TemplatesHelper $templates
      * @param array $data
      */
     public function __construct(
@@ -27,9 +31,11 @@ class Main extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Config $wysiwygConfig,
+        TemplatesHelper $templates,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
+        $this->_templates = $templates;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -41,7 +47,7 @@ class Main extends Generic
      */
     protected function _prepareForm()
     {
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
 
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
@@ -50,19 +56,59 @@ class Main extends Generic
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Group Properties')]);
 
         if ($group->getId()) {
-            $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
+            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
+            $fieldset->addField(
+                'template_id',
+                'select',
+                [
+                    'name'     => 'group[template_id]',
+                    'label'    => __('Template Name'),
+                    'title'    => __('Template Name'),
+                    'disabled' => true,
+                    'required' => true,
+                    'values' => $this->_templates->getTemplates(),
+                    'note'  => 'This code represent the template where field\'s are defined'
+                ]
+            );
+            
+            $fieldset->addField(
+                'group_code',
+                'text',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Code'),
+                    'title'    => __('code'),
+                    'readonly' => true,
+                    'required' => true,
+                    'note'  => 'This code represent the group name'
+                ]
+            );
+        } else {
+             $fieldset->addField(
+                 'template_id',
+                 'select',
+                 [
+                    'name'     => 'group[template_id]',
+                    'label'    => __('Template Name'),
+                    'title'    => __('Template Name'),
+                    'options' => $this->_templates->getTemplates(),
+                    'required' => true,
+                    'note'  => 'This code represent the template where field\'s are defined'
+                 ]
+             );
+            
+            $fieldset->addField(
+                'group_code',
+                'text',
+                [
+                    'name'     => 'group[group_code]',
+                    'label'    => __('Code'),
+                    'title'    => __('Code'),
+                    'required' => true,
+                    'note'  => 'This code represent the group name. Can\'t be changed.'
+                ]
+            );
         }
-
-        $fieldset->addField(
-            'group_code',
-            'text',
-            [
-                'name'     => 'group[group_code]',
-                'label'    => __('Code'),
-                'title'    => __('Code'),
-                'required' => true
-            ]
-        );
 
         $fieldset->addField(
             'title',

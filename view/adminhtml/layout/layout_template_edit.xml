@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="left">
+            <block class="OuterEdge\Layout\Block\Adminhtml\Template\Edit\Tabs" name="template_edit_tabs">
+                <block class="OuterEdge\Layout\Block\Adminhtml\Template\Edit\Tab\Main" name="main"/>
+                <block class="OuterEdge\Layout\Block\Adminhtml\TemplateFields" name="fields"/>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="OuterEdge\Layout\Block\Adminhtml\Template\Edit" name="template_edit_content"/>
+        </referenceContainer>
+    </body>
+</page>

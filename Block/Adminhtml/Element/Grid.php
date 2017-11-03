@@ -48,8 +48,9 @@ class Grid extends Extended
     protected function _prepareCollection()
     {
         $collection = $this->elementFactory->create()->getCollection();
-        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('group_id')]);
+        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
         $this->setCollection($collection);
+        
         return parent::_prepareCollection();
     }
 
@@ -88,6 +89,6 @@ class Grid extends Extended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/element/edit', ['element_id' => $row->getElementId(), 'group_id' => $row->getGroupId()]);
+        return $this->getUrl('*/element/edit', ['element_id' => $row->getId(), 'group_id' => $row->getGroupId()]);
     }
 }

@@ -7,9 +7,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
+use OuterEdge\Layout\Helper\Data as TemplatesHelper;
 
 class Main extends Generic
 {
+    protected $_templates;
+    
     /**
      * @var Config
      */
@@ -20,6 +23,7 @@ class Main extends Generic
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
+     * @param TemplatesHelper $templates
      * @param array $data
      */
     public function __construct(
@@ -27,9 +31,11 @@ class Main extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Config $wysiwygConfig,
+        TemplatesHelper $templates,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
+        $this->_templates = $templates;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -41,82 +47,96 @@ class Main extends Generic
      */
     protected function _prepareForm()
     {
-        $element = $this->_coreRegistry->registry('element');
+        $element = $this->_coreRegistry->registry('elementModel');
         $groupId = $this->getRequest()->getParam('group_id');
-
+        
         $form = $this->_formFactory->create(
-            ['data' => ['id' => 'edit_form', 'enctype' => 'multipart/form-data', 'action' => $this->getData('action'), 'method' => 'post']]
+            ['data' => [
+                'id' => 'edit_form',
+                'enctype' => 'multipart/form-data',
+                'action' => $this->getData('action'),
+                'method' => 'post']]
         );
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Properties')]);
         $fieldset->addType('image', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image');
 
         if ($element->getId()) {
-            $fieldset->addField('element_id', 'hidden', ['name' => 'element_id']);
+            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         } elseif ($groupId) {
             $element->setGroupId($groupId);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
-
+        
+        //Ask factory template for group code name
+        $templateData = $this->_templates->getFieldsTemplate($groupId);
+       
+        //Fixed fields
         $fieldset->addField(
             'title',
             'text',
             [
-                'name'     => 'title',
-                'label'    => __('Title'),
-                'title'    => __('Title')
+                'name'  => 'title',
+                'label' => __('Title'),
+                'title' => __('Title')
             ]
         );
-
-        $fieldset->addField(
-            'description',
-            'editor',
-            [
-                'name'    => 'description',
-                'label'   => __('Description'),
-                'title'   => __('Description'),
-                'wysiwyg' => true,
-                'config'  => $this->_wysiwygConfig->getConfig([
-                    'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
-                    'add_variables' => false,
-                    'add_widgets'   => false,
-                    'add_images'    => false
-                ])
-            ]
-        );
-
-        $fieldset->addField(
-            'link',
-            'text',
-            [
-                'name'  => 'link',
-                'label' => __('Link'),
-                'title' => __('Link')
-            ]
-        );
-
-        $fieldset->addField(
-            'link_text',
-            'text',
-            [
-                'name'  => 'link_text',
-                'label' => __('Text for link'),
-                'title' => __('Text for link')
-            ]
-        );
-
-        $fieldset->addField(
-            'image',
-            'image',
-            [
-                'name'  => 'image',
-                'label' => __('Image'),
-                'title' => __('Image'),
-                'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
-            ]
-        );
-
+ 
+        $count = 0;
+        //Dynamic fields
+        foreach ($templateData as $key => $field) {
+            $label = ucfirst(str_replace("_", " ", key($field)));
+            $identifier = $key;
+            $type = reset($field);
+            
+            switch ($type) {
+                case 'image':
+                    $fieldset->addField(
+                        $identifier,
+                        'image',
+                        [
+                            'name'  => $identifier,
+                            'label' => __($label),
+                            'title' => __($label),
+                            'note'  => 'Allowed types: jpg, jpeg, gif, png, svg'
+                        ]
+                    );
+                    $count++;
+                    $fieldset->addField("image_identifier[$count]", 'hidden', ['name' => "image_identifier[$count]"]);
+                    $element->setData("image_identifier[$count]", $identifier);
+                    break;
+                case 'editor':
+                    $fieldset->addField(
+                        $identifier,
+                        'editor',
+                        [
+                            'name'    => $identifier,
+                            'label'   => __($label),
+                            'title'   => __($label),
+                            'wysiwyg' => true,
+                            'config'  => $this->_wysiwygConfig->getConfig([
+                                'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
+                                'add_variables' => false,
+                                'add_widgets'   => false,
+                                'add_images'    => false
+                            ])
+                        ]
+                    );
+                    break;
+                default:
+                    $fieldset->addField(
+                        $identifier,
+                        $type,
+                        [
+                            'name'     => $identifier,
+                            'label'    => __($label),
+                            'title'    => __($label)
+                        ]
+                    );
+            }
+        }
+        
         $fieldset->addField(
             'sort_order',
             'text',
@@ -126,7 +146,7 @@ class Main extends Generic
                 'title' => __('Sort Order')
             ]
         );
-
+        
         $form->setValues($element->getData());
         $this->setForm($form);
 

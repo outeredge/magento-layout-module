@@ -6,6 +6,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use OuterEdge\Layout\Model\GroupFactory;
 use OuterEdge\Layout\Model\ElementFactory;
 use Magento\Framework\Phrase;
 
@@ -29,25 +30,33 @@ abstract class Element extends Action
     protected $resultPageFactory;
 
     /**
+     * @var GroupFactory
+     */
+    protected $groupFactory;
+    
+    /**
      * @var ElementFactory
      */
     protected $elementFactory;
-
+    
     /**
      * @param Context $context
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param ElementFactory $elementFactory
+     * @param GroupFactory $groupFactory
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
-        ElementFactory $elementFactory
+        ElementFactory $elementFactory,
+        GroupFactory $groupFactory
     ) {
         $this->_coreRegistry = $coreRegistry;
         $this->resultPageFactory = $resultPageFactory;
         $this->elementFactory = $elementFactory;
+        $this->groupFactory = $groupFactory;
         parent::__construct($context);
     }
 

@@ -7,6 +7,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Api\ImageProcessorInterface;
@@ -43,6 +44,7 @@ class Save extends Element
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param ElementFactory $elementFactory
+     * @param GroupFactory $groupFactory
      * @param DateTime $dateTime
      * @param UploaderFactory $uploaderFactory
      * @param ImageProcessorInterface $imageProcessor
@@ -54,6 +56,7 @@ class Save extends Element
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
         ElementFactory $elementFactory,
+        GroupFactory $groupFactory,
         DateTime $dateTime,
         UploaderFactory $uploaderFactory,
         ImageProcessorInterface $imageProcessor,
@@ -69,7 +72,8 @@ class Save extends Element
             $context,
             $coreRegistry,
             $resultPageFactory,
-            $elementFactory
+            $elementFactory,
+            $groupFactory
         );
     }
 
@@ -106,30 +110,36 @@ class Save extends Element
             } else {
                 $data['created_at'] = $this->dateTime->date();
             }
-
-            if (isset($data['image']['delete']) && $data['image']['delete']) {
-                $data['image'] = null;
-            } else {
-                try {
-                    $uploader = $this->uploaderFactory->create(['fileId' => 'image']);
-                    $imageData = $uploader->validateFile();
-                    if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
-                        $imageContentDataObject = $this->imageContentFactory->create()
-                            ->setName($imageData['name'])
-                            ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
-                            ->setType($imageData['type']);
-                        $data['image'] = $this->imageProcessor->processImageContent(Image::LAYOUT_IMAGE_DIR, $imageContentDataObject);
+            
+            if (isset($data['image_identifier'])) {
+                foreach ($data['image_identifier'] as $imageIdentifier) {
+                    if (isset($data[$imageIdentifier]['delete']) && $data[$imageIdentifier]['delete']) {
+                        $data[$imageIdentifier] = null;
                     } else {
-                        unset($data['image']);
+                        try {
+                            $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
+                            $imageData = $uploader->validateFile();
+                            if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
+                                $imageContentDataObject = $this->imageContentFactory->create()
+                                    ->setName($imageData['name'])
+                                    ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
+                                    ->setType($imageData['type']);
+                                $data[$imageIdentifier] = $this->imageProcessor->processImageContent(
+                                    Image::LAYOUT_IMAGE_DIR,
+                                    $imageContentDataObject
+                                );
+                            } else {
+                                unset($data[$imageIdentifier]);
+                            }
+                        } catch (Exception $e) {
+                            // The file was probably not uploaded - skip and continue with model saving
+                            unset($data[$imageIdentifier]);
+                        }
                     }
-                } catch (Exception $e) {
-                    // The file was probably not uploaded - skip and continue with model saving
-                    unset($data['image']);
                 }
             }
 
             $model->addData($data);
-
             try {
                 $model->save();
 
@@ -138,16 +148,26 @@ class Save extends Element
                 $this->_session->setElementData(false);
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => false]);
+                    return $resultRedirect->setPath(
+                        '*/*/edit',
+                        ['element_id' => $model->getId(),
+                        '_current' => true],
+                        ['error' => false]
+                    );
                 }
                 return $resultRedirect->setPath('*/group/edit', [
-                    'group_id' => $model->getGroupId(),
+                    'entity_id' => $model->getGroupId(),
                     'active_tab' => 'elements'
                 ], ['error' => false]);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_session->setElementData($data);
-                return $resultRedirect->setPath('*/*/edit', ['element_id' => $model->getId(), '_current' => true], ['error' => true]);
+                return $resultRedirect->setPath(
+                    '*/*/edit',
+                    ['element_id' => $model->getId(),
+                    '_current' => true],
+                    ['error' => true]
+                );
             }
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);

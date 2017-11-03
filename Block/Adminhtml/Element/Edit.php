@@ -76,8 +76,11 @@ class Edit extends Container
      */
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('element')->getId()) {
-            return __('Edit Element "%1"', $this->escapeHtml($this->_coreRegistry->registry('element')->getTitle()));
+        if ($this->_coreRegistry->registry('elementModel')->getId()) {
+            return __(
+                'Edit Element "%1"',
+                $this->escapeHtml($this->_coreRegistry->registry('elementModel')->getTitle())
+            );
         }
         return __('New Element');
     }
@@ -89,7 +92,7 @@ class Edit extends Container
      */
     public function getBackUrl()
     {
-        return $this->getUrl('*/group/edit', ['group_id' => $this->getGroupId(), 'active_tab' => 'elements']);
+        return $this->getUrl('*/group/edit', ['entity_id' => $this->getGroupId(), 'active_tab' => 'elements']);
     }
 
     /**
@@ -109,9 +112,9 @@ class Edit extends Container
      */
     private function getGroupId()
     {
-        if ($this->getRequest()->getParam('group_id')) {
-            return $this->getRequest()->getParam('group_id');
+        if ($this->getRequest()->getParam('entity_id')) {
+            return $this->getRequest()->getParam('entity_id');
         }
-        return $this->_coreRegistry->registry('element')->getGroupId();
+        return $this->_coreRegistry->registry('elementModel')->getGroupId();
     }
 }

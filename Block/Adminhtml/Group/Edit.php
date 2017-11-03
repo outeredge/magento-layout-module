@@ -42,7 +42,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'group_id';
+        $this->_objectId = 'entity_id';
         $this->_controller = 'adminhtml_group';
 
         parent::_construct();
@@ -68,14 +68,15 @@ class Edit extends Container
             ['mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']]]
         );
 
-        $group = $this->_coreRegistry->registry('group');
+        $group = $this->_coreRegistry->registry('groupModel');
         if ($group->getId()) {
             $this->addButton(
                 'add_new_element',
                 [
                     'label' => __('Add New Element'),
                     'class' => 'save',
-                    'onclick' => "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
+                    'onclick' =>
+                        "setLocation('" . $this->getUrl('*/element/new/', ['group_id' => $group->getId()]) . "')"
                 ]
             );
         }
@@ -88,8 +89,8 @@ class Edit extends Container
      */
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('group')->getId()) {
-            return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('group')->getTitle()));
+        if ($this->_coreRegistry->registry('groupModel')->getId()) {
+            return __('Edit Group "%1"', $this->escapeHtml($this->_coreRegistry->registry('groupModel')->getTitle()));
         }
         return __('New Group');
     }

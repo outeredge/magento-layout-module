@@ -25,7 +25,7 @@ class Delete extends Element
             try {
                 $model->delete();
                 $this->messageManager->addSuccess(__('You deleted the element.'));
-                return $resultRedirect->setPath('*/group/edit', ['group_id' => $groupId, 'active_tab' => 'elements']);
+                return $resultRedirect->setPath('*/group/edit', ['entity_id' => $groupId, 'active_tab' => 'elements']);
             } catch (Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 return $resultRedirect->setPath('*/*/edit', ['element_id' => $id, 'group_id' => $groupId]);
