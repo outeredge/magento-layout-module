@@ -84,7 +84,7 @@ class Save extends Group
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath(
                         '*/*/edit',
-                        ['group_id' => $model->getId(), '_current' => true],
+                        ['entity_id' => $model->getId(), '_current' => true],
                         ['error' => false]
                     );
                 }
@@ -94,7 +94,7 @@ class Save extends Group
                 $this->_session->setGroupData($data);
                 return $resultRedirect->setPath(
                     '*/*/edit',
-                    ['group_id' => $model->getId(),
+                    ['entity_id' => $model->getId(),
                     '_current' => true],
                     ['error' => true]
                 );

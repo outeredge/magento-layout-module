@@ -80,7 +80,7 @@ class Save extends Template
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath(
                         '*/*/edit',
-                        ['template_id' => $model->getId(),
+                        ['entity_id' => $model->getId(),
                         '_current' => true],
                         ['error' => false]
                     );
@@ -91,7 +91,7 @@ class Save extends Template
                 $this->_session->setTemplateData($data);
                 return $resultRedirect->setPath(
                     '*/*/edit',
-                    ['template_id' => $model->getId(),
+                    ['entity_id' => $model->getId(),
                     '_current' => true],
                     ['error' => true]
                 );
