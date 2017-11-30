@@ -16,6 +16,8 @@ use Magento\Framework\App\ResourceConnection;
 use Zend_Validate_Regex;
 use Exception;
 use Magento\Eav\Model\Entity\Attribute;
+use Magento\PageCache\Model\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class Save extends TemplateFields
 {
@@ -30,6 +32,16 @@ class Save extends TemplateFields
     private $eavAttribute;
     
     /**
+     * @var Config
+     */
+    protected $config;
+    
+    /**
+     * @var TypeListInterface
+     */
+    protected $typeList;
+    
+    /**
      * @param Context $context
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
@@ -40,6 +52,8 @@ class Save extends TemplateFields
      * @param ElementSetupFactory $elementSetupFactory
      * @param ResourceConnection $resource
      * @param Attribute $eavAttribute
+     * @param Config $config
+     * @param TypeListInterface $typeList
      */
     public function __construct(
         Context $context,
@@ -51,10 +65,14 @@ class Save extends TemplateFields
         EavSetupFactory $eavSetupFactory,
         ElementSetupFactory $elementSetupFactory,
         ResourceConnection $resource,
-        Attribute $eavAttribute
+        Attribute $eavAttribute,
+        Config $config,
+        TypeListInterface $typeList
     ) {
         $this->dateTime = $dateTime;
         $this->eavAttribute = $eavAttribute;
+        $this->config = $config;
+        $this->typeList = $typeList;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -133,6 +151,10 @@ class Save extends TemplateFields
                 $this->messageManager->addSuccess(__('The field has been saved.'));
 
                 $this->_session->setTemplateFieldsData(false);
+                
+                if ($this->config->isEnabled()) {
+                    $this->typeList->invalidate('BLOCK_HTML');
+                }
 
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath(

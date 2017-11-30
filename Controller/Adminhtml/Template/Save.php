@@ -9,6 +9,8 @@ use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\TemplateFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Exception;
+use Magento\PageCache\Model\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class Save extends Template
 {
@@ -16,6 +18,16 @@ class Save extends Template
      * @var DateTime
      */
     protected $dateTime;
+    
+    /**
+     * @var Config
+     */
+    protected $config;
+    
+    /**
+     * @var TypeListInterface
+     */
+    protected $typeList;
 
     /**
      * @param Context $context
@@ -23,15 +35,21 @@ class Save extends Template
      * @param PageFactory $resultPageFactory
      * @param TemplateFactory $templateFactory
      * @param DateTime $dateTime
+     * @param Config $config
+     * @param TypeListInterface $typeList
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
         TemplateFactory $templateFactory,
-        DateTime $dateTime
+        DateTime $dateTime,
+        Config $config,
+        TypeListInterface $typeList
     ) {
         $this->dateTime = $dateTime;
+        $this->config = $config;
+        $this->typeList = $typeList;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -76,6 +94,10 @@ class Save extends Template
                 $this->messageManager->addSuccess(__('The Template has been saved.'));
 
                 $this->_session->setTemplateData(false);
+                
+                if ($this->config->isEnabled()) {
+                    $this->typeList->invalidate('BLOCK_HTML');
+                }
 
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath(

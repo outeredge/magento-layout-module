@@ -16,6 +16,8 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image;
 use Exception;
+use Magento\PageCache\Model\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class Save extends Element
 {
@@ -38,6 +40,16 @@ class Save extends Element
      * @var ImageContentInterfaceFactory
      */
     protected $imageContentFactory;
+    
+    /**
+     * @var Config
+     */
+    protected $config;
+    
+    /**
+     * @var TypeListInterface
+     */
+    protected $typeList;
 
     /**
      * @param Context $context
@@ -50,6 +62,8 @@ class Save extends Element
      * @param ImageProcessorInterface $imageProcessor
      * @param ImageContentInterfaceFactory $imageContentFactory
      * @param Filesystem $filesystem
+     * @param Config $config
+     * @param TypeListInterface $typeList
      */
     public function __construct(
         Context $context,
@@ -61,13 +75,17 @@ class Save extends Element
         UploaderFactory $uploaderFactory,
         ImageProcessorInterface $imageProcessor,
         ImageContentInterfaceFactory $imageContentFactory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        Config $config,
+        TypeListInterface $typeList
     ) {
         $this->dateTime = $dateTime;
         $this->uploaderFactory = $uploaderFactory;
         $this->imageProcessor = $imageProcessor;
         $this->imageContentFactory = $imageContentFactory;
         $this->tmpDirectory = $filesystem->getDirectoryRead(DirectoryList::SYS_TMP);
+        $this->config = $config;
+        $this->typeList = $typeList;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -146,7 +164,11 @@ class Save extends Element
                 $this->messageManager->addSuccess(__('The element has been saved.'));
 
                 $this->_session->setElementData(false);
-
+                
+                if ($this->config->isEnabled()) {
+                    $this->typeList->invalidate('BLOCK_HTML');
+                }
+                
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath(
                         '*/*/edit',
