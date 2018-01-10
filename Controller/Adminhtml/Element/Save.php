@@ -10,8 +10,6 @@ use OuterEdge\Layout\Model\ElementFactory;
 use OuterEdge\Layout\Model\GroupFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\MediaStorage\Model\File\UploaderFactory;
-use Magento\Framework\Api\ImageProcessorInterface;
-use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image;
@@ -30,16 +28,6 @@ class Save extends Element
      * @var UploaderFactory
      */
     private $uploaderFactory;
-
-    /**
-     * @var ImageProcessorInterface
-     */
-    protected $imageProcessor;
-
-    /**
-     * @var ImageContentInterfaceFactory
-     */
-    protected $imageContentFactory;
     
     /**
      * @var Config
@@ -50,6 +38,11 @@ class Save extends Element
      * @var TypeListInterface
      */
     protected $typeList;
+    
+    /**
+     * @var array
+     */
+    protected $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png', 'svg'];
 
     /**
      * @param Context $context
@@ -59,8 +52,6 @@ class Save extends Element
      * @param GroupFactory $groupFactory
      * @param DateTime $dateTime
      * @param UploaderFactory $uploaderFactory
-     * @param ImageProcessorInterface $imageProcessor
-     * @param ImageContentInterfaceFactory $imageContentFactory
      * @param Filesystem $filesystem
      * @param Config $config
      * @param TypeListInterface $typeList
@@ -73,33 +64,23 @@ class Save extends Element
         GroupFactory $groupFactory,
         DateTime $dateTime,
         UploaderFactory $uploaderFactory,
-        ImageProcessorInterface $imageProcessor,
-        ImageContentInterfaceFactory $imageContentFactory,
         Filesystem $filesystem,
         Config $config,
         TypeListInterface $typeList
     ) {
         $this->dateTime = $dateTime;
         $this->uploaderFactory = $uploaderFactory;
-        $this->imageProcessor = $imageProcessor;
-        $this->imageContentFactory = $imageContentFactory;
-        $this->tmpDirectory = $filesystem->getDirectoryRead(DirectoryList::SYS_TMP);
         $this->config = $config;
         $this->typeList = $typeList;
-        parent::__construct(
+        $this->destinationPath = $filesystem->getDirectoryWrite(DirectoryList::MEDIA)->getAbsolutePath(Image::LAYOUT_IMAGE_DIR . '/');
+           
+       parent::__construct(
             $context,
             $coreRegistry,
             $resultPageFactory,
             $elementFactory,
             $groupFactory
         );
-    }
-
-    protected function getBase64EncodedData($fileName)
-    {
-        $fileContent = $this->tmpDirectory->readFile($this->tmpDirectory->getRelativePath($fileName));
-        $encodedContent = base64_encode($fileContent);
-        return $encodedContent;
     }
 
     /**
@@ -137,15 +118,18 @@ class Save extends Element
                         try {
                             $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
                             $imageData = $uploader->validateFile();
+                            
                             if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
-                                $imageContentDataObject = $this->imageContentFactory->create()
-                                    ->setName($imageData['name'])
-                                    ->setBase64EncodedData($this->getBase64EncodedData($imageData['tmp_name']))
-                                    ->setType($imageData['type']);
-                                $data[$imageIdentifier] = $this->imageProcessor->processImageContent(
-                                    Image::LAYOUT_IMAGE_DIR,
-                                    $imageContentDataObject
-                                );
+                              
+                               $uploader->setAllowCreateFolders(true)
+                                    ->setAllowCreateFolders(true)
+                                    ->setAllowRenameFiles(true)
+                                    ->setFilesDispersion(true)
+                                    ->setAllowedExtensions($this->allowedExtensions);
+                                    
+                               $result = $uploader->save($this->destinationPath);
+            
+                               $data[$imageIdentifier] = $result['file'];
                             } else {
                                 unset($data[$imageIdentifier]);
                             }
@@ -194,4 +178,5 @@ class Save extends Element
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
+    
 }
