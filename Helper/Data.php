@@ -175,7 +175,9 @@ class Data extends AbstractHelper
     public function getGroupAndElements($id, $field = 'group_code')
     {
         $group = $this->getGroup($id, $field);
-        $elements = $this->getElementCollection()->addFieldToFilter('group_id', ['eq' => $group->getId()]);
+        $elements = $this->getElementCollection()
+            ->addFieldToFilter('group_id', ['eq' => $group->getId()])
+            ->setOrder('sort_order', 'ASC');
         
         $elementsData = [];
         foreach ($elements as $element) {
