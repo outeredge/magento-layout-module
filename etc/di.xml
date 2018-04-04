@@ -1,2 +1,13 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd"></config>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+  <virtualType name="Vendor\Package\Setup\Module\DataSetup" type="Magento\Setup\Module\DataSetup">
+        <arguments>
+            <argument name="context" xsi:type="object">Magento\Framework\Module\Setup\Context</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eav\Setup\EavSetup">
+        <arguments>
+            <argument name="setup" xsi:type="object">Vendor\Package\Setup\Module\DataSetup</argument>
+        </arguments>
+    </type>
+</config>
