@@ -124,6 +124,18 @@ class Main extends Generic
                         ]
                     );
                     break;
+                case 'date':
+                    $fieldset->addField(
+                        $identifier,
+                        'date',
+                        [
+                            'name' => $identifier,
+                            'label' => __($label),
+                            'date_format' => 'yyyy-MM-dd',
+                            'time_format' => 'hh:mm:ss'
+                        ]
+                    );
+                    break;
                 default:
                     $fieldset->addField(
                         $identifier,
