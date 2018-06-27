@@ -24,7 +24,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     }
 
     /**
-     * Add the column 'template_file' to the layout_emplate table
+     * Add the column 'template_file' to the layout_group table
      *
      * @param SchemaSetupInterface $setup
      *
@@ -34,7 +34,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     {
         $connection = $setup->getConnection();
 
-        $tableItem = $setup->getTable('layout_template');
+        $tableItem = $setup->getTable('layout_group');
         if ($connection->isTableExists($tableItem) == true) {
             $connection->addColumn(
                 $tableItem,

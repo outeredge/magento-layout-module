@@ -138,6 +138,16 @@ class Main extends Generic
         );
 
         $fieldset->addField(
+            'template_file',
+            'text',
+            [
+                'name'  => 'group[template_file]',
+                'label' => __('Template Widget File'),
+                'title' => __('Template Widget File')
+            ]
+        );
+
+        $fieldset->addField(
             'sort_order',
             'text',
             [
