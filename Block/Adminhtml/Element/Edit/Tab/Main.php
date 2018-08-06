@@ -150,7 +150,8 @@ class Main extends Generic
                                 'top-right'    => 'Top Right',
                                 'top-left'     => 'Top Left',
                                 'bottom-right' => 'Bottom Right',
-                                'bottom-left'  => 'Bottom Left'],
+                                'bottom-left'  => 'Bottom Left'
+                             ],
                         ]
                     );
                     break;
