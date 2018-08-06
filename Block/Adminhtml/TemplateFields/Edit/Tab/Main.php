@@ -120,7 +120,8 @@ class Main extends Generic
                     'multiselect'   => __('Multiple Select'),
                     'select'        => __('Dropdown'),
                     'editor'        => __('Editor'),
-                    'image'         => __('Image')]
+                    'image'         => __('Image'),
+                    'position'      => __('Position')]
             ]
         );
         
