@@ -74,7 +74,7 @@ class Save extends Element
         $this->typeList = $typeList;
         $this->destinationPath = $filesystem->getDirectoryWrite(DirectoryList::MEDIA)->getAbsolutePath(Image::LAYOUT_IMAGE_DIR . '/');
            
-       parent::__construct(
+        parent::__construct(
             $context,
             $coreRegistry,
             $resultPageFactory,
@@ -118,18 +118,17 @@ class Save extends Element
                         try {
                             $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
                             $imageData = $uploader->validateFile();
-                            
                             if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
                               
-                               $uploader->setAllowCreateFolders(true)
+                                $uploader->setAllowCreateFolders(true)
                                     ->setAllowCreateFolders(true)
                                     ->setAllowRenameFiles(true)
                                     ->setFilesDispersion(true)
                                     ->setAllowedExtensions($this->allowedExtensions);
                                     
-                               $result = $uploader->save($this->destinationPath);
+                                $result = $uploader->save($this->destinationPath);
             
-                               $data[$imageIdentifier] = $result['file'];
+                                $data[$imageIdentifier] = $result['file'];
                             } else {
                                 unset($data[$imageIdentifier]);
                             }
@@ -178,5 +177,4 @@ class Save extends Element
         }
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
-    
 }
