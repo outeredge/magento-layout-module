@@ -119,13 +119,12 @@ class Save extends Element
                             $uploader = $this->uploaderFactory->create(['fileId' => $imageIdentifier]);
                             $imageData = $uploader->validateFile();
                             if ($imageData['name'] && $imageData['type'] && $imageData['tmp_name'] && $imageData['size'] > 0) {
-                              
                                 $uploader->setAllowCreateFolders(true)
                                     ->setAllowCreateFolders(true)
                                     ->setAllowRenameFiles(true)
                                     ->setFilesDispersion(true)
                                     ->setAllowedExtensions($this->allowedExtensions);
-                                    
+                                
                                 $result = $uploader->save($this->destinationPath);
             
                                 $data[$imageIdentifier] = $result['file'];
