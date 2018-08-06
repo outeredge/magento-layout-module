@@ -136,6 +136,24 @@ class Main extends Generic
                         ]
                     );
                     break;
+                case 'position':
+                    $fieldset->addField(
+                        $identifier,
+                        'select',
+                        [
+                            'name' => $identifier,
+                            'label' => __($label),
+                            'values'   => [
+                                'right'        => 'Right',
+                                'left'         => 'Left',
+                                'center'       => 'Center',
+                                'top-right'    => 'Top Right',
+                                'top-left'     => 'Top Left',
+                                'bottom-right' => 'Bottom Right',
+                                'bottom-left'  => 'Bottom Left'],
+                        ]
+                    );
+                    break;
                 default:
                     $fieldset->addField(
                         $identifier,
