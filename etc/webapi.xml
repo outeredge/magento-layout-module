@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/layoutGroup" method="GET">
+		<service class="OuterEdge\Layout\Api\LayoutApiInterface" method="getList"/>
+			<resources>
+				<resource ref="OuterEdge_Layout::layout"/>
+			</resources>
+	</route>
+</routes>

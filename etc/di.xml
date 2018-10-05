@@ -10,4 +10,7 @@
             <argument name="setup" xsi:type="object">Vendor\Package\Setup\Module\DataSetup</argument>
         </arguments>
     </type>
+    <preference for="OuterEdge\Layout\Api\LayoutApiInterface" type="OuterEdge\Layout\Model\LayoutApi"/>
+    <preference for="OuterEdge\Layout\Api\Data\ItemInterface" type="OuterEdge\Layout\Model\LayoutApiItem"/>
+    <preference for="OuterEdge\Layout\Api\Data\ItemSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
 </config>
