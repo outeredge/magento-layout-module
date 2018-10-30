@@ -155,6 +155,20 @@ class Main extends Generic
                         ]
                     );
                     break;
+		case 'boolean':
+                    $fieldset->addField(
+                        $identifier,
+                        'select',
+                        [
+                            'name' => $identifier,
+                            'label' => __($label),
+                            'values' => [
+                                '1' => 'Yes',
+                                '0' => 'No'
+                             ],
+                        ]
+                    );
+                    break;
                 default:
                     $fieldset->addField(
                         $identifier,
