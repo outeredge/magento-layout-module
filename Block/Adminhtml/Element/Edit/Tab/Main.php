@@ -132,7 +132,7 @@ class Main extends Generic
                             'name' => $identifier,
                             'label' => __($label),
                             'date_format' => 'yyyy-MM-dd',
-                            'time_format' => 'hh:mm:ss'
+                            'time_format' => 'HH:mm:ss'
                         ]
                     );
                     break;
