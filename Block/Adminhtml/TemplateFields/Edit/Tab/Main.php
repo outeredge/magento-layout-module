@@ -105,26 +105,31 @@ class Main extends Generic
             ]
         );
         
-        $fieldset->addField(
-            'frontend_input',
-            'select',
-            [
-                'name'  => 'frontend_input',
-                'label' => __('Frontend Type'),
-                'title' => __('Frontend Type'),
-                'options' => [
-                    'text'          => __('Text Field'),
-                    'textarea'      => __('Text Area'),
-                    'date'          => __('Date'),
-                    'boolean'       => __('Yes/No'),
-                    'multiselect'   => __('Multiple Select'),
-                    'select'        => __('Dropdown'),
-                    'editor'        => __('Editor'),
-                    'image'         => __('Image'),
-                    'position'      => __('Position')
+        if ($templateFields->getEavAttributeId()) {
+            $fieldset->addField(
+                'frontend_input',
+                'select',
+                [
+                    'name'  => 'frontend_input',
+                    'label' => __('Frontend Type'),
+                    'title' => __('Frontend Type'),
+                    'readonly' => true,
+                    'disabled' => true,
+                    'options' => $this->getFrontendTypeList()
                 ]
-            ]
-        );
+            );
+        } else {
+            $fieldset->addField(
+                'frontend_input',
+                'select',
+                [
+                    'name'  => 'frontend_input',
+                    'label' => __('Frontend Type'),
+                    'title' => __('Frontend Type'),
+                    'options' => $this->getFrontendTypeList()
+                ]
+            );
+        }
         
         $fieldset->addField(
             'sort_order',
@@ -132,7 +137,7 @@ class Main extends Generic
             [
                 'name'  => 'sort_order',
                 'label' => __('Sort Order'),
-                'title' => __('Sort Order')
+                'title' => __('Sort Order'),
             ]
         );
         
@@ -143,4 +148,20 @@ class Main extends Generic
 
         return parent::_prepareForm();
     }
+
+    protected function getFrontendTypeList()
+    {
+        return [
+            'text'          => __('Text Field'),
+            'textarea'      => __('Text Area'),
+            'date'          => __('Date'),
+            'boolean'       => __('Yes/No'),
+            'multiselect'   => __('Multiple Select'),
+            'select'        => __('Dropdown'),
+            'editor'        => __('Editor'),
+            'image'         => __('Image'),
+            'position'      => __('Position')
+        ];
+    }
 }
+
