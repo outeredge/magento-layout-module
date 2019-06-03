@@ -20,6 +20,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addTemplateFileColumnToTemplateTable($setup);
         }
 
+        if (version_compare($context->getVersion(), '1.0.3', '<')) {
+            $this->createLayoutGroupStoreTable($setup);
+        }
+
         $setup->endSetup();
     }
 
@@ -45,6 +49,88 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     'default'  => null,
                     'comment'  => 'Template Widget File'
                 ]
+            );
+        }
+    }
+
+    /**
+     * Create layout_group_store table
+     *
+     * @param SchemaSetupInterface $setup
+     *
+     * @return void
+     */
+    private function createLayoutGroupStoreTable(SchemaSetupInterface $setup)
+    {
+        $table = $setup->getConnection()
+            ->newTable($setup->getTable('layout_group_store'))
+            ->addColumn(
+                'group_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Group Id'
+            )
+            ->addColumn(
+                'store_id',
+                Table::TYPE_SMALLINT,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Store Id'
+            )
+            ->addIndex(
+                $setup->getIdxName('layout_group_store', ['store_id']),
+                ['store_id']
+            )
+            ->addForeignKey(
+                $setup->getFkName('layout_group_store', 'group_id', 'layout_group', 'entity_id'),
+                'group_id',
+                $setup->getTable('layout_group'),
+                'entity_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            )
+            ->addForeignKey(
+                $setup->getFkName('layout_group_store', 'store_id', 'store', 'store_id'),
+                'store_id',
+                $setup->getTable('store'),
+                'store_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            )
+            ->setComment('Layout Group Store');
+        $setup->getConnection()->createTable($table);
+    }
+
+    /**
+     * Add the column 'store_id' to the layout_group table
+     *
+     * @param SchemaSetupInterface $setup
+     *
+     * @return void
+     */
+    private function addStoreColumnToLayoutGroup(SchemaSetupInterface $setup)
+    {
+        $connection = $setup->getConnection();
+
+        $tableItem = $setup->getTable('layout_group');
+        if ($connection->isTableExists($tableItem) == true) {
+            $connection->addColumn(
+                $tableItem,
+                'store_id',
+                [
+                    'type'     => Table::TYPE_SMALLINT,
+                    'nullable' => true,
+                    'default'  => 0,
+                    'comment'  => 'Store Id'
+                ]
+            )->addIndex(
+                $installer->getIdxName('layout_group', ['store_id']),
+                ['store_id']
+            )->addForeignKey(
+                $installer->getFkName('layout_group', 'store_id', 'store', 'store_id'),
+                'store_id',
+                $installer->getTable('store'),
+                'store_id',
+                Table::ACTION_SET_NULL
             );
         }
     }
