@@ -16,6 +16,7 @@ use OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image;
 use Exception;
 use Magento\PageCache\Model\Config;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class Save extends Element
 {
@@ -45,6 +46,11 @@ class Save extends Element
     protected $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png', 'svg'];
 
     /**
+     * @var TimezoneInterface
+     */
+    protected $timezone;
+
+    /**
      * @param Context $context
      * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
@@ -55,6 +61,7 @@ class Save extends Element
      * @param Filesystem $filesystem
      * @param Config $config
      * @param TypeListInterface $typeList
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         Context $context,
@@ -66,14 +73,16 @@ class Save extends Element
         UploaderFactory $uploaderFactory,
         Filesystem $filesystem,
         Config $config,
-        TypeListInterface $typeList
+        TypeListInterface $typeList,
+        TimezoneInterface $timezone
     ) {
         $this->dateTime = $dateTime;
         $this->uploaderFactory = $uploaderFactory;
         $this->config = $config;
         $this->typeList = $typeList;
         $this->destinationPath = $filesystem->getDirectoryWrite(DirectoryList::MEDIA)->getAbsolutePath(Image::LAYOUT_IMAGE_DIR . '/');
-           
+        $this->timezone = $timezone;
+
         parent::__construct(
             $context,
             $coreRegistry,
@@ -139,6 +148,25 @@ class Save extends Element
                 }
             }
 
+            //Hack to fix timezone issue on save
+            $currentTimestampUTC = $this->dateTime->gmtTimestamp();
+            $currentTimestampLocale =  $this->timezone->scopeTimeStamp();
+            $differenceTimestamp = $currentTimestampLocale - $currentTimestampUTC;
+            $differenceHours = $differenceTimestamp/3600;
+
+            if ($differenceHours >= 1  && is_int($differenceHours)) {
+                foreach ($data as $key => $row) {
+                    if (strpos($key, '_date') !== false && !empty($row)) {
+                        $date = $this->dateTime->gmtTimestamp($row);
+                        $dateNew = $this->timezone->date($date - $differenceTimestamp)
+                            ->modify('-' . $differenceHours .' hour')
+                            ->format('Y-m-d H:i:s');
+                        
+                        $data[$key] = $dateNew;
+                    }
+                }
+            }
+
             $model->addData($data);
             try {
                 $model->save();
@@ -177,3 +205,4 @@ class Save extends Element
         return $resultRedirect->setPath('*/*/', [], ['error' => true]);
     }
 }
+
