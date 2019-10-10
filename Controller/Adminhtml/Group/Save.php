@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\GroupFactory;
 use OuterEdge\Layout\Model\ElementFactory;
+use OuterEdge\Layout\Model\GroupStoreFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Exception;
 use Magento\PageCache\Model\Config;
@@ -36,6 +37,7 @@ class Save extends Group
      * @param PageFactory $resultPageFactory
      * @param GroupFactory $groupFactory
      * @param ElementFactory $elementFactory
+     * @param GroupStoreFactory $groupStoreFactory
      * @param DateTime $dateTime
      * @param Config $config
      * @param TypeListInterface $typeList
@@ -46,6 +48,7 @@ class Save extends Group
         PageFactory $resultPageFactory,
         GroupFactory $groupFactory,
         ElementFactory $elementFactory,
+        GroupStoreFactory $groupStoreFactory,
         DateTime $dateTime,
         Config $config,
         TypeListInterface $typeList
@@ -58,7 +61,8 @@ class Save extends Group
             $coreRegistry,
             $resultPageFactory,
             $groupFactory,
-            $elementFactory
+            $elementFactory,
+            $groupStoreFactory
         );
     }
 
@@ -93,7 +97,26 @@ class Save extends Group
             $model->addData($data);
 
             try {
-                $model->save();
+                $result = $model->save();
+                
+                //Save store view
+                if (isset($data['store_ids'])) {
+                    $modelStore = $this->groupStoreFactory->create();
+
+                    foreach ($data['store_ids'] as $store) {
+
+                        /**
+                         * ToDo save is not working, dont know the reason
+                         * 
+                         */
+                        
+                        $modelStore->setData([
+                            'group_id' => $result->getId(), 
+                            'store_id' => $store
+                        ]);   
+                        $modelStore->save();
+                    }
+                }
 
                 $this->messageManager->addSuccess(__('The group has been saved.'));
 

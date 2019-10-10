@@ -23,12 +23,6 @@ class Edit extends Group
                 ['GROUP_CONCAT(`lgs`.`store_id`) as store_ids']
             )->group('main_table.entity_id');
 
-//TODO inner join return more than one row
-//We can create a new model do query layout_group_store and add the store field to $data
-//But in the frontend, when we need to be filter by store...
-
-         //   echo ($model->getSelect());
-//   die();
         if ($id) {
             $model->getSelect()->where('main_table.entity_id = ?', $id);
             $model = $model->getFirstItem();

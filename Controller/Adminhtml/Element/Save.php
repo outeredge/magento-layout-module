@@ -91,6 +91,7 @@ class Save extends Element
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+        
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($data) {
@@ -139,6 +140,14 @@ class Save extends Element
                 }
             }
 
+            if (isset($data['category_identifier'])) {
+                foreach ($data['category_identifier'] as $catIdentifier) {
+                    if (isset($data[$catIdentifier])) {
+                        $data[$catIdentifier] = implode(',',$data[$catIdentifier]);
+                    }
+                }
+            }
+            
             $model->addData($data);
             try {
                 $model->save();
