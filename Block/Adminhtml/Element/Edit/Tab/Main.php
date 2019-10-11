@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
 use OuterEdge\Layout\Helper\Data as TemplatesHelper;
+use OuterEdge\Layout\Block\Adminhtml\Element\Helper\CategoryMultiselect;
 
 class Main extends Generic
 {
@@ -19,11 +20,17 @@ class Main extends Generic
     protected $_wysiwygConfig;
 
     /**
+     * @var CategoryMultiselect
+     */
+    protected $categoryMultiselect;
+
+    /**
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
      * @param TemplatesHelper $templates
+     * @param CategoryMultiselect $categoryMultiselect
      * @param array $data
      */
     public function __construct(
@@ -32,10 +39,12 @@ class Main extends Generic
         FormFactory $formFactory,
         Config $wysiwygConfig,
         TemplatesHelper $templates,
+        CategoryMultiselect $categoryMultiselect,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
         $this->_templates = $templates;
+        $this->categoryMultiselect = $categoryMultiselect;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -60,6 +69,9 @@ class Main extends Generic
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Properties')]);
         $fieldset->addType('image', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image');
+        
+        //Category chooser not is use, because issue on css/js
+        //$fieldset->addType('category', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\CategoryChooser');
 
         if ($element->getId()) {
             $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
@@ -149,13 +161,15 @@ class Main extends Generic
                                 'center'       => 'Center',
                                 'top-right'    => 'Top Right',
                                 'top-left'     => 'Top Left',
+                                'top-center'   => 'Top Center',
                                 'bottom-right' => 'Bottom Right',
-                                'bottom-left'  => 'Bottom Left'
+                                'bottom-left'  => 'Bottom Left',
+                                'bottom-center'=> 'Bottom Center'
                              ],
                         ]
                     );
                     break;
-		case 'boolean':
+		        case 'boolean':
                     $fieldset->addField(
                         $identifier,
                         'select',
@@ -168,6 +182,20 @@ class Main extends Generic
                              ],
                         ]
                     );
+                    break;
+                case 'categories':
+                    $fieldset->addField(
+                        $identifier,
+                        'multiselect', //'category'
+                        [
+                            'name' => $identifier,
+                            'label' => __($label),
+                            'values' => $this->categoryMultiselect->toOptionArray()
+                        ]
+                    );
+                    $count++;
+                    $fieldset->addField("category_identifier[$count]", 'hidden', ['name' => "category_identifier[$count]"]);
+                    $element->setData("category_identifier[$count]", $identifier);
                     break;
                 default:
                     $fieldset->addField(

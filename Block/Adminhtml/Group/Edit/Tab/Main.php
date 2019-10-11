@@ -8,9 +8,13 @@ use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
 use OuterEdge\Layout\Helper\Data as TemplatesHelper;
+use Magento\Store\Model\System\Store;
 
 class Main extends Generic
 {
+    /**
+     * @var TemplatesHelper
+     */
     protected $_templates;
     
     /**
@@ -19,11 +23,17 @@ class Main extends Generic
     protected $_wysiwygConfig;
 
     /**
+     * @var Store
+     */
+    protected $_systemStore;
+
+    /**
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Config $wysiwygConfig
      * @param TemplatesHelper $templates
+     * @param Store $systemStore
      * @param array $data
      */
     public function __construct(
@@ -32,10 +42,12 @@ class Main extends Generic
         FormFactory $formFactory,
         Config $wysiwygConfig,
         TemplatesHelper $templates,
+        Store $systemStore,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
         $this->_templates = $templates;
+        $this->_systemStore = $systemStore;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -144,6 +156,18 @@ class Main extends Generic
                 'name'  => 'group[template_file]',
                 'label' => __('Template Widget File'),
                 'title' => __('Template Widget File')
+            ]
+        );
+
+        $fieldset->addField(
+            'store_ids',
+            'multiselect',
+            [
+                'name'  => 'group[store_ids]',
+                'label'    => __('Store Views'),
+                'title'    => __('Store Views'),
+                'required' => true,
+                'values'   => $this->_systemStore->getStoreValuesForForm(false, true),
             ]
         );
 

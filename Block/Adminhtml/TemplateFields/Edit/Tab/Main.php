@@ -160,7 +160,8 @@ class Main extends Generic
             'select'        => __('Dropdown'),
             'editor'        => __('Editor'),
             'image'         => __('Image'),
-            'position'      => __('Position')
+            'position'      => __('Position'),
+            'categories'    => __('Categories'),
         ];
     }
 }

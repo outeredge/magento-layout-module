@@ -15,10 +15,17 @@ class Edit extends Group
     {
         $id = $this->getRequest()->getParam('entity_id');
 
-        $model = $this->groupFactory->create();
+        $model = $this->groupFactory->create()->getCollection();
+        $model->getSelect()
+            ->joinLeft(
+                ['lgs' => 'layout_group_store'],
+                'main_table.entity_id = lgs.group_id',
+                ['GROUP_CONCAT(`lgs`.`store_id`) as store_ids']
+            )->group('main_table.entity_id');
 
         if ($id) {
-            $model->load($id);
+            $model->getSelect()->where('main_table.entity_id = ?', $id);
+            $model = $model->getFirstItem();
 
             if (!$model->getId()) {
                 $this->messageManager->addError(__('This group no longer exists.'));
@@ -28,7 +35,7 @@ class Edit extends Group
         }
 
         $data = $this->_session->getGroupData(true);
-        
+     
         if (!empty($data)) {
             $model->setData($data);
         }

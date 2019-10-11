@@ -33,7 +33,7 @@ abstract class Group extends Action
      * @var GroupFactory
      */
     protected $groupFactory;
-    
+   
     /**
      * @var ElementFactory
      */

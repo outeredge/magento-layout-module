@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OuterEdge\Layout\Model\GroupFactory;
 use OuterEdge\Layout\Model\ElementFactory;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Exception;
 use Magento\PageCache\Model\Config;
@@ -39,6 +40,7 @@ class Save extends Group
      * @param DateTime $dateTime
      * @param Config $config
      * @param TypeListInterface $typeList
+     * @param ResourceConnection $resourceConnection
      */
     public function __construct(
         Context $context,
@@ -48,11 +50,13 @@ class Save extends Group
         ElementFactory $elementFactory,
         DateTime $dateTime,
         Config $config,
-        TypeListInterface $typeList
+        TypeListInterface $typeList,
+        ResourceConnection $resourceConnection
     ) {
         $this->dateTime = $dateTime;
         $this->config = $config;
         $this->typeList = $typeList;
+        $this->resourceConnection = $resourceConnection;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -93,7 +97,24 @@ class Save extends Group
             $model->addData($data);
 
             try {
-                $model->save();
+                $result = $model->save();
+                
+                //Save store view
+                if (isset($data['store_ids'])) {
+                    
+                    $groupId = (int)$result->getId();
+                    $connection = $this->resourceConnection->getConnection();
+                    $table = $this->resourceConnection->getTableName('layout_group_store');
+                    
+                    $connection->query("DELETE FROM $table WHERE group_id = $groupId ");
+
+                    foreach ($data['store_ids'] as $store) {
+                      
+                        $insert = "INSERT INTO $table (group_id, store_id) VALUES ($groupId, $store) 
+                            ON DUPLICATE KEY UPDATE group_id = $groupId AND store_id = $store";
+                        $connection->query($insert);
+                    }
+                }
 
                 $this->messageManager->addSuccess(__('The group has been saved.'));
 
