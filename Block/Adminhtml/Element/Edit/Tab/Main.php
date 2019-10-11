@@ -39,7 +39,7 @@ class Main extends Generic
         FormFactory $formFactory,
         Config $wysiwygConfig,
         TemplatesHelper $templates,
-        categoryMultiselect $categoryMultiselect,
+        CategoryMultiselect $categoryMultiselect,
         array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;

@@ -85,4 +85,3 @@ class CategoryMultiselect implements ArrayInterface
         return $this->categoryList;
     }
 }
-?>
