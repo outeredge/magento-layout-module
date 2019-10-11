@@ -229,8 +229,7 @@ class Save extends TemplateFields
     public function updateEavAttribute($row)
     {
         $data = [
-            'frontend_label' => $row['frontend_label'],
-            'frontend_input' => $row['frontend_input']
+            'frontend_label' => $row['frontend_label']
         ];
         
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
