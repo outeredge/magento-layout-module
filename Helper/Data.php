@@ -15,6 +15,7 @@ use OuterEdge\Layout\Model\ResourceModel\TemplateFields\CollectionFactory as Tem
 use OuterEdge\Layout\Model\TemplateFactory;
 use OuterEdge\Layout\Model\ResourceModel\Template\CollectionFactory as TemplateCollectionFactory;
 use Magento\Eav\Model\Config;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends AbstractHelper
 {
@@ -62,6 +63,11 @@ class Data extends AbstractHelper
      * @var Config
      */
     protected $eavConfig;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
     
     /**
      * @param Context $context
@@ -74,6 +80,7 @@ class Data extends AbstractHelper
      * @param TemplateFactory $templateFactory
      * @param TemplateCollectionFactory $templateCollectionFactory
      * @param Config $eavConfig
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
@@ -85,7 +92,8 @@ class Data extends AbstractHelper
         TemplateFieldsCollectionFactory $templateFieldsCollectionFactory,
         TemplateFactory $templateFactory,
         TemplateCollectionFactory $templateCollectionFactory,
-        Config $eavConfig
+        Config $eavConfig,
+        StoreManagerInterface $storeManager
     ) {
         $this->groupFactory = $groupFactory;
         $this->groupCollectionFactory = $groupCollectionFactory;
@@ -96,7 +104,18 @@ class Data extends AbstractHelper
         $this->templateFactory = $templateFactory;
         $this->templateCollectionFactory = $templateCollectionFactory;
         $this->eavConfig = $eavConfig;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
+    }
+
+    /**
+     * Get store identifier
+     *
+     * @return  int
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
     }
 
     /**
@@ -106,11 +125,21 @@ class Data extends AbstractHelper
      */
     public function getGroup($id = false, $field = 'group_code')
     {
-        $group = $this->groupFactory->create();
+        $group = $this->groupFactory->create()->getCollection();
         if ($id) {
-            $group->load($id, $field);
+
+            $group->getSelect()
+                ->joinLeft(
+                    ['lgs' => 'layout_group_store'],
+                    'main_table.entity_id = lgs.group_id',
+                    ['lgs.store_id']
+                )
+                ->where($field.' = ?', $id)
+                ->where("(store_id = 0 OR store_id IS NULL OR store_id = ".$this->getStoreId().")")
+                ->group('main_table.entity_id');
+            $result = $group->getFirstItem();
         }
-        return $group;
+        return $result;
     }
 
     /**
@@ -197,8 +226,7 @@ class Data extends AbstractHelper
     public function getFieldsTemplate($idGroup)
     {
         //Get template Id from group Id
-        $group = $this->groupFactory->create();
-        $group->load($idGroup);
+        $group = $this->getGroup($idGroup, 'entity_id');
         
         $templateFields = $this->getTemplateFieldsCollection()
             ->addFieldToFilter('template_id', ['eq' => $group->getTemplateId()]);
