@@ -137,9 +137,9 @@ class Data extends AbstractHelper
                 ->where($field.' = ?', $id)
                 ->where("(store_id = 0 OR store_id IS NULL OR store_id = ".$this->getStoreId().")")
                 ->group('main_table.entity_id');
-            $result = $group->getFirstItem();
+            return $group->getFirstItem();
         }
-        return $result;
+        return null;
     }
 
     /**
