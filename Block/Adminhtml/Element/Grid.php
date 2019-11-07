@@ -145,19 +145,19 @@ class Grid extends Extended
             } 
         }
 
-        $collection = $this->elementFactory->create()->getCollection();
         if ($secondInnerJoin) {
+            $collection = $this->elementFactory->create()->getCollection();
             $collection->getSelect()
-            ->joinLeft(
-                ['leev' => 'layout_element_entity_varchar'],
-                'e.entity_id = leev.entity_id AND show_in_grid = leev.attribute_id',
-                ['leev.attribute_id', 'leev.value'])
-            ->joinLeft(
-                ['eav' => 'eav_attribute'],
-                'leev.attribute_id = eav.attribute_id',
-                ['eav.attribute_code']
-            )
-            ->where('group_id = ?', $this->getRequest()->getParam('entity_id'));
+                ->joinLeft(
+                    ['leev' => 'layout_element_entity_varchar'],
+                    'e.entity_id = leev.entity_id AND show_in_grid = leev.attribute_id',
+                    ['leev.attribute_id', 'leev.value'])
+                ->joinLeft(
+                    ['eav' => 'eav_attribute'],
+                    'leev.attribute_id = eav.attribute_id',
+                    ['eav.attribute_code']
+                )
+                ->where('group_id = ?', $this->getRequest()->getParam('entity_id'));
         }
 
         return $collection;
