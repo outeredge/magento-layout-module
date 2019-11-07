@@ -116,6 +116,13 @@ class Save extends Group
                     }
                 }
 
+                //Save show in grid data
+                $showInGrid = $this->getRequest()->getPostValue('show_in_grid');
+                $groupId = (int)$result->getId();
+                $connection = $this->resourceConnection->getConnection();
+                $table = $this->resourceConnection->getTableName('layout_element_entity');
+                $connection->query("UPDATE $table SET `show_in_grid` = $showInGrid WHERE `group_id` = $groupId ");
+
                 $this->messageManager->addSuccess(__('The group has been saved.'));
 
                 $this->_session->setGroupData(false);

@@ -164,5 +164,6 @@ class Main extends Generic
             'categories'    => __('Categories'),
         ];
     }
+
 }
 
