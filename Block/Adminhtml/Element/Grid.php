@@ -47,8 +47,8 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $collection = $this->elementFactory->create()->getCollection();
-        $collection->addFieldToFilter('group_id', ['eq' => $this->getRequest()->getParam('entity_id')]);
+        $collection = $this->getCustomCollection();
+
         $this->setCollection($collection);
         
         return parent::_prepareCollection();
@@ -67,6 +67,16 @@ class Grid extends Extended
                 'index'  => 'title'
             ]
         );
+        
+        if ($dynamicField = $this->checkDynamicField()) {
+            $this->addColumn(
+                'value',
+                [
+                    'header' => ucfirst(str_replace("_", " ", $dynamicField)),
+                    'index'  => 'value'
+                ]
+            );
+        }
 
         $this->addColumn(
             'sort_order',
@@ -90,5 +100,66 @@ class Grid extends Extended
     public function getRowUrl($row)
     {
         return $this->getUrl('*/element/edit', ['element_id' => $row->getId(), 'group_id' => $row->getGroupId()]);
+    }
+
+    /**
+     * Check if dynamic field exist
+     */
+    protected function checkDynamicField()
+    {
+        $collection = $this->getCustomCollection();
+        
+        $fieldCode = false;
+        foreach ($collection as $element) {
+            if (!is_null($element['show_in_grid'])) {                
+                $fieldCode = $element['attribute_code'];
+            }
+        }
+
+        return $fieldCode;
+    }
+
+    /**
+     * Get Custom collection query with dynamic field
+     */
+    protected function getCustomCollection()
+    {
+        $collection = $this->elementFactory->create()->getCollection();
+        $collection->getSelect()
+            ->joinLeft(
+                    ['leet' => 'layout_element_entity_text'],
+                    'e.entity_id = leet.entity_id AND show_in_grid = leet.attribute_id',
+                    ['leet.attribute_id', 'leet.value AS value'])
+            ->joinLeft(
+                ['eav' => 'eav_attribute'],
+                'leet.attribute_id = eav.attribute_id',
+                ['eav.attribute_code']
+            )
+            ->where('group_id = ?', $this->getRequest()->getParam('entity_id'));
+        
+        $secondInnerJoin = false;
+        foreach ($collection->getData() as $element) {
+            if ($element['value'] == NULL) {
+                $secondInnerJoin = true;
+                break;
+            } 
+        }
+
+        if ($secondInnerJoin) {
+            $collection = $this->elementFactory->create()->getCollection();
+            $collection->getSelect()
+                ->joinLeft(
+                    ['leev' => 'layout_element_entity_varchar'],
+                    'e.entity_id = leev.entity_id AND show_in_grid = leev.attribute_id',
+                    ['leev.attribute_id', 'leev.value'])
+                ->joinLeft(
+                    ['eav' => 'eav_attribute'],
+                    'leev.attribute_id = eav.attribute_id',
+                    ['eav.attribute_code']
+                )
+                ->where('group_id = ?', $this->getRequest()->getParam('entity_id'));
+        }
+
+        return $collection;
     }
 }

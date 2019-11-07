@@ -24,6 +24,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->createLayoutGroupStoreTable($setup);
         }
 
+        if (version_compare($context->getVersion(), '1.0.4', '<')) {
+            $this->addShowInGridColumnToLayoutElementEntity($setup);
+        }
+
         $setup->endSetup();
     }
 
@@ -131,6 +135,32 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $installer->getTable('store'),
                 'store_id',
                 Table::ACTION_SET_NULL
+            );
+        }
+    }
+
+    /**
+     * Add show_in_grid option to layout_element_entity table
+     *
+     * @param SchemaSetupInterface $setup
+     *
+     * @return void
+     */
+    private function addShowInGridColumnToLayoutElementEntity(SchemaSetupInterface $setup)
+    {
+        $connection = $setup->getConnection();
+
+        $tableItem = $setup->getTable('layout_element_entity');
+        if ($connection->isTableExists($tableItem) == true) {
+            $connection->addColumn(
+                $tableItem,
+                'show_in_grid',
+                [
+                    'type'     => Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'default'  => null,
+                    'comment'  => 'Field to show In Grid'
+                ]
             );
         }
     }

@@ -165,4 +165,3 @@ class Main extends Generic
         ];
     }
 }
-

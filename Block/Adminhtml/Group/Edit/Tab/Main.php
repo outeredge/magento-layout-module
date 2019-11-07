@@ -61,6 +61,12 @@ class Main extends Generic
     {
         $group = $this->_coreRegistry->registry('groupModel');
 
+        $elementCollection = $this->_templates->getElementCollection()
+            ->addFieldToFilter('group_id', ['eq' => $group->getId()]);
+        $element = $elementCollection->getData();
+        $showInGrid = reset($element);
+        $group->setShowInGrid($showInGrid['show_in_grid']);
+
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
         );
@@ -159,6 +165,20 @@ class Main extends Generic
             ]
         );
 
+        if ($group->getId()) {
+            $fieldset->addField(
+                'show_in_grid',
+                'select',
+                [
+                    'name'  => 'show_in_grid',
+                    'label' => __('Show in grid'),
+                    'title' => __('Show in grid'),
+                    'values' => $this->getAllFieldsOptions($group->getTemplateId()),
+                    'note' => __('Select extra text field to show in grid')
+                ]
+            );
+        }
+
         $fieldset->addField(
             'store_ids',
             'multiselect',
@@ -187,5 +207,31 @@ class Main extends Generic
         $this->_eventManager->dispatch('group_form_build_main_tab', ['form' => $form]);
 
         return parent::_prepareForm();
+    }
+
+     /**
+     * options array with all template fields
+     */
+    protected function getAllFieldsOptions($id)
+    {
+        $allFieldsCollection = $this->_templates->getTemplateFieldsCollection()
+        ->addFieldToFilter('template_id', ['eq' => $id]);
+        $allFieldsCollection->getSelect()
+            ->join(
+                ['eav' => 'eav_attribute'],
+                'main_table.eav_attribute_id = eav.attribute_id',
+                ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
+            );
+        $allFieldsCollection->setOrder('sort_order', 'ASC');
+
+        $allOptions = [];
+        $allOptions['NULL'] = '  ';
+        foreach ($allFieldsCollection as $element) {
+            if ($element['frontend_input'] == 'text') {
+                $allOptions[$element['eav_attribute_id']] = $element['attribute_code'];
+            }
+        }
+
+        return $allOptions;
     }
 }
