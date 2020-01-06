@@ -16,6 +16,7 @@ use OuterEdge\Layout\Model\TemplateFactory;
 use OuterEdge\Layout\Model\ResourceModel\Template\CollectionFactory as TemplateCollectionFactory;
 use Magento\Eav\Model\Config;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\State;
 
 class Data extends AbstractHelper
 {
@@ -68,6 +69,11 @@ class Data extends AbstractHelper
      * @var StoreManagerInterface
      */
     protected $storeManager;
+
+    /**
+     * @var State
+     */
+    protected $state;
     
     /**
      * @param Context $context
@@ -81,6 +87,7 @@ class Data extends AbstractHelper
      * @param TemplateCollectionFactory $templateCollectionFactory
      * @param Config $eavConfig
      * @param StoreManagerInterface $storeManager
+     * @param State $state
      */
     public function __construct(
         Context $context,
@@ -93,7 +100,8 @@ class Data extends AbstractHelper
         TemplateFactory $templateFactory,
         TemplateCollectionFactory $templateCollectionFactory,
         Config $eavConfig,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        State $state
     ) {
         $this->groupFactory = $groupFactory;
         $this->groupCollectionFactory = $groupCollectionFactory;
@@ -105,6 +113,7 @@ class Data extends AbstractHelper
         $this->templateCollectionFactory = $templateCollectionFactory;
         $this->eavConfig = $eavConfig;
         $this->storeManager = $storeManager;
+        $this->state = $state;
         parent::__construct($context);
     }
 
@@ -135,8 +144,13 @@ class Data extends AbstractHelper
                     ['lgs.store_id']
                 )
                 ->where($field.' = ?', $id)
-                ->where("(store_id = 0 OR store_id IS NULL OR store_id = ".$this->getStoreId().")")
                 ->group('main_table.entity_id');
+
+            if ($this->state->getAreaCode() != 'adminhtml') {
+                $group->getSelect()
+                ->where("(store_id = 0 OR store_id IS NULL OR store_id = ".$this->getStoreId().")");
+            }
+            
             return $group->getFirstItem();
         }
         return null;
