@@ -144,6 +144,8 @@ class Save extends Element
                 foreach ($data['category_identifier'] as $catIdentifier) {
                     if (isset($data[$catIdentifier])) {
                         $data[$catIdentifier] = implode(',',$data[$catIdentifier]);
+                    } else {
+                        $data[$catIdentifier] = null;
                     }
                 }
             }
