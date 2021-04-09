@@ -61,11 +61,13 @@ class Main extends Generic
     {
         $group = $this->_coreRegistry->registry('groupModel');
 
-        $elementCollection = $this->_templates->getElementCollection()
-            ->addFieldToFilter('group_id', ['eq' => $group->getId()]);
-        $element = $elementCollection->getData();
-        $showInGrid = reset($element);
-        $group->setShowInGrid($showInGrid['show_in_grid']);
+        if ($group->getId()) {
+            $elementCollection = $this->_templates->getElementCollection()
+                ->addFieldToFilter('group_id', ['eq' => $group->getId()]);
+            $element = $elementCollection->getData();
+            $showInGrid = reset($element);
+            $group->setShowInGrid($showInGrid['show_in_grid']);
+        }
 
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
