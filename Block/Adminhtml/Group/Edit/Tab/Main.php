@@ -64,9 +64,11 @@ class Main extends Generic
         if ($group->getId()) {
             $elementCollection = $this->_templates->getElementCollection()
                 ->addFieldToFilter('group_id', ['eq' => $group->getId()]);
-            $element = $elementCollection->getData();
-            $showInGrid = reset($element);
-            $group->setShowInGrid($showInGrid['show_in_grid']);
+
+            if (!empty($element = $elementCollection->getData())) {
+                $showInGrid = reset($element);
+                $group->setShowInGrid($showInGrid['show_in_grid']);
+            }
         }
 
         $form = $this->_formFactory->create(
