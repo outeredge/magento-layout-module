@@ -8,15 +8,13 @@
     "authors": [
         {
             "name": "outer/edge",
-            "email": "hello@outeredgeuk.com",
-            "homepage": "https://outeredgeuk.com/",
+            "email": "support@outeredfge.agency",
+            "homepage": "https://outeredge.agency",
             "role": "Developer"
         }
     ],
     "require-dev": {
-        "magento-ecg/coding-standard": "~3.0",
-        "outeredge/coding-standards": "~1.0.0",
-        "squizlabs/php_codesniffer": "^3.0"
+        "outeredge/dev-dependencies": "^3.0"
     },
     "autoload": {
         "files": [

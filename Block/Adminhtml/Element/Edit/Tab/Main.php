@@ -13,7 +13,7 @@ use OuterEdge\Layout\Block\Adminhtml\Element\Helper\CategoryMultiselect;
 class Main extends Generic
 {
     protected $_templates;
-    
+
     /**
      * @var Config
      */
@@ -58,7 +58,7 @@ class Main extends Generic
     {
         $element = $this->_coreRegistry->registry('elementModel');
         $groupId = $this->getRequest()->getParam('group_id');
-        
+
         $form = $this->_formFactory->create(
             ['data' => [
                 'id' => 'edit_form',
@@ -69,7 +69,7 @@ class Main extends Generic
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Element Properties')]);
         $fieldset->addType('image', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\Image');
-        
+
         //Category chooser not is use, because issue on css/js
         //$fieldset->addType('category', 'OuterEdge\Layout\Block\Adminhtml\Element\Helper\CategoryChooser');
 
@@ -80,10 +80,10 @@ class Main extends Generic
             $element->setGroupId($groupId);
             $fieldset->addField('group_id', 'hidden', ['name' => 'group_id']);
         }
-        
+
         //Ask factory template for group code name
         $templateData = $this->_templates->getFieldsTemplate($groupId);
-       
+
         //Fixed fields
         $fieldset->addField(
             'title',
@@ -94,14 +94,14 @@ class Main extends Generic
                 'title' => __('Title')
             ]
         );
- 
+
         $count = 0;
         //Dynamic fields
         foreach ($templateData as $key => $field) {
             $label = ucfirst(str_replace("_", " ", key($field)));
             $identifier = $key;
             $type = reset($field);
-            
+
             switch ($type) {
                 case 'image':
                     $fieldset->addField(
@@ -128,7 +128,7 @@ class Main extends Generic
                             'title'   => __($label),
                             'wysiwyg' => true,
                             'config'  => $this->_wysiwygConfig->getConfig([
-                                'hidden'        => $element->getDescription() === strip_tags($element->getDescription()),
+                                'hidden'        => $element->getDescription() === strip_tags((string) $element->getDescription()),
                                 'add_variables' => false,
                                 'add_widgets'   => false,
                                 'add_images'    => false
@@ -209,7 +209,7 @@ class Main extends Generic
                     );
             }
         }
-        
+
         $fieldset->addField(
             'sort_order',
             'text',
@@ -219,7 +219,7 @@ class Main extends Generic
                 'title' => __('Sort Order')
             ]
         );
-        
+
         $form->setValues($element->getData());
         $this->setForm($form);
 
