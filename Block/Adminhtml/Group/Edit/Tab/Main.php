@@ -151,6 +151,7 @@ class Main extends Generic
                 'title'   => __('Description'),
                 'wysiwyg' => true,
                 'config'  => $this->_wysiwygConfig->getConfig([
+                    'hidden'        => $group->getDescription() === strip_tags((string) $group->getDescription()),
                     'add_variables' => false,
                     'add_widgets'   => false,
                     'add_images'    => false
