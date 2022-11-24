@@ -141,11 +141,11 @@ class Main extends Generic
             ]
         );
         
-        $form->setValues($templateFields->getData());
-        $this->setForm($form);
-
         $this->_eventManager->dispatch('templatefields_form_build_main_tab', ['form' => $form]);
 
+        $form->setValues($templateFields->getData());
+        $this->setForm($form);
+        
         return parent::_prepareForm();
     }
 

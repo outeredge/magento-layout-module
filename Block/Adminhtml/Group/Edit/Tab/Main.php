@@ -205,10 +205,10 @@ class Main extends Generic
             ]
         );
 
+        $this->_eventManager->dispatch('group_form_build_main_tab', ['form' => $form]);
+
         $form->setValues($group->getData());
         $this->setForm($form);
-
-        $this->_eventManager->dispatch('group_form_build_main_tab', ['form' => $form]);
 
         return parent::_prepareForm();
     }
