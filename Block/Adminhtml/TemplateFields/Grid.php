@@ -52,7 +52,7 @@ class Grid extends Extended
         $collection
             ->getSelect()
             ->join(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $collection->getTable('eav_attribute')],
                 'main_table.eav_attribute_id = eav.attribute_id',
                 ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );

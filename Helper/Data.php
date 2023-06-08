@@ -139,7 +139,7 @@ class Data extends AbstractHelper
 
             $group->getSelect()
                 ->joinLeft(
-                    ['lgs' => 'layout_group_store'],
+                    ['lgs' => $group->getTable('layout_group_store')],
                     'main_table.entity_id = lgs.group_id',
                     ['lgs.store_id']
                 )
@@ -247,7 +247,7 @@ class Data extends AbstractHelper
         $templateFields
             ->getSelect()
             ->join(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $templateFields->getTable('eav_attribute')],
                 'main_table.eav_attribute_id = eav.attribute_id',
                 ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
@@ -306,7 +306,7 @@ class Data extends AbstractHelper
         $templateFields
             ->getSelect()
             ->join(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $templateFields->getTable('eav_attribute')],
                 'main_table.eav_attribute_id = eav.attribute_id',
                 ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );

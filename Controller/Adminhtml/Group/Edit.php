@@ -19,7 +19,7 @@ class Edit extends Group
             $model = $this->groupFactory->create()->getCollection();
             $model->getSelect()
                 ->joinLeft(
-                    ['lgs' => 'layout_group_store'],
+                    ['lgs' => $model->getTable('layout_group_store')],
                     'main_table.entity_id = lgs.group_id',
                     ['GROUP_CONCAT(`lgs`.`store_id`) as store_ids']
                 )
