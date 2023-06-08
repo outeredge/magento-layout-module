@@ -127,11 +127,11 @@ class Grid extends Extended
         $collection = $this->elementFactory->create()->getCollection();
         $collection->getSelect()
             ->joinLeft(
-                    ['leet' => 'layout_element_entity_text'],
+                    ['leet' => $collection->getTable('layout_element_entity_text')],
                     'e.entity_id = leet.entity_id AND show_in_grid = leet.attribute_id',
                     ['leet.attribute_id', 'leet.value AS value'])
             ->joinLeft(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $collection->getTable('eav_attribute')],
                 'leet.attribute_id = eav.attribute_id',
                 ['eav.attribute_code']
             )
@@ -149,11 +149,11 @@ class Grid extends Extended
             $collection = $this->elementFactory->create()->getCollection();
             $collection->getSelect()
                 ->joinLeft(
-                    ['leev' => 'layout_element_entity_varchar'],
+                    ['leev' => $collection->getTable('layout_element_entity_varchar')],
                     'e.entity_id = leev.entity_id AND show_in_grid = leev.attribute_id',
                     ['leev.attribute_id', 'leev.value'])
                 ->joinLeft(
-                    ['eav' => 'eav_attribute'],
+                    ['eav' => $collection->getTable('eav_attribute')],
                     'leev.attribute_id = eav.attribute_id',
                     ['eav.attribute_code']
                 )

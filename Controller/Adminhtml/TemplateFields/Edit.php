@@ -19,7 +19,7 @@ class Edit extends TemplateFields
         $model = $this->templateFieldsFactory->create()->getCollection();
         $model->getSelect()
             ->join(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $model->getTable('eav_attribute')],
                 'main_table.eav_attribute_id = eav.attribute_id',
                 ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );

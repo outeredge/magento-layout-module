@@ -222,7 +222,7 @@ class Main extends Generic
         ->addFieldToFilter('template_id', ['eq' => $id]);
         $allFieldsCollection->getSelect()
             ->join(
-                ['eav' => 'eav_attribute'],
+                ['eav' => $allFieldsCollection->getTable('eav_attribute')],
                 'main_table.eav_attribute_id = eav.attribute_id',
                 ['eav.attribute_code', 'eav.frontend_label', 'eav.frontend_input']
             );
