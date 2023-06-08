@@ -13,11 +13,11 @@ use Magento\Eav\Setup\EavSetupFactory;
 use OuterEdge\Layout\Setup\ElementSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\App\ResourceConnection;
-use Zend_Validate_Regex;
 use Exception;
 use Magento\Eav\Model\Entity\Attribute;
 use Magento\PageCache\Model\Config;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\Validator\Regex;
 
 class Save extends TemplateFields
 {
@@ -118,7 +118,7 @@ class Save extends TemplateFields
                 //Create attribute
                 $attributeCode = $data['template_code'] .'_'. $data['attribute_code'];
                 if (strlen($attributeCode) > 0) {
-                    $validatorAttrCode = new Zend_Validate_Regex(['pattern' => '/^[a-z][a-z_0-9]{0,30}$/']);
+                    $validatorAttrCode = new Regex('/^[a-z][a-z_0-9]{0,30}$/');
                     if (!$validatorAttrCode->isValid($attributeCode)) {
                         $this->messageManager->addError(
                             __(
