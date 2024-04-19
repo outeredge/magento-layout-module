@@ -6,12 +6,6 @@ use Magento\Eav\Model\Entity\AbstractEntity;
 
 class Element extends AbstractEntity
 {
-    protected function _construct()
-    {
-        $this->_read = 'layout_element_read';
-        $this->_write = 'layout_element_write';
-    }
-    
     /**
      * Getter and lazy loader for _type
      *
