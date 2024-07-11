@@ -44,6 +44,8 @@ class Save extends Element
      */
     protected $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png', 'svg'];
 
+    protected $destinationPath;
+
     /**
      * @param Context $context
      * @param Registry $coreRegistry
