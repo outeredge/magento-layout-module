@@ -13,4 +13,10 @@
     <preference for="OuterEdge\Layout\Api\LayoutApiInterface" type="OuterEdge\Layout\Model\LayoutApi"/>
     <preference for="OuterEdge\Layout\Api\Data\ItemInterface" type="OuterEdge\Layout\Model\LayoutApiItem"/>
     <preference for="OuterEdge\Layout\Api\Data\ItemSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <type name="Magento\Framework\File\Uploader">
+        <plugin name="check_allowed_svg_extension" type="OuterEdge\Layout\Plugin\CheckAllowed"/>
+    </type>
+    <type name="Magento\MediaStorage\Model\File\Uploader">
+        <plugin name="check_allowed_svg_media_storage" type="OuterEdge\Layout\Plugin\CheckAllowedMediaStorage"/>
+    </type>
 </config>
