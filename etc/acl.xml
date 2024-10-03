@@ -4,24 +4,26 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::content">
-                    <resource id="OuterEdge_Layout::layout" title="Layout" sortOrder="10" >
-                        <resource id="OuterEdge_Layout::group" title="Group" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::group_save" title="Save Group" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::group_delete" title="Delete Group" sortOrder="20" />
+                    <resource id="Magento_Backend::content_elements">
+                        <resource id="OuterEdge_Layout::layout" title="Groups  &#38; Elements" sortOrder="10" >
+                            <resource id="OuterEdge_Layout::group" title="Group" sortOrder="40" >
+                                <resource id="OuterEdge_Layout::group_save" title="Save Group" sortOrder="10" />
+                                <resource id="OuterEdge_Layout::group_delete" title="Delete Group" sortOrder="20" />
+                                <resource id="OuterEdge_Layout::element" title="Elements" sortOrder="40" >
+                                    <resource id="OuterEdge_Layout::element_save" title="Save Element" sortOrder="10" />
+                                    <resource id="OuterEdge_Layout::element_delete" title="Delete Element" sortOrder="20" />
+                                </resource>
+                            </resource>
                         </resource>
-                        <resource id="OuterEdge_Layout::element" title="Element" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::element_save" title="Save Element" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::element_delete" title="Delete Element" sortOrder="20" />
-                        </resource>
-                    </resource>
-                    <resource id="OuterEdge_Layout::layout_template" title="Layout Template" sortOrder="10" >
-                        <resource id="OuterEdge_Layout::template" title="Template" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::template_save" title="Save Template" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::template_delete" title="Delete Template" sortOrder="20" />
-                        </resource>
-                        <resource id="OuterEdge_Layout::template_field" title="Template Fields" sortOrder="40" >
-                            <resource id="OuterEdge_Layout::template_field_save" title="Save Template Fields" sortOrder="10" />
-                            <resource id="OuterEdge_Layout::template_field_delete" title="Delete Template Fields" sortOrder="20" />
+                        <resource id="OuterEdge_Layout::layout_template" title="Layout Templates" sortOrder="10" >
+                            <resource id="OuterEdge_Layout::template" title="Template" sortOrder="40" >
+                                <resource id="OuterEdge_Layout::template_save" title="Save Template" sortOrder="10" />
+                                <resource id="OuterEdge_Layout::template_delete" title="Delete Template" sortOrder="20" />
+                                <resource id="OuterEdge_Layout::template_field" title="Template Fields" sortOrder="40" >
+                                    <resource id="OuterEdge_Layout::template_field_save" title="Save Template Fields" sortOrder="10" />
+                                    <resource id="OuterEdge_Layout::template_field_delete" title="Delete Template Fields" sortOrder="20" />
+                                </resource>
+                            </resource>
                         </resource>
                     </resource>
                 </resource>
